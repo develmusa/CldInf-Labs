@@ -1,9 +1,11 @@
-\documentclass[a4paper,10pt]{scrartcl}
+\documentclass[a4,12pt]{scrartcl}
 
 %Basic 
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage[bottom = 3.50cm]{geometry}
 
 %Titel Seite
 \title{CLOUD INFRASTRUCTURE}
@@ -29,29 +31,35 @@
 %Tabellen
 \usepackage{booktabs}
 
+%Querformat für eine Seite
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{pdflscape}
+
+%Temp
+\usepackage{lipsum}
+
+
+
 \begin{document}
 
-\maketitle
+\clearpage\maketitle
+\thispagestyle{empty}
 \tableofcontents
 \newpage
 
 \section{Section}
-Text
+\lipsum[1]
 
 \subsection{Subsection}
-Text
+\lipsum[1]
+\lipsum[1]
+\lipsum[1]
+\lipsum[1]
+\lipsum[1]
 
 \subsubsection{Subsubsection}
-Text
-
-\section{Bilder}
-\begin{figure} [h]
-\begin{center}
-\includegraphics[width=0.50\textwidth]{./pictures/sample_picture.pdf}
-\caption{Bild Unterschrift}
-\label{Bild Referenz}
-\end{center}
-\end{figure}
+\lipsum[1]
 
 \section{Tabellen}
 \begin{center}
@@ -64,6 +72,24 @@ Text
     \bottomrule
     \end{tabular}
 \end{center}
+
+\section{Bilder}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.50\textwidth]{./pictures/sample_picture.pdf}
+	\caption{\textbf{Bild Unterschrift}}
+	\label{Bild Referenz}
+	\end{center}
+\end{figure}
+
+\begin{landscape}
+\begin{figure}[htbp]
+\subsection{Querformat}
+\centering
+\fbox{\includegraphics[width=\linewidth, height=\textheight,keepaspectratio]{./pictures/sample_picture_landscape.pdf}}
+\caption{\textbf{Bild Querformat}}
+\end{figure}
+\end{landscape}	
 
 
 \end{document}

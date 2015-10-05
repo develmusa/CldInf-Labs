@@ -1,7 +1,7 @@
 
 ## Cloud_Infrastructure Labs
 
-Bei Collaboration möglichst auf/mit Branches arbeiten ;)
+Bei Collaboration möglichst auf/mit Branches arbeiten ;)  
 Vorschlag für Branchnames dieses Projekts: 
 - {aktuelle Abschnitt}{init}
 - {aktuelle Abschnitt}{korrektur}
@@ -31,9 +31,22 @@ $ git config credential.helper store
 
 ## Befehle
 ###Branch
+####Erstellen
 Naming wenn möglich Feature spezifisch
 ```bash
 $ git branch dildo-vibration-hardcore
+```
+
+####Wechseln
+```bash
+$ git checkout newBranch
+```
+
+###Merge 
+Beispiel um Branch in Master zu mergen:
+```bash
+$ git checkout master
+$ git merge branch
 ```
 
 ###Dateien hinzufügen
@@ -47,13 +60,22 @@ Alle Dateien:
 $ git add .
 ```
 
-Nicht zu empfehlen ausser es besteht ein .gitignore file
+Nicht zu empfehlen ausser es besteht ein .gitignore file im root directory
 - Bsp. .gitignore file for LaTeX projects https://gist.github.com/kogakure/149016
-
 
 ###Commit
 ```bash
 $ git commit -a -m "text"
+```
+
+###Push
+```bash
+$ git push -u origin "source/branch"
+```
+
+###Pull
+```bash
+$ git pull origin "source/branch"
 ```
 
 ###Zurücksetzen
@@ -67,12 +89,20 @@ $ git reset xxxxxxx
 ```
 
 ###Repository neu ziehen
+"Fuck was funkt nüm" Plan:
 ```bash
 $ git fetch --all 
 $ git reset --hard HEAD
 ```
 
+###Tracked Files
+```bash
+$ git ls-files
+```
 
-
-
+###Git Log
+Mit dem x kann man die Anzahl Commits definieren.
+```bash
+$ git log -x
+```
      

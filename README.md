@@ -1,6 +1,11 @@
 
 ## Cloud_Infrastructure Labs
 
+Bei Collaboration möglichst auf/mit Branches arbeiten ;)
+Vorschlag für Branchnames dieses Projekts: 
+- {aktuelle Abschnitt}{init}
+- {aktuelle Abschnitt}{korrektur}
+
 Chlini Hilf und Gedankestützi für die Ahnigslose Motherfuckers:
 ## Tutorials
 - Interaktives Gittutorial (SE Übungen): http://pcottle.github.io/learnGitBranching/
@@ -24,14 +29,33 @@ Speicher Login im Klartext auf Lokalem Datenträger:
 $ git config credential.helper store
 ```
 
-
-
 ## Befehle
+###Branch
+Naming wenn möglich Feature spezifisch
+```bash
+$ git branch dildo-vibration-hardcore
+```
+
+###Dateien hinzufügen
+Jede Datei einzeln mit:
+```bash
+$ git filename
+```
+
+Alle Dateien:
+```bash
+$ git add .
+```
+
+Nicht zu empfehlen ausser es besteht ein .gitignore file
+- Bsp. .gitignore file for LaTeX projects https://gist.github.com/kogakure/149016
+
 
 ###Commit
 ```bash
 $ git commit -a -m "text"
 ```
+
 ###Zurücksetzen
 relativ mittels HEAD~x:
 ```bash
@@ -41,6 +65,14 @@ oder über Hash:
 ```bash
 $ git reset xxxxxxx
 ```
+
+###Repository neu ziehen
+```bash
+$ git fetch --all 
+$ git reset --hard HEAD
+```
+
+
 
 
      

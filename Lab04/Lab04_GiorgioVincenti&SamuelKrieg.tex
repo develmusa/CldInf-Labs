@@ -79,15 +79,6 @@ Hints
 \item Guest VM don’t need a GUI
 \end{itemize}
 
-\subsection{Vorgehen}
-\begin{itemize}
-\item Ubuntu Server installiert
-
-\item 
-\begin{lstlisting}
-sudo apt-get install
-\end{lstlisting}
-\end{itemize}
 \subsection{Wichtiges im Überblick}
 Hier einen Überblick über die erforderlichen Punkte:
 \begin{itemize}
@@ -135,21 +126,11 @@ Hier einige Details über die eingesetzte Linux Distribution.
 \end{center}
 
 \subsubsection{Login}
-Um VMs auf dem Host erstellen zu können sind Berechtigungen erforderlich. Die Userin wird auf dem Host-Computer mit einem Administratorkonto arbeiten. 
+Die Userin wird auf dem Host-Computer mit einem Administratorkonto arbeiten. 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Benutzername} & {Passwort} & {Privilegien}\\ \midrule
     Cloud Infrastrucure & hsr12344 & Administrator (root)\\ \addlinespace
-    \bottomrule
-    \end{tabular}
-\end{center}
-
-\subsubsection{Network}
-Der Host verfügt über eine statische IP-Konfiguration. Über diese IP kann der Server verwaltet werden. 
-\begin{center}
-    \begin{tabular}{@{} l l r@{}}\toprule    
-    {Hostname} & {IP-Adresse} & {Subnetz}\\ \midrule
-    Host & 10.0.1.11 & 255.255.255.0\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}

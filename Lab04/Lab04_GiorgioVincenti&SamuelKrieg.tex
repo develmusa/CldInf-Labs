@@ -204,16 +204,36 @@ Die VMs befinden sich im Homeverzeichnis des Users. Sie sind als *.img Datei abg
 \end{figure}
 
 \subsection{Networking}
-In diesem Kapitel werden einige Konfigurationsdetails zum Netzwerk aufgezeigt. 
+In diesem Kapitel werden einige Konfigurationsdetails zum Netzwerk aufgezeigt.
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./draws/uebersicht_bridges_taps_visio.pdf}
+	\caption{{Network Übersicht}}
+	\label{virtualdir}
+	\end{center}
+\end{figure}
+Zur Sicherstellung der Kommunikationswege werden die Layer 2 Verbindungen über Bridges realisiert. Die Guest-OS werden mittels TAP's in die Birdges eingebunden. Damit VM1 mit dem Netzwerk kommunizieren kann, muss eine Bridge konfiguriert werden welche das Netwerkinterface  des Host-OS beinhaltet.
 
 \subsubsection{Host-Networkconfig}
-Host IP Konfiguration und Tabs 
-
+Host IP Konfiguration und Tabs
+ 
+\subsubsection{Bridge}
+Es sind drei Bridges von Nöten, zwei Bridges zwischen den VM's und eine für die Kommunikation  nach aussen.
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Bridge Name} & {Verbindung} & {Intfaces}\\ \toprule
+    brext & HostOS-VM1 & eth0,tapext\\ 
+    br121 & VM1-VM2 & tap12,tap21\\
+    br323 & VM2-VM3 & tap23,tap32\\ \addlinespace
+    \bottomrule
+    \end{tabular}
+\end{center}
 \subsubsection{Guest-Networkconfig}
 Netzwerkkonfig von den Guests 
 
-\subsubsection{Bridge}
-Hier folgen die Daten der Bridge
+
+
+
 
 \section{Anleitung}
 Dies ist eine kurze Anleitung für das erstellen einer 3-Tier Umgebung mit \textbf{QEMU} auf einer Linux umgebung. Es wird von Ubuntu 14.04 als Hosts-OS ausgegangen.

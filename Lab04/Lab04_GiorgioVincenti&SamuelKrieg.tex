@@ -51,7 +51,6 @@
 \clearpage\maketitle
 \thispagestyle{empty}
 \tableofcontents
-\newpage
 
 \section{Aufgabenstellung}
 Wurde aus der Aufgabenstellung entnommen:
@@ -119,82 +118,111 @@ Wurden aus dem Mail von Urs Baumann entnommen:
 \section{Infrastruktur}
 Hier einige Eckdaten zu der Infrastruktur. 
 
-\subsection{Virtualisierungs-Software}
-Als Virtualisierungssoftware wird VMWare Workstation eingesetzt. 
+\subsection{Virtualisierungs-Software (Test-Umgebung)}
+Um die Aufgabe durchzuführen wird die erforderliche Umgebung auf VMWare Workstation 12.0 aufgesetzt. 
 
 \subsection{Virtualisierungs-Host}
-Als Virtualisierungs-Host wir ein Linux Server OS eingsetzt. Wir gehen nicht auf die Details der Installation ein. Es wird nur das nötigste dokumentiert.  
+Als Virtualisierungs-Host wir ein Linux OS eingsetzt. Wir gehen nicht auf die Details der Installation ein. Es wird nur das nötigste dokumentiert.  
 
 \subsubsection{OS} 
 Hier einige Details über die eingesetzte Linux Distribution. 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Linux Distribution} & {Version}\\ \midrule
-    Ubuntu & Server x.x.x.x\\ \addlinespace
+    Ubuntu & 14.04.3 LTS\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}
 
 \subsubsection{Login}
-Es sind zwei Logins auf dem Server eingerichtet. Eines für die Userin, um VMs erstellen zu können und eines für die Administratoren um den Server zu verwalten. 
+Um VMs auf dem Host erstellen zu können sind Berechtigungen erforderlich. Die Userin wird auf dem Host-Computer mit einem Administratorkonto arbeiten. 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Benutzername} & {Passwort} & {Privilegien}\\ \midrule
-    HSR & hsr & User\\ \addlinespace
-    root & ****** & Administrator\\ \addlinespace
+    Cloud Infrastrucure & hsr12344 & Administrator (root)\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}
 
 \subsubsection{Network}
-Der Server verfügt über eine statische IP-Konfiguration. Über diese IP kann der Server verwaltet werden. 
+Der Host verfügt über eine statische IP-Konfiguration. Über diese IP kann der Server verwaltet werden. 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Hostname} & {IP-Adresse} & {Subnetz}\\ \midrule
-    SE01 & 10.0.1.11 & 255.255.255.0\\ \addlinespace
+    Host & 10.0.1.11 & 255.255.255.0\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}
 
 \subsubsection{Services}
-Auf dem Server laufen keine, für die Umgebung relevanten, Services. 
+Auf dem Server laufen keine, für die Umgebung relevanten, Services. Es sind die Standard-Features von Ubuntu installiert.  
 
 \subsubsection{Application}
-
-\newpage
-\subsubsection{Verwaltung}
-Um den Server von Remote zu verwalten empfehlen wir SSH Secure Shell oder PuTTy. Diese Tools kann man kostenlos vom Internet heruntergeladen und verwenden. Der Server kann auch per Konsole verwaltet werden.
-\begin{figure} [H]
+Auf dem Ubuntu Client (Host) wird als Virtualisierungssoftware QEMU eingesetzt. Mit dieser Software soll die Anwendering VMs erstellen und verwalten können. 
 \begin{center}
-\includegraphics[width=0.48\textwidth]{./pictures/ssh_login.jpg}
-\caption{Login in SSH Secure Shell}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Software} & {Version}\\ \midrule
+    QEMU emulator & 2.0.0\\ \addlinespace
+    \bottomrule
+    \end{tabular}
 \end{center}
-\end{figure}
+Die Installation der Software erfolgte über das Terminal: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Befehl} & {Bemerkung}\\ \midrule
+    apt-get install qemu-system & Download und Installation\\
+     \addlinespace
+    \bottomrule
+    \end{tabular}
+\end{center}
 
 \subsection{Virtualisierungs-Guests}
-Die Umgebung besteht aus gesamt drei virtuellen Guests, die auf dem Virtualisierungs-Host laufen.
-\subsubsection{VM1 - bla bla}
-\subsubsection{VM2 - bla bla}
-\subsubsection{VM3 - bla bla}
-\newpage
-\subsection{Enumerate}
-\begin{enumerate}
-  \item The first item
-  \item The second item
-  \item The third etc \ldots
-\end{enumerate}
+Die Umgebung besteht aus gesamt drei virtuellen Guests, die auf dem Virtualisierungs-Host laufen. Als Virtualisierungssoftware wird QEMU eingesetzt. 
 
-\subsubsection{Subsubsection}
-Text
+\subsubsection{Guest-OS}
+Als Guest-OS wird auf eine extrem kleine Linux Distribution gesetzt. Alle drei VMs betreiben dasselbe OS. 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Distribution} & {Version} & {Hostname}\\ \toprule
+    Tiny Core & v6.4 & vm1guest\\ 
+    Tiny Core & v6.4 & vm2guest\\
+    Tiny Core & v6.4 & vm3guest\\ \addlinespace
+    \bottomrule
+    \end{tabular}
+\end{center}
 
-\subsection{Description}
-\begin{description}
-  \item[First] The first item
-  \item[Second] The second item
-  \item[Third] The third etc \ldots
-\end{description}
+\subsubsection{Guest-Path}
+Die VMs befinden sich im Homeverzeichnis des Users. Sie sind als *.img Datei abgelegt.
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Image-Name} & {Path} & {Hostname}\\ \toprule
+    vm1\_guest.img & /home/cldinf/Virtualdir & vm1guest\\ 
+    vm2\_guest.img & /home/cldinf/Virtualdir & vm2guest\\
+    vm3\_guest.img & /home/cldinf/Virtualdir & vm3guest\\ \addlinespace
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/virtualdir.jpg}
+	\caption{{Virtualdir Übersicht}}
+	\label{virtualdir}
+	\end{center}
+\end{figure}
+
+\subsection{Networking}
+In diesem Kapitel werden einige Konfigurationsdetails zum Netzwerk aufgezeigt. 
+
+\subsubsection{Host-Networkconfig}
+Host IP Konfiguration und Tabs 
+
+\subsubsection{Guest-Networkconfig}
+Netzwerkkonfig von den Guests 
+
+\subsubsection{Bridge}
+Hier folgen die Daten der Bridge
 
 \section{Anleitung}
-\newpage
 
 \end{document}

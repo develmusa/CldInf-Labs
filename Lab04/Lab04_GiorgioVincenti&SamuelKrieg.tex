@@ -137,14 +137,17 @@ Um VMs auf dem Host erstellen zu können sind Berechtigungen erforderlich. Die U
 \end{center}
 
 \subsubsection{Network}
-Der Host verfügt über eine statische IP-Konfiguration. Über diese IP kann der Server verwaltet werden. 
+Der Host verfügt über eine statische IP-Konfiguration. Die Netzwerkkarte wird in der VMWare Workstation im NAT-Modus betrieben, um Internetkonektitivät zu erhalten.  
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Hostname} & {IP-Adresse} & {Subnetz}\\ \midrule
-    Host & 10.0.1.11 & 255.255.255.0\\ \addlinespace
+    Host & 10.0.0.101 & 255.255.255.0\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}
+Auf dem VMWare Virtual Network ist ein DHCP Service aktiviert. \\
+Subnet: 10.0.0.0 und Netmask: 255.255.255.0 \\
+DHCP-Pool: 10.0.0.150 - 10.0.0.180
 
 \subsubsection{Services}
 Auf dem Server laufen keine, für die Umgebung relevanten, Services. Es sind die Standard-Features von Ubuntu installiert.  
@@ -203,22 +206,35 @@ Die VMs befinden sich im Homeverzeichnis des Users. Sie sind als *.img Datei abg
 	\end{center}
 \end{figure}
 
+\subsubsection{Guest-Networking}
+Hier einige Details über die IP-Konfiguration der Guests. Jeder Guest verfügt über zwei Schnittstellen.  
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Hostname} & {IP-Adresse} & {Netmask}\\ \toprule
+    vm1guest & 10.0.1.11 + .12 & 255.255.255.0\\ 
+    vm2guest & 10.0.2.11 + .12 & 255.255.255.0\\
+    vm3guest & 10.0.3.11 + .12 & 255.255.255.0\\ \addlinespace
+    \bottomrule
+    \end{tabular}
+\end{center}
+
 \subsection{Networking}
 In diesem Kapitel werden einige Konfigurationsdetails zum Netzwerk aufgezeigt.
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./draws/uebersicht_bridges_taps_visio.pdf}
-	\caption{{Network Übersicht}}
+	\caption{{network overview}}
 	\label{virtualdir}
 	\end{center}
 \end{figure}
-Zur Sicherstellung der Kommunikationswege werden die Layer 2 Verbindungen über Bridges realisiert. Die Guest-OS werden mittels TAP's in die Birdges eingebunden. Damit VM1 mit dem Netzwerk kommunizieren kann, muss eine Bridge konfiguriert werden welche das Netwerkinterface  des Host-OS beinhaltet.
+
+\noindent Zur Sicherstellung der Kommunikationswege werden die Layer 2 Verbindungen über Bridges realisiert. Die Guest-OS werden mittels TAP's in die Birdges eingebunden. Damit VM1 mit dem Netzwerk kommunizieren kann, muss eine Bridge konfiguriert werden welche das Netwerkinterface  des Host-OS beinhaltet.
 
 \subsubsection{Host-Networkconfig}
-Host IP Konfiguration und Tabs
+Wurde bereits im obigem Kapitel aufgelistet. (Kapitel 2.2.3)
  
 \subsubsection{Bridge}
-Es sind drei Bridges von Nöten, zwei Bridges zwischen den VM's und eine für die Kommunikation  nach aussen.
+Es sind gesamt drei Bridges notwendig um die Umgebung zu betreiben. Zwei Bridges zwischen den VM's und eine für die Kommunikation  nach aussen.
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Bridge Name} & {Verbindung} & {Intfaces}\\ \toprule
@@ -229,14 +245,11 @@ Es sind drei Bridges von Nöten, zwei Bridges zwischen den VM's und eine für di
     \end{tabular}
 \end{center}
 \subsubsection{Guest-Networkconfig}
-Netzwerkkonfig von den Guests 
-
-
-
-
+Wurde bereits im obigen Kapitel aufgelistet. (Kapitel 2.3.3)\\
+In der Anleitung mehr Details dazu. 
 
 \section{Anleitung}
-Dies ist eine kurze Anleitung für das erstellen einer 3-Tier Umgebung mit \textbf{QEMU} auf einer Linux umgebung. Es wird von Ubuntu 14.04 als Hosts-OS ausgegangen.
+Dies ist eine kurze Anleitung für das erstellen einer 3-Tier Umgebung mit \textbf{QEMU} auf einer Linux-Umgebung. Es wird von Ubuntu 14.04 als Hosts-OS ausgegangen.
 \newline
 Was wird zusätzlich zum Host-OS benötigt:
 \begin{itemize}
@@ -244,10 +257,23 @@ Was wird zusätzlich zum Host-OS benötigt:
 \item Etwas Glück oder Nerven
 \end{itemize}
 
-\subsubsection{Vorbereitung}
+\subsection{Was benötigt wird}
+Um die Umgebung aufzubauen wird folgendes benötigt: 
+\begin{itemize}
+\item Ein Host-OS um \textbf{QEMU} betreiben zu können
+\item \textbf{QEMU} Software auf dem Host-OS 
+\item Ein Guest-OS, welche die 3-Tier Umgebung darstellen 
+\item Diverse Netzwerk-Konfigurationen seitens des Host 
+\end{itemize}
+
+\subsection{Vorgehen}
+Wir gehen bereits davon aus das die Userin ein Host-OS installiert hat.
+Die Vorbereitungen sind im Terminal auf dem Host-OS vorzunehmen. 
+
+\subsubsection{Installation und Vorbereitung}
 \begin{itemize}
 \item Installation der Virtualisierungssoftware \textbf{QEMU}:
-\begin{lstlisting}
+\begin{lstlisting} 
 sudo apt-get install qemu-system-x86_64
 sudo apt-get install qemu-utils
 \end{lstlisting}
@@ -258,7 +284,7 @@ sudo apt-get install bridge-utils
 \end{itemize} 
 
 \begin{itemize}
-\item Erweitere Zugriffsrechte auf das \textbf{TUN-Device} für group und others:
+\item Erweitere Zugriffsrechte auf das \textbf{TUN-Device} für group und others erteilen:
 \begin{lstlisting}
 sudo chmod go+rw /dev/net/tun
 \end{lstlisting}
@@ -267,7 +293,7 @@ sudo chmod go+rw /dev/net/tun
 \begin{itemize}
 \item Anpassen der \textbf{QEMU} Interface up \& down Skripte:
 \newline
-Jeweils die Inhalte ersetzen:
+Jeweils die Inhalte ersetzen (mit root-Rechte anpassen):
 \newline
 /etc/qemu-ifup:
 \begin{lstlisting}
@@ -277,7 +303,7 @@ sudo /sbin/ifconfig $1 0.0.0.0 up
 /etc/qemu-ifdown:
 \begin{lstlisting}
 #!/bin/sh                                                        
-sudo /sbin/ifconfig $1 0.0.0.0 up
+sudo /sbin/ifconfig $1 0.0.0.0 down
 \end{lstlisting}
 \end{itemize}
 
@@ -288,15 +314,22 @@ sudo chmod +x /etc/qemu-ifup
 sudo chmod +x /etc/qemu-ifdown
 \end{lstlisting}
 \end{itemize}
+
 \subsubsection{Guest-OS}
+Die Guest-OS liegen als Images (*.img) im home Verzeichnis des Users unter Virtualdir. 
 \begin{itemize}
 \item Starten der VM's mittels QEMU und erzeugen der \textbf{TAP}'s:
 \begin{lstlisting}
-sudo qemu-system-x86_64 vm.img -net nic, -net tap,ifname=tapext -net nic, -net tap,ifname=tap12
-sudo qemu-system-x86_64 vm.img -net nic, -net tap,ifname=tap21 -net nic, -net tap,ifname=tap23
-sudo qemu-system-x86_64 vm.img -net nic, -net tap,ifname=tap32
+sudo qemu-system-x86_64 Virtualdir/vm1_guest.img 
+-net nic, -net tap,ifname=tapext -net nic, -net tap,ifname=tap12
+
+sudo qemu-system-x86_64 Virtualdir/vm2_guest.img 
+-net nic, -net tap,ifname=tap21 -net nic, -net tap,ifname=tap23
+
+sudo qemu-system-x86_64 vm3_guest.img 
+-net nic, -net tap,ifname=tap32
 \end{lstlisting}
-Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} ersichtlich sein.
+Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem Host-OS ersichtlich sein.
 
 \item In den Guest-OS müssen den Netzwerkinterfaces IP-Adressen zugewiesen werden. Die folgenden Befehlesind in den Guest-OS auszuführen.
 \newline

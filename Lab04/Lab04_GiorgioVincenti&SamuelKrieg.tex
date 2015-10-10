@@ -211,9 +211,9 @@ Hier einige Details über die IP-Konfiguration der Guests. Jeder Guest verfügt 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Hostname} & {IP-Adresse} & {Netmask}\\ \toprule
-    vm1guest & 10.0.1.11 + .12 & 255.255.255.0\\ 
-    vm2guest & 10.0.2.11 + .12 & 255.255.255.0\\
-    vm3guest & 10.0.3.11 + .12 & 255.255.255.0\\ \addlinespace
+    vm1guest & 10.10.0.11 + 1.11 & 255.255.255.0\\ 
+    vm2guest & 10.10.1.12 + 2.11 & 255.255.255.0\\
+    vm3guest & 10.10.2.12 & 255.255.255.0\\ \addlinespace
     \bottomrule
     \end{tabular}
 \end{center}
@@ -306,6 +306,7 @@ sudo /sbin/ifconfig $1 0.0.0.0 up
 sudo /sbin/ifconfig $1 0.0.0.0 down
 \end{lstlisting}
 \end{itemize}
+Die Dateien liegen ebenfalls im Virtualdir/settings Verzeichnis, falls die Userin lieber die Dateien ersetzen möchte, statt diese zu bearbeiten. 
 
 \begin{itemize}
 \item Sofern \textbf{qemu-ifup} \& \textbf{qemu-ifdown} nicht bereits ausführbar sind, dies nachholen:
@@ -335,24 +336,22 @@ Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem 
 \newline
 VM1:
 \begin{lstlisting}
-ifconfig eth0 10.10.0.2 netmask 255.255.255.0 up
-ifconfig eth1 10.10.1.2 netmask 255.255.255.0 up
+ifconfig eth0 10.10.0.11 netmask 255.255.255.0 up
+ifconfig eth1 10.10.1.11 netmask 255.255.255.0 up
 \end{lstlisting}
 VM2:
 \begin{lstlisting}
-ifconfig eth0 10.10.1.3 netmask 255.255.255.0 up
-ifconfig eth1 10.10.2.2 netmask 255.255.255.0 up
+ifconfig eth0 10.10.1.12 netmask 255.255.255.0 up
+ifconfig eth1 10.10.2.11 netmask 255.255.255.0 up
 \end{lstlisting}
 VM3:
 \begin{lstlisting}
-ifconfig eth1 10.10.2.2 netmask 255.255.255.0 up
-
+ifconfig eth1 10.10.2.12 netmask 255.255.255.0 up
 \end{lstlisting}
-
-
 \end{itemize}
 
 \subsubsection{Bridges}
+Die Bridges werden auf dem Host-OS erstellt. Insgesamt werden drei Bridges benötigt. 
 \begin{itemize}
 \item Erstellen der \textbf{Bridges}:
 \begin{lstlisting}
@@ -361,20 +360,21 @@ brctl addbr br121
 brctl addbr br323
 \end{lstlisting}
 
-
-
-\item Die durch das starten der VM's erstellten TAPS müssen nun den Bridges zugeordnet werden.
+\item Die durch das starten der VM's erstellten TAPS müssen nun den Bridges zugeordnet werden:
 \newline
+
 Bridge \textbf{brext}:
 \begin{lstlisting}
 sudo brctl addif brext eth0
 sudo brctl addif brext tapext
 \end{lstlisting}
+
 Bridge \textbf{br121}:
 \begin{lstlisting}
 sudo brctl addif br121 tap12
 sudo brctl addif br121 tap21
 \end{lstlisting}
+
 Bridge \textbf{br323}:
 \begin{lstlisting}
 sudo brctl addif br323 tap23
@@ -388,11 +388,21 @@ sudo ifconfig brext 10.10.0.1 netmask 255.255.255.0 up
 sudo ifconfig br121 10.10.1.1 netmask 255.255.255.0 up
 sudo ifconfig br323 10.10.2.1 netmask 255.255.255.0 up
 \end{lstlisting}
+\end{itemize}
+Als Abschluss kann die komplette Konektivität mittels Ping-Befehle getestet werden. Nun sollte die Umgebung funktionieren. 
+\newpage
 
+\section{Testing}
+Ob das Setup geklappt hat, können einige Tests mittels Ping durchgeführt werden. Hier folgen einige Test-Beispiele. 
+\newpage
 
+\section{3-Tier Modell auf anderen Host}
+Die Frage ist jetzt ob das 3-Tier Modell auf einem beliebigem (oder einen anderen Host) gemäss dieser Anleitung betrieben werden kann. 
 
-
-
-
+\noindent Natürlich kann die Umgebung auf einem anderen Host betrieben werden. Um das Host-OS zu wechseln muss die Userin nur zwei Scripts ausführen die wir in ihr Home Verzeichnis gepackt haben. Zusätzlich müssen die Images der Guest-OS auf dem anderen Host kopiert werden oder Home Verzeichnis Roaming muss aktiviert sein (falls bsp.: Active Directory vorhanden). Falls kein Romaing aktiv ist, wäre das einfachste das Verzeichnis Virtualdir auf den anderen Host zu kopieren. 
+\begin{itemize}
+\item /home/cldinf/Virtualdir/scripts/Vorbereitung.sh
+\item /home/cldinf/Virtualdir/scripts/StartenDerVMs.sh 
+\item /home/cldinf/Virtualdir/scripts/NetworkSettings.sh
 \end{itemize}
 \end{document}

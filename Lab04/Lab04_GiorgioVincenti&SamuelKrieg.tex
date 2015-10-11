@@ -268,8 +268,7 @@ Die Vorbereitungen sind im Terminal auf dem Host-OS vorzunehmen.
 \begin{itemize}
 \item Installation der Virtualisierungssoftware \textbf{QEMU}:
 \begin{lstlisting} 
-sudo apt-get install qemu-system-x86_64
-sudo apt-get install qemu-utils
+sudo apt-get install qemu
 \end{lstlisting}
 \item Installation des Packets \textbf{bridge-utils} für das Bridgemanagement:
 \begin{lstlisting}
@@ -292,12 +291,12 @@ Jeweils die Inhalte ersetzen (mit root-Rechte anpassen):
 /etc/qemu-ifup:
 \begin{lstlisting}
 #!/bin/sh                                                        
-sudo -p "Password for $0:" /sbin/ifconfig $1 0.0.0.0 up
+sudo -p /sbin/ifconfig $1 0.0.0.0 up
 \end{lstlisting}
 /etc/qemu-ifdown:
 \begin{lstlisting}
 #!/bin/sh                                                        
-sudo -p "Password for $0:" /sbin/ifconfig $1 down
+sudo -p /sbin/ifconfig $1 down
 \end{lstlisting}
 \end{itemize}
 Die Dateien liegen ebenfalls im Virtualdir/settings Verzeichnis, falls die Userin lieber die Dateien ersetzen möchte, statt diese zu bearbeiten. 
@@ -418,7 +417,7 @@ Mit einigen Pings können Tests durchgeführt werden. Hier folgen einige Test-Be
 \newpage
 
 \section{Usability}
-Es ist definitif zumutbar für einen Softwareentwickler. Es werden drei Scripte vorbereitet, welche all diese Schritte automatisieren. Das erste Script(Vorbereitung.sh) benötigt etwas länger zum durchlaufen wegen den Installationen der Module. Die Zeit hängt von der Leistungsfähigkeit des Computers,der Internetanbindung und der Grösse des Guest-Image ab. Nach dem Setup kann mit Ausführzeiten der zwei weiteren Scripts(StartenDerVMs.sh \& NetworkSettings.sh) kleiner 1min gerechnet werden. 
+Es ist definitiv zumutbar für einen Softwareentwickler. Es werden drei Scripte vorbereitet, welche all diese Schritte automatisieren. Das erste Script(Vorbereitung.sh) benötigt etwas länger zum durchlaufen wegen den Installationen der Module. Die Zeit hängt von der Leistungsfähigkeit des Computers,der Internetanbindung und der Grösse des Guest-Image ab. Nach dem Setup kann mit Ausführzeiten der zwei weiteren Scripts(StartenDerVMs.sh \& NetworkSettings.sh) kleiner 1min gerechnet werden. 
 
 \section{3-Tier Modell auf anderen Host}
 Die Frage ist jetzt, ob das 3-Tier Modell auf einem beliebigem (oder einen anderen Host) gemäss dieser Anleitung betrieben werden kann. 

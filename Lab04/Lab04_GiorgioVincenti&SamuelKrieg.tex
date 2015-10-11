@@ -55,9 +55,9 @@
 \section{Aufgabenstellung}
 Wurde aus der Aufgabenstellung entnommen:
 
-Your teammate needs your help. She works in the software development team and is not really experienced in Linux server and virtualization. Create a How-to for your workmate in order that the software developer can use it.
+\noindent Your teammate needs your help. She works in the software development team and is not really experienced in Linux server and virtualization. Create a How-to for your workmate in order that the software developer can use it.
 
-What they need:
+\noindent \textbf{What they need:}
 \begin{itemize}
 \item 3 separated virtual machines
 \item  VM1 has to be reachable from the internet and needs connectivity to VM2
@@ -66,13 +66,13 @@ What they need:
 \item Guess how long it will take for the SE
 \end{itemize}
 
-Add the following to your delivery:
+\textbf{Add the following to your delivery:}
 \begin{itemize}
 \item Usability
 \item Is it possible to deploy the VMs on multiple hosts (2 Nodes)?
 \end{itemize}
 
-Hints
+\textbf{Hints}
 \begin{itemize}
 \item Download Qcow image for VM
 \item Qemu supports different network backend types
@@ -250,12 +250,6 @@ In der Anleitung mehr Details dazu.
 
 \section{Anleitung}
 Dies ist eine kurze Anleitung für das erstellen einer 3-Tier Umgebung mit \textbf{QEMU} auf einer Linux-Umgebung. Es wird von Ubuntu 14.04 als Hosts-OS ausgegangen.
-\newline
-Was wird zusätzlich zum Host-OS benötigt:
-\begin{itemize}
-\item Ein Guest-OS Image (z.B CirrOS oder Tiny Core)
-\item Etwas Glück oder Nerven
-\end{itemize}
 
 \subsection{Was benötigt wird}
 Um die Umgebung aufzubauen wird folgendes benötigt: 
@@ -393,16 +387,51 @@ Als Abschluss kann die komplette Konektivität mittels Ping-Befehle getestet wer
 \newpage
 
 \section{Testing}
-Ob das Setup geklappt hat, können einige Tests mittels Ping durchgeführt werden. Hier folgen einige Test-Beispiele. 
+Mit einigen Pings können Tests durchgeführt werden. Hier folgen einige Test-Beispiele. 
+
+\subsection{VM1 to Internet}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ping_vm1_to_internet.png}
+	\caption{{Ping test von VM1 ins Internet (Google Public DNS)}}
+	\label{virtualdir}
+	\end{center}
+\end{figure}
+
+\subsection{VM1 to VM2}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ping_vm1_to_vm2.png}
+	\caption{{Ping test von VM1 zu VM2}}
+	\label{virtualdir}
+	\end{center}
+\end{figure}
+
+\subsection{VM2 to VM3}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ping_vm2_to_vm3.png}
+	\caption{{Ping test von VM2 zu VM3}}
+	\label{virtualdir}
+	\end{center}
+\end{figure}
 \newpage
 
 \section{3-Tier Modell auf anderen Host}
 Die Frage ist jetzt ob das 3-Tier Modell auf einem beliebigem (oder einen anderen Host) gemäss dieser Anleitung betrieben werden kann. 
 
-\noindent Natürlich kann die Umgebung auf einem anderen Host betrieben werden. Um das Host-OS zu wechseln muss die Userin nur zwei Scripts ausführen die wir in ihr Home Verzeichnis gepackt haben. Zusätzlich müssen die Images der Guest-OS auf dem anderen Host kopiert werden oder Home Verzeichnis Roaming muss aktiviert sein (falls bsp.: Active Directory vorhanden). Falls kein Romaing aktiv ist, wäre das einfachste das Verzeichnis Virtualdir auf den anderen Host zu kopieren. 
+\noindent Natürlich kann die Umgebung auf einem anderen Host betrieben werden. Um das Host-OS zu wechseln muss die Userin nur drei Scripts ausführen die wir in ihr Home Verzeichnis gepackt haben. Zusätzlich müssen die Images der Guest-OS auf dem anderen Host kopiert werden oder Home Verzeichnis Roaming muss aktiviert sein (falls bsp.: Active Directory vorhanden). Falls kein Romaing aktiv ist, wäre das einfachste das Verzeichnis Virtualdir auf den anderen Host zu kopieren. Die VM-Guest Netzwerk Einstellungen sind manuell durchzuführen. 
+
+\subsection{Virtualdir}
+Hier der Inhalt des Verzeichnis Virtualdir im Home Verzeichnis. 
 \begin{itemize}
 \item /home/cldinf/Virtualdir/scripts/Vorbereitung.sh
 \item /home/cldinf/Virtualdir/scripts/StartenDerVMs.sh 
 \item /home/cldinf/Virtualdir/scripts/NetworkSettings.sh
+\item /home/cldinf/Virtualdir/vm1\_guest.img
+\item /home/cldinf/Virtualdir/vm2\_guest.img
+\item /home/cldinf/Virtualdir/vm3\_guest.img 
+\item /home/cldinf/Virtualdir/settings/qemu-ifup
+\item /home/cldinf/Virtualdir/settings/qemu-ifdown
 \end{itemize}
 \end{document}

@@ -320,7 +320,7 @@ sudo qemu-system-x86_64 Virtualdir/vm1_guest.img -nographic
 sudo qemu-system-x86_64 Virtualdir/vm2_guest.img -nographic
 -net nic, -net tap,ifname=tap21 -net nic, -net tap,ifname=tap23
 
-sudo qemu-system-x86_64 vm3_guest.img -nographic
+sudo qemu-system-x86_64 Virtualdir/vm3_guest.img -nographic
 -net nic, -net tap,ifname=tap32
 \end{lstlisting}
 Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem Host-OS ersichtlich sein.

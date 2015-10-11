@@ -153,7 +153,7 @@ DHCP-Pool: 10.0.0.150 - 10.0.0.180
 Auf dem Server laufen keine, für die Umgebung relevanten, Services. Es sind die Standard-Features von Ubuntu installiert.  
 
 \subsubsection{Application}
-Auf dem Ubuntu Client (Host) wird als Virtualisierungssoftware QEMU eingesetzt. Mit dieser Software soll die Anwendering VMs erstellen und verwalten können. 
+Auf dem Ubuntu Client (Host) wird als Virtualisierungssoftware QEMU eingesetzt. Mit dieser Software soll die Anwenderin VMs erstellen und verwalten können. 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
     {Software} & {Version}\\ \midrule
@@ -315,13 +315,13 @@ Die Guest-OS liegen als Images (*.img) im home Verzeichnis des Users unter Virtu
 \begin{itemize}
 \item Starten der VM's mittels QEMU und erzeugen der \textbf{TAP}'s:
 \begin{lstlisting}
-sudo qemu-system-x86_64 Virtualdir/vm_guest.img -nographic 
+sudo qemu-system-x86_64 Virtualdir/vm1_guest.img -nographic 
 -net nic, -net tap,ifname=tapext -net nic, -net tap,ifname=tap12
 
-sudo qemu-system-x86_64 Virtualdir/vm_guest.img -nographic
+sudo qemu-system-x86_64 Virtualdir/vm2_guest.img -nographic
 -net nic, -net tap,ifname=tap21 -net nic, -net tap,ifname=tap23
 
-sudo qemu-system-x86_64 vm_guest.img -nographic
+sudo qemu-system-x86_64 vm3_guest.img -nographic
 -net nic, -net tap,ifname=tap32
 \end{lstlisting}
 Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem Host-OS ersichtlich sein.
@@ -417,8 +417,11 @@ Mit einigen Pings können Tests durchgeführt werden. Hier folgen einige Test-Be
 \end{figure}
 \newpage
 
+\section{Usability}
+Es ist definitif zumutbar für einen Softwareentwickler. Es werden drei Scripte vorbereitet, welche all diese Schritte automatisieren. Das erste Script(Vorbereitung.sh) benötigt etwas länger zum durchlaufen wegen den Installationen der Module. Die Zeit hängt von der Leistungsfähigkeit des Computers,der Internetanbindung und der Grösse des Guest-Image ab. Nach dem Setup kann mit Ausführzeiten der zwei weiteren Scripts(StartenDerVMs.sh \& NetworkSettings.sh) kleiner 1min gerechnet werden. 
+
 \section{3-Tier Modell auf anderen Host}
-Die Frage ist jetzt ob das 3-Tier Modell auf einem beliebigem (oder einen anderen Host) gemäss dieser Anleitung betrieben werden kann. 
+Die Frage ist jetzt, ob das 3-Tier Modell auf einem beliebigem (oder einen anderen Host) gemäss dieser Anleitung betrieben werden kann. 
 
 \noindent Natürlich kann die Umgebung auf einem anderen Host betrieben werden. Um das Host-OS zu wechseln muss die Userin nur drei Scripts ausführen die wir in ihr Home Verzeichnis gepackt haben. Zusätzlich müssen die Images der Guest-OS auf dem anderen Host kopiert werden oder Home Verzeichnis Roaming muss aktiviert sein (falls bsp.: Active Directory vorhanden). Falls kein Romaing aktiv ist, wäre das einfachste das Verzeichnis Virtualdir auf den anderen Host zu kopieren. Die VM-Guest Netzwerk Einstellungen sind manuell durchzuführen. 
 

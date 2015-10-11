@@ -298,12 +298,12 @@ Jeweils die Inhalte ersetzen (mit root-Rechte anpassen):
 /etc/qemu-ifup:
 \begin{lstlisting}
 #!/bin/sh                                                        
-sudo /sbin/ifconfig $1 0.0.0.0 up
+sudo -p "Password for $0:" /sbin/ifconfig $1 0.0.0.0 up
 \end{lstlisting}
 /etc/qemu-ifdown:
 \begin{lstlisting}
 #!/bin/sh                                                        
-sudo /sbin/ifconfig $1 0.0.0.0 down
+sudo -p "Password for $0:" /sbin/ifconfig $1 down
 \end{lstlisting}
 \end{itemize}
 Die Dateien liegen ebenfalls im Virtualdir/settings Verzeichnis, falls die Userin lieber die Dateien ersetzen möchte, statt diese zu bearbeiten. 
@@ -336,17 +336,17 @@ Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem 
 \newline
 VM1:
 \begin{lstlisting}
-ifconfig eth0 10.10.0.11 netmask 255.255.255.0 up
-ifconfig eth1 10.10.1.11 netmask 255.255.255.0 up
+sudo ifconfig eth0 10.10.0.11 netmask 255.255.255.0 up
+sudo ifconfig eth1 10.10.1.11 netmask 255.255.255.0 up
 \end{lstlisting}
 VM2:
 \begin{lstlisting}
-ifconfig eth0 10.10.1.12 netmask 255.255.255.0 up
-ifconfig eth1 10.10.2.11 netmask 255.255.255.0 up
+sudo ifconfig eth0 10.10.1.12 netmask 255.255.255.0 up
+sudo ifconfig eth1 10.10.2.11 netmask 255.255.255.0 up
 \end{lstlisting}
 VM3:
 \begin{lstlisting}
-ifconfig eth1 10.10.2.12 netmask 255.255.255.0 up
+sudo ifconfig eth1 10.10.2.12 netmask 255.255.255.0 up
 \end{lstlisting}
 \end{itemize}
 

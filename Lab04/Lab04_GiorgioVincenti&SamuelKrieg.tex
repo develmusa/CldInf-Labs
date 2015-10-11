@@ -321,13 +321,13 @@ Die Guest-OS liegen als Images (*.img) im home Verzeichnis des Users unter Virtu
 \begin{itemize}
 \item Starten der VM's mittels QEMU und erzeugen der \textbf{TAP}'s:
 \begin{lstlisting}
-sudo qemu-system-x86_64 Virtualdir/vm1_guest.img 
+sudo qemu-system-x86_64 Virtualdir/vm_guest.img -nographic 
 -net nic, -net tap,ifname=tapext -net nic, -net tap,ifname=tap12
 
-sudo qemu-system-x86_64 Virtualdir/vm2_guest.img 
+sudo qemu-system-x86_64 Virtualdir/vm_guest.img -nographic
 -net nic, -net tap,ifname=tap21 -net nic, -net tap,ifname=tap23
 
-sudo qemu-system-x86_64 vm3_guest.img 
+sudo qemu-system-x86_64 vm_guest.img -nographic
 -net nic, -net tap,ifname=tap32
 \end{lstlisting}
 Die TAP's und Bridges sollten nun bei der Eingabe von \textit{ifconfig} auf dem Host-OS ersichtlich sein.
@@ -355,9 +355,9 @@ Die Bridges werden auf dem Host-OS erstellt. Insgesamt werden drei Bridges benö
 \begin{itemize}
 \item Erstellen der \textbf{Bridges}:
 \begin{lstlisting}
-brctl addbr brext
-brctl addbr br121
-brctl addbr br323
+sudo brctl addbr brext
+sudo brctl addbr br121
+sudo brctl addbr br323
 \end{lstlisting}
 
 \item Die durch das starten der VM's erstellten TAPS müssen nun den Bridges zugeordnet werden:

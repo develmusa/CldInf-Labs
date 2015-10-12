@@ -1,0 +1,143 @@
+\documentclass[a4,12pt]{scrartcl}
+
+%Basic 
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage[bottom = 3.50cm]{geometry}
+
+%Titel Seite
+\title{CLOUD INFRASTRUCTURE}
+\subtitle{Lab-05}
+\author{Giorgio Vincenti \and Samuel Krieg}
+\date{\today}
+
+
+%Kopf, Fusszeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{ \begin{picture}(0,0) \put(0,0){\includegraphics[width=3cm]{./pictures/hsrlogo.png}} \end{picture}}
+\chead{}
+\rhead{Seite \thepage}
+\lfoot{Cloud Infrastructure \\Lab-05}
+\cfoot{Giorgio Vincenti \and Samuel Krieg}
+\rfoot{\today}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%Bilder
+\usepackage{graphicx}
+
+\begin{document}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+\section{Definitionen}
+\textbf{Beschreiben Sie die 4 Punkt der Cloud Service Definition OSSM:}
+\begin{enumerate}
+  \item \textbf{On-demand:} the server is already setup and ready to be deployed (so the user can sign-up for the service without waiting)
+  \item \textbf{Self-service:} customer chooses what they want, when they want it (the user can use the service anytime, without waiting)
+  \item \textbf{Scalable:} customer can choose how much they want and ramp up if necessary (the user can scale-up the service when needed, without waiting for the provider to add more capacity) 
+  \item \textbf{Measurable:} there’s metering/reporting so you know you are getting what you pay for (the user can access measurable data to determine the status of the service
+
+\end{enumerate}
+\textbf{Official(US NIST) Definition:}
+\begin{itemize}
+\item \textbf{Infrastructure as a Service (IaaS):} The capability provided to the consumer is to provision processing, storage, networks, and other fundamental computing resources where the consumer is able to deploy and run arbitrary software, which can include operating systems and applications. The consumer does not manage or control the underlying cloud infrastructure but has control over operating systems, storage, and deployed applications; and possibly limited control of select networking components (e.g., host firewalls).
+
+\item \textbf{Platform as a Service (PaaS):} The capability provided to the consumer is to deploy onto the cloud infrastructure consumer-created or acquired applications created using programming languages, libraries, services, and tools supported by the provider.3 The consumer does not manage or control the underlying cloud infrastructure including network, servers, operating systems, or storage, but has control over the deployed applications and possibly configuration settings for the application-hosting environment.
+
+\item \textbf{Software as a Service (SaaS):} The capability provided to the consumer is to use the provider’s applications running on a cloud infrastructure. The applications are accessible from various client devices through either a thin client interface, such as a web browser (e.g.web-based email), or a program interface. The consumer does not manage or control the underlying cloud infrastructure including network, servers, operating systems, storage, or even individual application capabilities, with the possible exception of limited userspecific application configuration settings.
+
+\item \textbf{Public cloud:} The cloud infrastructure is provisioned for open use by the general public. It may be owned, managed, and operated by a business, academic, or government organization, or some combination of them. It exists on the premises of the cloud provider.
+
+\item \textbf{Community cloud:} The cloud infrastructure is provisioned for exclusive use by a specific community of consumers from organizations that have shared concerns (e.g., mission, security requirements, policy, and compliance considerations). It may be owned, managed, and operated by one or more of the organizations in the community, a third party, or some combination of them, and it may exist on or off premises.
+
+\item \textbf{Hybrid cloud:} The cloud infrastructure is a composition of two or more distinct cloud infrastructures (private, community, or public) that remain unique entities, but are bound together by standardized or proprietary technology that enables data and application portability (e.g., cloud bursting for load balancing between clouds).
+
+\item \textbf{Private cloud:} The cloud infrastructure is provisioned for exclusive use by a single organization comprising multiple consumers (e.g., business units). It may be owned, managed, and operated by the organization, a third party, or some combination of them, and it may exist on or off premises.
+\end{itemize}
+
+\section{Cloud Nutzen Analyse}
+\subsection{Welches sind die Argumente pro/contra Cloud im Allgemeinen?}
+\textbf{Pro:}
+\begin{itemize}
+\item Lower investment costs
+\item No long-term capital commitment
+\item Scalability
+\item Higher reliability
+\item Less employees 
+\item actuality
+\end{itemize}
+
+\textbf{Contra:}
+\begin{itemize}
+\item Dependency on Provider
+\item Data security
+\item Internet connectivity reliability
+\item Legal Aspects
+\item Provider insolvency 
+\item Higher costs
+\end{itemize}
+
+\subsection{Vergleichen Sie die beiden Varianten "Public vs. "Private"Cloud:}
+\subsubsection{Public Cloud}
+As opposed to public clouds, private clouds are not delivered through a utility model or pay-as-you-go basis because the hardware is dedicated. Private clouds are generally preferred by mid and large size enterprises because they meet the security and compliance requirements of these larger organizations and their customers.
+\begin{itemize}
+\item\textbf{Utility Model:} Public Clouds typically deliver a pay-as-you-go model, where you pay by the hour for the compute resources you use. This is an economical way to go if you’re spinning up \& tearing down development servers on a regular basis.
+\item \textbf{No Contracts:} Along with the utility model, you’re only paying by the hour – if you want to shut down your server after only 2 hours of use, there is no contract requiring your ongoing use of the server.
+\item \textbf{Shared Hardware:} Because the public cloud is by definition a multi-tenant environment, your server shares the same hardware, storage and network devices as the other tenants in the cloud. Meeting compliance requirements, such as PCI or SOX, is not possible in the public cloud. 
+\item \textbf{No Control of Hardware Performance:} In the public cloud, you can’t select the hardware, cache or storage performance (SATA or SAS). Your virtual server is placed on whatever hardware and network, the public cloud provider designates for you.
+\item \textbf{Self Managed:} with the high volume, utility model, self managed systems are required for this business model to make sense. Advantage here for the technical buyers that like to setup and manage the details of their servers. Disadvantage for those that want a fully managed solution.
+\end{itemize}
+
+\subsubsection{Private Cloud}
+As opposed to public clouds, private clouds are not delivered through a utility model or pay-as-you-go basis because the hardware is dedicated. Private clouds are generally preferred by mid and large size enterprises because they meet the security and compliance requirements of these larger organizations and their customers.
+\begin{itemize}
+\item \textbf{Security:} Because private clouds are dedicated to a single organization, the hardware, data storage and network can be designed to assure high levels of security that cannot be accessed by other clients in the same data center.
+\item \textbf{Compliance:} Sarbanes Oxley, PCI and HIPAA compliance can not be delivered through a public cloud deployment. Because the hardware, storage and network configuration is dedicated to a single client, compliance is much easier to achieve.
+\item \textbf{Customizable:} Hardware performance, network performance and storage performance can be specified and customized in the private cloud.
+\item\textbf{Hybrid Deployments:} If a dedicated server is required to run a high speed database application, that hardware can be integrated into a private cloud, in effect, hybridizing the solution between virtual servers and dedicated servers. This can’t be achieved in a public cloud.
+\end{itemize}
+
+\subsection{Nennen Sie Beispiele, die sich besonders für die Public oder Private Cloud eignen:}
+\begin{enumerate}
+  \item Applikationsebene
+  \begin{itemize}
+	\item E-Mail
+	\item Website
+	\item Datashare
+	\end{itemize}
+  \item Plattformebene
+    \begin{itemize}
+	\item Database
+	\item Webserver
+	\end{itemize}
+  \item Infrastrukturebene
+    \begin{itemize}
+	\item Network
+	\item Stoarge
+	\item Computing
+	\end{itemize}
+\end{enumerate}
+
+\section{Technische Anforderungen an die Cloud}
+Beschreiben Sie die besonderen technischen Anforderungen an eine Cloud Infrastruktur. Anders gefragt: Welche grundlegenden Prinzipien/Anforderungen/Rahmenbedingungen ändern sich mit der Verlegung der IT in die Cloud?
+
+\subsection{Private Cloud:}
+\begin{itemize}
+\item optinal software license
+\item higher safety requirements
+\item new networkdesign
+\end{itemize}
+
+\subsection{Public Cloud:}
+\begin{itemize}
+\item High utilization
+\item Internet connectivity
+\end{itemize}
+
+\end{document}

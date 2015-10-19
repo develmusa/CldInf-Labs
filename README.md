@@ -96,7 +96,7 @@ $ git push -u origin "source/branch"
 $ git pull origin "source/branch"
 ```
 
-###Reset (Zurücksetzten)
+###Reset (Zurücksetzen)
 
 relativ mittels HEAD~x:
 ```bash

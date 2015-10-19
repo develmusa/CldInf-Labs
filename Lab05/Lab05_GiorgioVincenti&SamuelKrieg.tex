@@ -13,6 +13,8 @@
 \author{Giorgio Vincenti \and Samuel Krieg}
 \date{\today}
 
+%Tabellen
+\usepackage{booktabs}
 
 %Kopf, Fusszeile
 \usepackage{fancyhdr}
@@ -27,6 +29,13 @@
 
 %Bilder
 \usepackage{graphicx}
+
+%Querformat für eine Seite
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{pdflscape}
+
+\usepackage{adjustbox}
 
 \begin{document}
 
@@ -139,5 +148,42 @@ Beschreiben Sie die besonderen technischen Anforderungen an eine Cloud Infrastru
 \item High utilization
 \item Internet connectivity
 \end{itemize}
+
+\begin{landscape}
+\begin{figure}[htbp]
+\subsection{Anforderungs Matrix:}
+\begin{center}
+\begin{adjustbox}{max width=600px}
+    \begin{tabular}{@{} l l l l l r@{}}\toprule    
+    {\textbf{Building Blocks}} & {\textbf{Elastic Auto-Scaling}} & {\textbf{Mobility}} & {\textbf{Multi-Tenancy}} & {\textbf{High Availability}} & {\textbf{Auto-Provisioning}}\\ \midrule
+    \textbf{IaaS/Server/OS} & Auto-Generate/Deploy & Move running VMs & Datenzugriffe & Physical HA & Customer Interface\\ \addlinespace
+    & Standardisierung & Global reachability & Ressourcenverteilung(QoS) & Active/Active  | Active/Passiv & Orchestration SW\\ \addlinespace
+        & Usage based Accounting/Billing & & & L2 Kommunikation & API (Secure)\\ \addlinespace
+		& & & & Monitoring & Reporting/Billing \\ \addlinespace
+		& & & & Virtuallisierung & \\ \addlinespace
+    \textbf{Storage} & no DAS & über "grosse" Distanzen & Partitionierung & RAID & obiges gilt hier auch\\ \addlinespace
+	& Storage Pool & synchronität/asynchronität & Config-Zugriffe & SAN & Ressourcen Layering \\ \addlinespace
+	& Storage Virtualization & von überall erreichbar & Clean-up Prozesse | Erase & DB Sync & RAM,SSD,HD \\ \addlinespace
+	& Over-provisioning & & Backup & & \\ \addlinespace
+	& iSCSI, FCoE,CIFS,NFS & & & & \\ \addlinespace
+	\textbf{Net} & Trunks/LACP & L2 (Lan|Wan) & Virtualisierung (Vlan, VPN, MPLS) & Redundanz & Network must know, where my WMs are \\ \addlinespace
+	& Load Balance & L3(nicht ganz trivial) & & Routing Protokoll & API \\ \addlinespace
+	& QoS & & & Default Gateway Redundanz & \\ \addlinespace
+	& Ost-West-Verkehr & & & STP(zu langsam) & \\ \addlinespace
+	& & & & load Balancing & \\ \addlinespace
+	& & & & Network Functions Virtualization & \\ \addlinespace
+	& & & & Hashing (Content Delivery Networks) & \\ \addlinespace
+	\textbf{Application} & Auto-Scaling fähig & Transaktionkonsistent & "Tiefe der Virtualisierung" & Load Balancer & Docker \\ \addlinespace
+	& & MessageQues & & Virtual IP's & \\ \addlinespace
+	& & App-Virtualisierung & & & \\
+    \bottomrule
+    \end{tabular}
+    \end{adjustbox}
+\end{center}
+
+\end{figure}
+\end{landscape}
+
+
 
 \end{document}

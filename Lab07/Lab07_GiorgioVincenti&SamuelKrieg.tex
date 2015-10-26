@@ -52,29 +52,41 @@
 \tableofcontents
 \newpage
 
-\section{Research modern data center requirements}
-\subsection{Challenges}
+\section{Anforderungen an ein modernes Datacenter}
+\subsection{Herausforderungen}
+Die Herausforderungen in einem moderem Datacenter bestehen darin die riesigen Datenmengen, die generiert werden, effizient und schnell verarbeiten zu können. Die Storages und Server Performance spielen dabei eine grosse rolle, jedoch bringt diese Performance nichts, wenn das Netzwerk nicht dementsprechend mit den Datenmengen effizient umgehen kann. Die grossen Datenmengen verlassen das Datacenter nicht, sondern fliessen von System zu System.
+
+\subsubsection{Beispiele}
+Hier einige Beispiele in der Praxis. \\
+
+\noindent \textbf{VMotion:} Zum Beispiel bei Einsatz von Virtualisierung muss der Administrator in der Lage sein, VMs über das Netzwerk auf andere Hosts innerst kürzester Zeit verschieben können. \\
+
+\noindent \textbf{Webserver:} Ein anderes Beispiel bezieht sich auf ein Webserver/Datenbank Modell. Der Webserver muss Daten der Datenbank abfragen und abholen ohne grossen Verzögerungen.\\
+
+\noindent \textbf{Backup:} Ein weiteres Beispiel betrifft die Backups der Maschinen. Da fliessen ebenfalls grosse Datenmengen übers Netzwerk. Falls mehrere Server innerhalb eines gewissen Zeitraums gesichert werden müssen, muss die Netzwerkperformance stimmen, damit keine Engpässe auftreten. 
+
+\subsection{Anforderungen}
+Die Anforderungen an ein solches Datacenter sind sehr hoch. Da gibt es einiges zu beachten: 
 \begin{itemize}
-\item new traffic behavior
-\item management of computing nodes
-\item higher security risks
-\item new staff required
+\item Sehr hohe Verfügbarkeit 
+\item Mobilität von Applikationen, Systemen und Daten
+\item Zugriffe auf Applikationen, Systemen und Daten 
+\item Hohe Auto-Skalierbarkeit 
+\item Genaue Abrechnungen auf benutzte Dienste 
+\item Sicherheit 
+\item Hohe Performance 
+\item Abhängigkeit 
+\item Autoprovisioning von Applikationen, Systemen und Daten
 \end{itemize}
 
-\subsection{Requirements}
+\subsection{Netzwerkarchitektur}
+Die Netzwerkarchitektur spielt eine sehr grosse Rolle in einem Datacenter. Auch diese bringt grosse Anforderungen mitsich, damit das Beste aus der Infrastruktur rausgeholt werden kann. 
 \begin{itemize}
-\item Elastic Auto-Scaling
-\item Mobility of Applications, Systems and Data
-\item Multi-Tenancy
-\item Highest Availability
-\item Autoprovisioning of Applications, Systems and Data
-\end{itemize}
-
-\subsection{Network architecture}
-\begin{itemize}
-\item Scalability
-\item Managing higher traffic in DC
-\item capable of "Elephant flows"
+\item Skalierbarkeit
+\item Performance 
+\item Hohen Datendurchsatz zwischen den Systemen
+\item Elephant-flows fähig 
+\item Managebar 
 \end{itemize}
 
 \section{Trill}
@@ -154,24 +166,5 @@ Text
 \begin{lstlisting}
 sudo apt-get install qemu
 \end{lstlisting}
-
-\section{Bilder}
-\begin{figure} [H]
-	\begin{center}
-	\includegraphics[width=0.50\textwidth]{./pictures/sample_picture.pdf}
-	\caption{\textbf{Bild Unterschrift}}
-	\label{Bild Referenz}
-	\end{center}
-\end{figure}
-
-\begin{landscape}
-\begin{figure}[htbp]
-\subsection{Querformat}
-\centering
-\fbox{\includegraphics[width=\linewidth, height=\textheight,keepaspectratio]{./pictures/sample_picture_landscape.pdf}}
-\caption{\textbf{Bild Querformat}}
-\end{figure}
-\end{landscape}	
-
 
 \end{document}

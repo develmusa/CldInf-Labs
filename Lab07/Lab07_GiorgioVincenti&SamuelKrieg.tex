@@ -79,12 +79,28 @@
 
 \section{Trill}
 \subsection{Function / Protocol header:} 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.50\textwidth]{./pictures/trill_header.png}
+	\caption{\textbf{TRILL HEADER}}
+	\label{http://www.ietf.org/mail-archive/web/trill/current/pngiL5ECU_mwA.png}
+	\end{center}
+\end{figure}
+
 \subsection{Goal of TRILL:}
+To uses Layer 3 routing techniques to create a large cloud of links which appear to IP nodes to be a single IP subnet. 
+
 \subsection{Why was TRILL developed?}
+\textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks TRILL allows the ease of configuration of Ethernet while benefitting from the routing techniques provided at Layer 3.
+
 \subsection{Where and how can TRILL be used?}
-\subsection{Is TRILL comparable to a traditional protocol?}
+In datacenter for better migration of virtual machines. There will also be more bandwidth available for intensive applications like real-time communications and for the transport of storage traffic across the Ethernet network with FCoE and iSCSI.
+
+\subsection{Is TRILL comparable to a traditional protocol?}It's a combination of traditional protocols (Ethernet, IP) and it's a bit like MPLS.
 \subsection{What are the advantages and disadvantages of TRILL?}
-\subsection{Are there other modern technologies which are similar to TRILL}
+TRILL make switches more cost-effective because it allows to load balance and to use more links in data center network designs.
+Reduces Latency and improves overall network bandwidth utilization.
+\subsection{Are there other modern technologies which are similar to TRILL} multichassis link aggregation or shortest path bridging
 \subsection{How is TRILL configured in the LAB?}
 \subsubsection{Trees}
 \subsubsection{PacketFlow}

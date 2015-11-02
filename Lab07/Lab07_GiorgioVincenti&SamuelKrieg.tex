@@ -77,15 +77,29 @@
 \item capable of "Elephant flows"
 \end{itemize}
 
-\section{Trill}
-\subsection{Function / Protocol header:} 
+\section{TRILL}
+\textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks ist ein von der IETF festgelegten Standard.
+\subsection{Funktion / Protokoll-Header}
+\subsubsection{Funktion}
+TRILL ist eine kombination von Layer 2 und Layer 3. Es ermöglicht auf Layer 2 zu routen und ersetzt Spanning Tree Protocol.
+\subsubsection{Header}
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.50\textwidth]{./pictures/trill_header.png}
-	\caption{\textbf{TRILL HEADER}}
-	\label{http://www.ietf.org/mail-archive/web/trill/current/pngiL5ECU_mwA.png}
+	\includegraphics[width=0.80\textwidth]{./pictures/trill_header.png}
+	\caption{\textbf{TRILL Header}}
+	\label{x}
 	\end{center}
 \end{figure}
+\begin{itemize}
+\item V (Version): 2-bit unsigned integer.
+\item R (Reserved): 2 bits.
+\item R (Reserved): 2 bits.
+\item Op-Length (Options Length): 5-bit unsigned integer.
+\item Hop Count: 6-bit unsigned integer.
+\item Egress RBridge Nickname: 16-bit identifier.
+\item Ingress RBridge Nickname: 16-bit identifier.
+\item Options: present if Op-Length is non-zero.
+\end{itemize}
 
 \subsection{Goal of TRILL:}
 To uses Layer 3 routing techniques to create a large cloud of links which appear to IP nodes to be a single IP subnet. 

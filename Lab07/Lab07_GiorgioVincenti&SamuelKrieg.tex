@@ -99,16 +99,19 @@ TRILL ist eine Kombination von Layer 2 (bridging) und Layer 3 (routing). Dank di
 TRILL wird von  Geräte implementiert die sich RBridges (routing bridges) nennen. Ein anderer Name für diese Geräte ist TRILL Switches. 
 
 \subsubsection{Routing}
-Zwischen den verschiedenen RBridges wird ein Link State Routing Protokol eingesetzt, damit alle RBridges über die gesamte Netztopologie bescheid wissen. Als Protokoll wird IS-IS eingesetzt, weil es auf Layer 2 kommuniziert und somit keinerlei IP-Konfiguration benötigt. Dies ermöglicht den RBridges den optimalen Pfad zur Destination ausfindigzumachen. 
+Zwischen den verschiedenen RBridges wird ein Link State Routing Protokol eingesetzt, damit alle RBridges über die gesamte Netztopologie bescheid wissen. Dies ermöglicht den RBridges den optimalen Pfad zur Destination ausfindigzumachen. Als Protokoll wird IS-IS eingesetzt, weil es auf Layer 2 kommuniziert und somit keinerlei IP-Konfiguration benötigt und sehr leicht erweiterbar ist. TRILL erstellt eine separata IS-IS Instanz und ist von einer eventuell bestehenden Layer 3 IS-IS Instanz komplett losgelöst. Jede RBridge hat eine eindeutige IS-IS ID von 48 Bit, welche von der eigenen MAC-Adresse abgeleitet wird. 
 
 \subsubsection{RBrigdes ID}
-Jede RBrigde im Netzwerk hat eine eindeutige ID (Bridge Identifier). Diese ID wird entweder dynamisch gewählt, oder kann durch den Netzwerkadministrator statisch vergeben werden. Die ID beantsprucht 2 Bytes im Header. (mehr dazu im Kapitel Header) 
+Jede RBrigde im Netzwerk hat eine eindeutige ID (Bridge Identifier). Diese ID wird entweder dynamisch gewählt, oder kann durch den Netzwerkadministrator statisch vergeben werden. 
 
 \subsubsection{Loop Prevention}
 Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete anzahl Hops, und jede RBridge dekrementiert das Feld um 1. Bei 0 wird das Packet verworfen.  
 
 \subsubsection{Encapsulation}
 Die RBridge welches ein Ethernet Frame von einem Client erhält (ingress bridge) verpackt das Frame in ein TRILL Packet. Dabei wird der TRILL Header eingefügt (siehe nächstes Kapitel). In diesem Header wird die destination bridge (engress bridge) spezifiziert, welche das ankommende Packet wieder auspackt und es an den Client weiter sendet, welcher das Packet erhalten soll. Wie ein eingepacktes Frame aussieht, wird im nächsten Kapitel gezeigt. 
+
+\subsubsection{VLAN-Tags}
+VLAN kann trotz TRILL verwendet werden. Es wird zwischen zwei VLANs unterschieden. Im Inner Ethernet Header: Inner VLAN-Tag, im Outer Ethernet Header: Outer VLAN-Tag. Die VLAN-Tags werden von TRILL nicht verrändert. Das Inner VLAN-Tag ist das ursprüngliche VLAN des Clients. Der Outer VLAN-Tag wird von der RBridge gesetzt beim Versand des Packets. 
 
 \subsection{Header}
 Der Header von TRILL sieht gemäss RFC 6325 folgendermassen aus: 
@@ -155,15 +158,16 @@ Ein eingepacktes TRILL Frame sieht folgendermassen aus: (wurde aus RFC 6325 entn
 	\end{center}
 \end{figure}
 
+\noindent Anhand von dieser Grafik ist zu erkennen, das der Outer Ethernet Header nach jedem Hop geändert wird. In diesem Beispiel befindet sich das Packet zwischen RB3 und RB4. Dies bedeutet das im Outer Ethernet Header unter Destination RB4 steht, und unter Source RB3. Das restliche Packet ist unverrändert (abgesehen der Hop Count im TRILL Header, da wird dekrementiert nach jedem Hop). 
+\newpage
 
+\subsection{Ziele von TRILL}
+Das Hauptziel von TRILL ist es ein Layer 2 Routing zu betreiben. Dadurch wird das Spanning-Tree Protokoll nicht weiter benötigt, das in Rechenzentren inakzeptable Aussetzer verursachen würde. TRILL kann einfach auch in bestehende Netzwerke eingesetzt werden, in dem nicht alle Geräte TRILL unterstützen. 
 
-\subsection{Goal of TRILL:}
-To uses Layer 3 routing techniques to create a large cloud of links which appear to IP nodes to be a single IP subnet. 
+\subsection{Wieso wurde TRILL entwickelt?}
+TRILL wurde entwickelt um Spanning-Tree in kritische Umgebungen ablösen zu können. Spanning-Tree ist nicht gut geeignet da es die ungenutzte Pfade blockiert um loops zu vermeiden. Dadurch kann nicht die volle Bandbreite genutzt werden und im Falle eines Ausfalls, benötigt Spanning-Tree einige Zeit um den blockierten Pfad aufzuheben. Dadurch können Unterbrüche und Verzögerungen entstehen, welche in einem Rechenzentrum nicht erwünscht sind. TRILL behebt dieses Problem. Bei TRILL gibt es keine blockierten Pfade, somit kann die gesamte Bandbreite genutzt werden. TRILL betreibt im Gegensatz zu STP ein Layer 2 Routing, was dazuführt das keine Loops entstehen können. Das STP und das TRILL wurden beide von der gleichen Entwicklerin designed, und zwar von Radia Perlmann. 
 
-\subsection{Why was TRILL developed?}
-\textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks TRILL allows the ease of configuration of Ethernet while benefitting from the routing techniques provided at Layer 3.
-
-\subsection{Where and how can TRILL be used?}
+\subsection{Wo kann TRILL eingesetzt werden?}
 In datacenter for better migration of virtual machines. There will also be more bandwidth available for intensive applications like real-time communications and for the transport of storage traffic across the Ethernet network with FCoE and iSCSI.
 
 \subsection{Is TRILL comparable to a traditional protocol?}It's a combination of traditional protocols (Ethernet, IP) and it's a bit like MPLS.

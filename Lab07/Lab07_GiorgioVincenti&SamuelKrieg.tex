@@ -105,13 +105,14 @@ Zwischen den verschiedenen RBridges wird ein Link State Routing Protokol eingese
 Jede RBrigde im Netzwerk hat eine eindeutige ID (Bridge Identifier). Diese ID wird entweder dynamisch gewählt, oder kann durch den Netzwerkadministrator statisch vergeben werden. Die ID beantsprucht 2 Bytes im Header. (mehr dazu im Kapitel Header) 
 
 \subsubsection{Loop Prevention}
-Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete anzahl Hops. 
+Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete anzahl Hops, und jede RBridge dekrementiert das Feld um 1. Bei 0 wird das Packet verworfen.  
 
 \subsubsection{Encapsulation}
-
-
+Die RBridge welches ein Ethernet Frame von einem Client erhält (ingress bridge) verpackt das Frame in ein TRILL Packet. Dabei wird der TRILL Header eingefügt (siehe nächstes Kapitel). In diesem Header wird die destination bridge (engress bridge) spezifiziert, welche das ankommende Packet wieder auspackt und es an den Client weiter sendet, welcher das Packet erhalten soll. Wie ein eingepacktes Frame aussieht, wird im nächsten Kapitel gezeigt. 
 
 \subsection{Header}
+Der Header von TRILL sieht gemäss RFC 6325 folgendermassen aus: 
+
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./pictures/trill_header.png}
@@ -130,6 +131,31 @@ Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld w
 \item Egress RBridge Nickname (source bridge): 16 Bit identifier
 \item Ingress RBridge Nickname (destination bridge): 16 Bit identifier
 \end{itemize}
+
+\subsubsection{Encapsulation TRILL Frame}
+Ein eingepacktes TRILL Frame sieht folgendermassen aus: (wurde aus RFC 6325 entnommen) 
+
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/trill_encapsulation.png}
+	\caption{An Ethernet Encapsulated TRILL Frame}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\noindent Der Client sendet das Packet, welches aus Inner Ethernet Frame, Ethernet Payload und Ethernet FCS besteht, an die ingress bridge. Diese packt den TRILL Header obendrauf, welcher die engress brigde (destination bridge) enthält und sendet das Packet an die nächste RBridge. Bei jedem Hop wird der Outer Ethernet Header angepasst, je nach Source und Destination Adresse. Das restliche Packet bleibt erhalten, bis es bei der engress bridge ankommt. Da wird es entpackt und an den Client weitergesendet. 
+\newpage
+
+\noindent Hier eine detailliertere Abbildung eines Frames, das zwischen zwei RBridges ausgetauscht wird: (über zwei weitere RBridges) 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/trill_frame_flow.png}
+	\caption{TRILL Data Encapsulation over Ethernet}
+	\label{x}
+	\end{center}
+\end{figure}
+
+
 
 \subsection{Goal of TRILL:}
 To uses Layer 3 routing techniques to create a large cloud of links which appear to IP nodes to be a single IP subnet. 

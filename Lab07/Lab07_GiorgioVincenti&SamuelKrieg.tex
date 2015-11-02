@@ -168,10 +168,48 @@ Das Hauptziel von TRILL ist es ein Layer 2 Routing zu betreiben. Dadurch wird da
 TRILL wurde entwickelt um Spanning-Tree in kritische Umgebungen ablösen zu können. Spanning-Tree ist nicht gut geeignet da es die ungenutzte Pfade blockiert um loops zu vermeiden. Dadurch kann nicht die volle Bandbreite genutzt werden und im Falle eines Ausfalls, benötigt Spanning-Tree einige Zeit um den blockierten Pfad aufzuheben. Dadurch können Unterbrüche und Verzögerungen entstehen, welche in einem Rechenzentrum nicht erwünscht sind. TRILL behebt dieses Problem. Bei TRILL gibt es keine blockierten Pfade, somit kann die gesamte Bandbreite genutzt werden. TRILL betreibt im Gegensatz zu STP ein Layer 2 Routing, was dazuführt das keine Loops entstehen können. Das STP und das TRILL wurden beide von der gleichen Entwicklerin designed, und zwar von Radia Perlmann. 
 
 \subsection{Wo kann TRILL eingesetzt werden?}
-In datacenter for better migration of virtual machines. There will also be more bandwidth available for intensive applications like real-time communications and for the transport of storage traffic across the Ethernet network with FCoE and iSCSI.
+Der Einsatz von TRILL macht bei diverse Szenarien Sinn: 
+\begin{itemize}
+\item In Rechenzentren wo hohe Bandbreiten und Verfügbarkeit gefragt sind (da TRILL keine Pfade blockt, und keine Unterbrüche verursacht bei aktivieren der blockierten Pfade wie STP) 
+\item In Rechenzentren wo virtuelle Maschinen flexibel verschiebt werden müssen
+\item In Netzwerke wo nicht alle Geräte TRILL unterstützen (die Geräte die kein TRILL unterstützen, sehen die TRILL RBridges als einzigen Switch und reden STP mit diesem)
+\item In allen Netzwerke wo STP im Allgemeinen nicht erwünscht ist 
+\item In Netzwerke in welchem ein verlängertes Layer 2 Netzwerk benötigt wird 
+\item In allen Netzwerken in welchem Layer 2 Routing notwendig ist 
+\end{itemize}
 
-\subsection{Is TRILL comparable to a traditional protocol?}It's a combination of traditional protocols (Ethernet, IP) and it's a bit like MPLS.
-\subsection{What are the advantages and disadvantages of TRILL?}
+\subsection{Vergleich von TRILL mit traditionelle Protokolle}
+\subsubsection{Spanning-Tree}
+TRILL ist sicher mit Spanning-Tree vergleichbar, da TRILL dazu entwickelt wurde Spanning-Tree abzulösen. \newpage
+\textbf{Limitationen}
+\begin{itemize}
+\item Da TRILL das STP Protokoll ablösen soll, gibt es keine Limitationen. Ein einziger Punkt ist sicher das STP viel weiter verbreitet und viel mehr unterstützt wird. 
+\end{itemize}
+\textbf{Unterschiede}
+\begin{itemize}
+\item TRILL hat im Gegensatz zu STP ein Hop Count Feld. 
+\item Die Packete werden von den RBridges eingepackt mit einem TRILL Header
+\item TRILL blockiert keine Pfade um Loops zu vermeiden 
+\item TRILL funktioniert als Layer 2 Routing 
+\item TRILL noch nicht soweit verbreitet wie STP 
+\end{itemize}
+
+\subsubsection{Shortest Path Bridging (SPB)}
+Ein sehr ähnliches Protokoll ist SPB. Es ist nicht traditionell, jedoch gut für Vergleiche. \\
+\textbf{Limitationen}
+\begin{itemize}
+\item 
+\end{itemize}
+\textbf{Unterschiede}
+\begin{itemize}
+\item 
+\end{itemize}
+
+\subsection{Welche Vor- und Nachteile bringt TRILL mit sich?}
+Wie jedes Protokoll gibt es Vor- und Nachteile. 
+\subsubsection{Vorteile}
+
+\subsubsection{Nachteile}
 TRILL make switches more cost-effective because it allows to load balance and to use more links in data center network designs.
 Reduces Latency and improves overall network bandwidth utilization.
 \subsection{Are there other modern technologies which are similar to TRILL} multichassis link aggregation or shortest path bridging

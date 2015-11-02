@@ -195,25 +195,42 @@ TRILL ist sicher mit Spanning-Tree vergleichbar, da TRILL dazu entwickelt wurde 
 \end{itemize}
 
 \subsubsection{Shortest Path Bridging (SPB)}
-Ein sehr ähnliches Protokoll ist SPB. Es ist nicht traditionell, jedoch gut für Vergleiche. \\
+Ein sehr ähnliches Protokoll ist SPB.  \\
 \textbf{Limitationen}
 \begin{itemize}
-\item 
+\item SPB Modus für normale VLAN Bridges, TRILL redet da von TRILL Domain
+\item TRILL performanter als SPB 
 \end{itemize}
 \textbf{Unterschiede}
 \begin{itemize}
-\item 
+\item TRILL wurde von IETF veröffentlich, SPB von IEEE
+\item SPB Nachfolgder von PBB (gibt es schon länger) 
 \end{itemize}
 
 \subsection{Welche Vor- und Nachteile bringt TRILL mit sich?}
 Wie jedes Protokoll gibt es Vor- und Nachteile. 
 \subsubsection{Vorteile}
-
+\begin{itemize}
+\item Spanning-Tree nicht mehr notwendig 
+\item keine blockierte Verbindung mehr (kein STP) 
+\item keine Unterbrüche bei Link Ausfall (kein STP)
+\item Alle Links können aktiv genutzt werden (kein STP) 
+\item Sehr gut Skalierbar 
+\item Nicht alle Geräte müssen TRILL unterstützen um es betreiben zu können
+\item Kein fundiertes Wissen über IS-IS notwendig   
+\item Layer 2 Routing 
+\end{itemize}
 \subsubsection{Nachteile}
-TRILL make switches more cost-effective because it allows to load balance and to use more links in data center network designs.
-Reduces Latency and improves overall network bandwidth utilization.
-\subsection{Are there other modern technologies which are similar to TRILL} multichassis link aggregation or shortest path bridging
-\subsection{How is TRILL configured in the LAB?}
+\begin{itemize}
+\item Noch nicht weit verbreitet 
+\item Nicht von allen Geräte unterstützt 
+\item Oft wird nicht TRILL integriert sondern Hersteller ähnliche Protokolle 
+\end{itemize}
+
+\subsection{Are there other modern technologies which are similar to TRILL} 
+Eine Alternative zu TRILL ist das Shortest Path Protocol (SPB) das von IEEE entwickelt wurde. SBP wurde als Erweiterung zu VLAN entwickelt. Beide Protokolle verwenden IS-IS. 
+\newpage
+\subsection{TRILL im LAB}
 \subsubsection{Trees}
 \subsubsection{PacketFlow}
 \subsubsection{MAC Learning} 

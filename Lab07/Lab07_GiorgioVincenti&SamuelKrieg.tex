@@ -90,29 +90,45 @@ Die Netzwerkarchitektur spielt eine sehr grosse Rolle in einem Datacenter. Auch 
 \end{itemize}
 
 \section{TRILL}
-\textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks ist ein von der IETF festgelegten Standard.
-\subsection{Funktion / Protokoll-Header}
-\subsubsection{Funktion}
-TRILL ist eine kombination von Layer 2 und Layer 3. Es ermöglicht auf Layer 2 zu routen und ersetzt Spanning Tree Protocol.
-\subsubsection{Header}
-\section{Trill - Teil 1}
-\subsection{Function / Protocol header:} 
+Trill steht für \textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks und ist ein von der IETF festgelegten Standard.
+
+\subsection{Funktion}
+TRILL ist eine Kombination von Layer 2 (bridging) und Layer 3 (routing). Dank dieser Kombination ermöglicht TRILL ein routing auf Layer 2 zu betreiben. Wird ein Layer 2 Netzwerk auf Layer 3 betrieben, ist kein Spanning-Tree mehr notwendig.
+
+\subsubsection{Implementation}
+TRILL wird von  Geräte implementiert die sich RBridges (routing bridges) nennen. Ein anderer Name für diese Geräte ist TRILL Switches. 
+
+\subsubsection{Routing}
+Zwischen den verschiedenen RBridges wird ein Link State Routing Protokol eingesetzt, damit alle RBridges über die gesamte Netztopologie bescheid wissen. Als Protokoll wird IS-IS eingesetzt, weil es auf Layer 2 kommuniziert und somit keinerlei IP-Konfiguration benötigt. Dies ermöglicht den RBridges den optimalen Pfad zur Destination ausfindigzumachen. 
+
+\subsubsection{RBrigdes ID}
+Jede RBrigde im Netzwerk hat eine eindeutige ID (Bridge Identifier). Diese ID wird entweder dynamisch gewählt, oder kann durch den Netzwerkadministrator statisch vergeben werden. Die ID beantsprucht 2 Bytes im Header. (mehr dazu im Kapitel Header) 
+
+\subsubsection{Loop Prevention}
+Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete anzahl Hops. 
+
+\subsubsection{Encapsulation}
+
+
+
+\subsection{Header}
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./pictures/trill_header.png}
-	\caption{\textbf{TRILL Header}}
+	\caption{TRILL Header aus RFC 6325}
 	\label{x}
 	\end{center}
 \end{figure}
+
+\subsubsection{Felder}
 \begin{itemize}
-\item V (Version): 2-bit unsigned integer.
-\item R (Reserved): 2 bits.
-\item R (Reserved): 2 bits.
-\item Op-Length (Options Length): 5-bit unsigned integer.
-\item Hop Count: 6-bit unsigned integer.
-\item Egress RBridge Nickname: 16-bit identifier.
-\item Ingress RBridge Nickname: 16-bit identifier.
-\item Options: present if Op-Length is non-zero.
+\item V (Version: aktuell 0): 2 Bit
+\item R (Reserved): 2 Bit.
+\item M (Multi-destination: 1. Bit 0 = unicast, 2. Bit 1 = distribution tree): 2 Bit.
+\item Op-Length (Options Length): 5 Bit
+\item Hop Count(jede RBridge dekrementiert, bei 0 wird Paket verworfen): 6 Bit
+\item Egress RBridge Nickname (source bridge): 16 Bit identifier
+\item Ingress RBridge Nickname (destination bridge): 16 Bit identifier
 \end{itemize}
 
 \subsection{Goal of TRILL:}

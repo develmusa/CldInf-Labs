@@ -565,14 +565,33 @@ You can configure both mininet environments parallel.
 	\label{x}
 	\end{center}
 \end{figure}
-\item Start wireshark on the physical hosts to sniff the VXLAN packets and check the VXLAN headers.
+\item Start wireshark on the physical hosts to sniff the VXLAN packets and check the VXLAN headers.\\
+Wir haben drei Wireshark Sessions durchgeführt. Anbei die Abbildungen zu unseren Tests: 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_header_analyse.png}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_sniff.png}
 	\caption{Screenshot: VXLAN Header Analyse mit Wireshark}
 	\label{x}
 	\end{center}
 \end{figure}
+Bei diesem Versuch hingen unsere Computer noch von der vorherigen Übung auf den konfigurierten HP Switches die ein eigenes VXLAN Konfiguriert hatten mit VNI 6666. Hier ist zu erkennen dass die Packete zwei Mal eingepackt werden. Einmal wird der Header hinzugefügt im eigenen virtuellen Netzwerk (das wir aufgebaut haben), das zweite Mal wird ein erneuter Header durch die Switches drauf gepackt. Wir haben diesen Screenshot hinzugefügt um zu zeigen wie die Encapsulation geschieht, wenn das Packet durch mehrere VXLANs wandert. Hier wird von HP1 (Ubuntu Srv 2) zu HP4 (Ubuntu Srv 1) gepingt. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_sniff2.png}
+	\caption{Screenshot: VXLAN Header Analyse mit Wireshark}
+	\label{x}
+	\end{center}
+\end{figure}
+Bei diesem Versuch hingegen wird direkt gepingt mit einer Encapsulation durch unser VXLAN gefahren. Dies erkennt man, weil unser Packet nur einmal eingepackt wurde und mit der VNI 8000 markiert wurde. Hier wird von HP4 (Ubuntu Srv 1) zu HP1 (Ubuntu Srv 2) gepingt.  
+
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_sniff3.png}
+	\caption{Screenshot: VXLAN Header Analyse mit Wireshark}
+	\label{x}
+	\end{center}
+\end{figure}
+Bei diesem Versuch ist dasselbe wie beim vorherigem. Der einzige Unterschied ist das die VNI sich auf 9000 ändert, da wir mit den anderen Hosts pingen. Hier wird von HP2 (Ubuntu Srv 1) zu HP 4 (Ubuntu Srv 2) gepingt. 
 \item Show your working environment to the instructors!\\
 \textbf{Wurde durch Urs Baumann am Montag den 2. November 2015 abgenommen.}
 \end{enumerate}

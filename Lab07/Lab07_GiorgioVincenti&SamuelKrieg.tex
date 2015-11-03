@@ -367,6 +367,8 @@ Bei einem weiteren Sniff Versuch, wurde von PC1 zu PC2 gepingt.
 Ein weiterer Test zeigte sich das die Frames nicht immer über den HP2 Switch fliessen müssen, sondern können ebenso über den HP1 fliessen.  Um dies zu testen haben wir auf \textit{ping} verzichtet und haben ein anderes Tool genommen das über TCP kommuniziert: \textit{jperf}. Damit wird ein neuer Hash  berechnet, da andere Protokolle im Einsatz sind, und die wahrscheinlichkeit ist sehr hoch das die Packete eine andere Route folgen (Da die Route meistens anhand von einem Hash über alle Informationen gewählt wird). Leider existieren von diesem Test keine Screenshots, die es beweisen würden. Es wurde jedoch ausführlich getestet.  
 
 \subsubsection{MAC Learning} 
+Das MAC-learnig bei RBridges ist sehr ähnlich wie bei normalen Switches, mit einigen Differenzen. Eine Ingress RBrigde welche ein Packet von einem Client erhält, notiert die MAC-Adresse des Clients (welche im Inner Ethernet Header steht) in seine MAC-Tabelle. Nach diesem Vorgang müsste die Ingress RBridge das Packet an eine Engress RBridge weiterleiten, es kann jedoch sein das die Engress RBridge welche das Packet erhalten soll (Inner Ethernet Header Destination Adresse des Clients) noch nicht bekannt ist. So flooded die Ingress RBridges anhand von Multicast Frames (ALL-RB-MCAST) einen Request aus an alle RBridges im Netz. Die RBridge die auf den Request antwortet kennt die MAC-Adresse der Destination MAC-Adresse des Clients (Inner Ethernet Header) und meldet sich bei der Ingress RBridge. Die Engress RBridge notiert die MAC-Adressen in seine table und kennt somit die Ingress RBridge jetzt. 
+
 \newpage
 \section{VXLAN - Teil 2}
 \section{VXLAN with Arista switches}

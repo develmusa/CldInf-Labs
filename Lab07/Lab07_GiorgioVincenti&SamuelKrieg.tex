@@ -449,6 +449,7 @@ Hier einige Anwendungsbeispiele von VXLAN:
 \subsection{Vergleich von VXLAN mit traditionelle Protokolle}
 
 
+
 \subsection{Welche Vor- und Nachteile bringt VXLAN mit sich?}
 In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt. 
 
@@ -470,7 +471,16 @@ In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt.
 \subsection{Ähnliche Technologien wie VXLAN?}
 Hier eine eine sehr ähnliche Technologie. 
 \subsubsection{NVGRE}
-Bei NVGRE handelt es sich um ein fast identische Technologie wie VXLAN. Es besitzt die selben Funktionen und verfolgt die gleichen Ideen. NVGRE verwendet kein jedoch UDP um die Packete zu entpacken, sondern setzt auf GRE (Generic Routing Encapsulation). Mit GRE werden die Packete in Form eines Tunnels über ein IP Netzwerk transportiert. Was ist mit dem Overhead Problem? Der Overhead der dadurch generiert wird, ist fast identisch. VMWare setzt auf VXLAN, im Gegensatz zu Microsoft mit Hyper V auf NVGRE. 
+Bei NVGRE handelt es sich um ein fast identische Technologie wie VXLAN. Es besitzt die selben Funktionen und verfolgt die gleichen Ideen. NVGRE verwendet kein jedoch UDP um die Packete zu entpacken, sondern setzt auf GRE (Generic Routing Encapsulation). Mit GRE werden die Packete in Form eines Tunnels über ein IP Netzwerk transportiert. Was ist mit dem Overhead Problem? Der Overhead der dadurch generiert wird, ist fast identisch. VMWare setzt auf VXLAN, im Gegensatz zu Microsoft mit Hyper V auf NVGRE. \\
+\\
+In dieser Abbildung ist ein Vergleich dargestellt. (Wurde aus der Vorlesung entnommen) 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.50\textwidth]{./pictures/vergleich_vxlan-nvgre.png}
+	\caption{Vorlesung Abbildung: Vergleich}
+	\label{x}
+	\end{center}
+\end{figure}
 
 \subsection{VXLAN im LAB}
 

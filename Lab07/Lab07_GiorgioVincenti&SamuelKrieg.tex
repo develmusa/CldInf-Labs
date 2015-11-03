@@ -405,6 +405,47 @@ Die VTEP behalten Einträge solange wie die TTL gültig ist. Danach wird dieser 
 Um zwischen VXLAN kommunizieren zu können, ist ein VXLAN-Gateway erfolderlich. Dieser ist ebenfalls fähig VXLAN Header zu entfernen oder hinzuzufügen. Durch dies können Packete auch in ein nicht VXLAN-fähiges Netzwerk gesendet werden. 
 
 \subsection{Header}
+Folgende Abblidung zeigt ein VXLAN-Packet. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/vxlan_header.png}
+	\caption{Cisco Abbildung eines VXLAN-Frames}
+	\label{x}
+	\end{center}
+\end{figure}
+\noindent Aus dieser Abbildung ist zu erkennen dass auf L2 Frame ein VXLAN Header hinzugefügt bekommt, und das ganze in ein UDP Packet gepackt wird. Dies führt zu erhöhtem Overhead. Deswegen ist die Wahl der MTU Size sehr wichtig. 
+
+\subsubsection{Felder}
+Sehen wir uns den VXLAN Header genauer an: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.30\textwidth]{./pictures/vxlan_header_detail.png}
+	\caption{Cisco Abbildung - Detail Ansicht VXLAN Header}
+	\label{x}
+	\end{center}
+\end{figure}
+
+Der VXLAN Header beinhaltet 8 Bytes und ist folgendermassen aufgebaut: 
+\begin{itemize}
+\item Flags: 8 Bit 
+\item Reserved: 24 Bit 
+\item VNI ID: 24 Bit 
+\item Reserved: 8 Bit 
+\end{itemize}
+
+\subsection{Ziele von VXLAN?}
+Das primäre Ziel von VXLAN ist es die Kapazität von VLAN zu erweitern. Es wurde entwickelt um die Skalierbarkeit in einem Rechenzentrum zu gewährleisten. Mit VXLAN kann eine multitenancy-Fähigkeit in einem Rechenzentrum oder Rechenzentrum übergreifend gewährleistet werden, somit können VMs sich im gleichem Layer 2 Netzwerk befinden. 
+
+\subsection{Warum wurde VXLAN entwickelt?}
+VXLAN wurde primär entwickelt um VLAN zu erweitern. Mehr zum Einsatz findet man im Kapitel Ziele von VXLAN. 
+
+\subsection{Wo und Wie kann VXLAN verwendet werden?}
+Hier einige Anwendungsbeispiele von VXLAN: 
+\begin{itemize}
+\item VM Verschieben: Nehmen wir an wir möchten gerne eine neue VM auf einem physischen Server implementieren, die Kapazität von diesem reicht jedoch nicht aus. Es können VMs auf andere Server gezügelt werden und diese verbleiben im gleichen Layer 2 Netzwerk. 
+\item Rechenzentrum Kapazität: DIe Kapazität von VLANs ist auf 4096 begrenzt. Für manche Rechenzentren reicht diese nicht aus. Da kommt VXLAN ins Spiel. Dank VXLAN ist die Grenze von 4096 Netzwerk IDs aufgehoben, und es können neu bis zu 16 Millionen Netzwerk IDs vergeben werden. 
+\item Ein Kunde möchte seine Umgebung auf mehrere Rechenzentren spalten, es besteht jedoch das Problem das sich die VMs nicht im gleichen Layer 2 Netzwerk befinden würden. Dank VXLAN ist eine solche Implementation möglich. Es ermöglicht dem Kunden eine Rechenzentrum übergreifende Layer 2 Umgebung. 
+\end{itemize}
 
 
 \section{VXLAN with Arista switches}

@@ -345,6 +345,27 @@ Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen
 Wie ein solcher Eintrag aussieht kann aus der Abbilung 7 entnommen werden. 
 
 \subsubsection{PacketFlow}
+Mit Wireshark wurde der packet flow der Switches analysiert. Dadurch konnte festgstellt werden das sporadisch IS-IS Packete durch das Netzwerk fliessen, an eine Multicast Adresse. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/capture_isis.png}
+	\caption{Screenshot: Sniff zwischen HP Switches}
+	\label{x}
+	\end{center}
+\end{figure}
+\noindent Aus diesem Screenshot kann man erkennen das es sich um ein IS-IS HELLO Packet handelt, dass an die Multicast Adresse \textit{All-IS-IS-RBridges} gesendet wird. Weiter unten ist auch zu erkennen, dass es sich um TRILL handelt (supported protocols). 
+\newpage
+Bei einem weiteren Sniff Versuch, wurde von PC1 zu PC2 gepingt. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/capture_ping.png}
+	\caption{Screenshot: Sniff zwischen HP Switches (Ping Request)}
+	\label{x}
+	\end{center}
+\end{figure}
+\noindent Bei dieser Abbildung handelt es sich um einen Wireshark Ausschnitt, während PC2 den PC1 anpingt. Hier ist schön zu erkennen dass das Ethernet Frame eingepackt wird. Der Inner Ethernet Header wird nicht verrändert und enthält die MAC-Adressen der beiden PCs. Im Outer Ethernet Header sieht man die Informationen der HP Switches die das Frame empfangen und weiterleiten. Der zu empfangende Switch entfernt den TRILL Header und somit den Outer Ethernet Header und leitet das Packet an den PC weiter. \\\\
+Ein weiterer Test zeigte sich das die Frames nicht immer über den HP2 Switch fliessen müssen, sondern können ebenso über den HP1 fliessen.  Um dies zu testen haben wir auf \textit{ping} verzichtet und haben ein anderes Tool genommen das über TCP kommuniziert: \textit{jperf}. Damit wird ein neuer Hash  berechnet, da andere Protokolle im Einsatz sind, und die wahrscheinlichkeit ist sehr hoch das die Packete eine andere Route folgen (Da die Route meistens anhand von einem Hash über alle Informationen gewählt wird). Leider existieren von diesem Test keine Screenshots, die es beweisen würden. Es wurde jedoch ausführlich getestet.  
+
 \subsubsection{MAC Learning} 
 \newpage
 \section{VXLAN - Teil 2}

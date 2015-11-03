@@ -314,7 +314,7 @@ Hier folgt das Bild von Samu.
 Hier folgen Informationen über TRILL mit Hilfe des Kommandos \textit{trill brief}:
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/brief.jpg}
+	\includegraphics[width=0.50\textwidth]{./pictures/brief.jpg}
 	\caption{Screenshot HP3: trill brief}
 	\label{x}
 	\end{center}
@@ -323,12 +323,11 @@ Hier folgen Informationen über TRILL mit Hilfe des Kommandos \textit{trill brie
 Mit dem Befehl \textit{trill neighbor table} findet man die Nachbaren heraus: 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/neighbor-table.jpg}
+	\includegraphics[width=0.50\textwidth]{./pictures/neighbor-table.jpg}
 	\caption{Screenshot HP3: trill neighbor-table}
 	\label{x}
 	\end{center}
 \end{figure}
-\newpage
 
 \subsubsection{Trees}
 Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen kann man mithilfe von \textit{trill neighbor-table} rauslesen: 
@@ -449,15 +448,29 @@ Hier einige Anwendungsbeispiele von VXLAN:
 
 \subsection{Vergleich von VXLAN mit traditionelle Protokolle}
 
+
 \subsection{Welche Vor- und Nachteile bringt VXLAN mit sich?}
+In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt. 
 
 \subsubsection{Vorteile}
+\begin{itemize}
+\item Layer 2 über Layer 3 Netzwerk 
+\item Skalierbarkeit 
+\item Layer 2 Netzwerke über grosse Distanzen
+\item Dynamisch Erweiterbar 
+\end{itemize}
 
 \subsubsection{Nachteile}
+\begin{itemize}
+\item Grosser Overhead - auf MTU achten 
+\item noch nicht von allen Herstellern unterstützt
+\item Gateway notwendig um mit andere VXLAN Netze zu kommunizieren (nicht umbedingt ien Nachteil) 
+\end{itemize}
 
 \subsection{Ähnliche Technologien wie VXLAN?}
-
-\subsubsection{coming soon}
+Hier eine eine sehr ähnliche Technologie. 
+\subsubsection{NVGRE}
+Bei NVGRE handelt es sich um ein fast identische Technologie wie VXLAN. Es besitzt die selben Funktionen und verfolgt die gleichen Ideen. NVGRE verwendet kein jedoch UDP um die Packete zu entpacken, sondern setzt auf GRE (Generic Routing Encapsulation). Mit GRE werden die Packete in Form eines Tunnels über ein IP Netzwerk transportiert. Was ist mit dem Overhead Problem? Der Overhead der dadurch generiert wird, ist fast identisch. VMWare setzt auf VXLAN, im Gegensatz zu Microsoft mit Hyper V auf NVGRE. 
 
 \subsection{VXLAN im LAB}
 

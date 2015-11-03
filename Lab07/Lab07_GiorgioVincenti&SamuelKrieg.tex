@@ -239,6 +239,64 @@ Eine Alternative zu TRILL ist das Shortest Path Protocol (SPB), dass von IEEE en
 \newpage
 
 \subsection{TRILL im LAB}
+Wurde aus der Aufgabenstellung entnommen: \\
+\\
+\textbf{How is TRILL configured in the lab?}
+\begin{itemize}
+\item Trees
+\item PacketFlow
+\item MAC learning
+\end{itemize}
+
+\noindent \textbf{TRILL with HP Switches}\\
+Use this lab to get further information about TRILL by generating traffic, sniffing packets and analyzing the TRILL headers. The lab infrastructure for TRILL uses 4 HP Switches. The Switches are correctly preconfigured. You must not change the configuration!\\ 
+\\
+To test the setup and to perform measurements you can use the lab computers by connecting them to the HP Switches. Each group should connect 2 computers to the two different leaf switches. Refer to the physical and logical topology below to see which ports you should use.\\
+\\
+\textbf{Use SSH to connect to the Switch CLI:}\\
+\\
+\textbf{User: student Password: student}\\
+\\
+HP1 IP: 10.5.0.11\\
+HP2 IP: 10.5.0.12\\
+HP3 IP: 10.5.0.13\\
+HP4 IP: 10.5.0.14\\
+\\
+\textbf{Useful CLI Commands:}\\
+system-view\\
+display trill ?\\
+display lldp neighbor-information list\\
+display mac-address\\
+display ip routing-table\\
+\newpage
+\textbf{Laboraufbau TRILL: Aufgabenstellung}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/trill_laboraufbau.png}
+	\caption{Aufgabenstellung: Laboraufbau TRILL}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\subsubsection{Konfiguration Computer}
+Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren notwendig: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Computer} & {IP-Adresse} & {Subnetzmaske}\\ \midrule
+    PC1 & 10.10.1.11 & 255.255.255.0\\ \addlinespace
+    PC2 & 10.10.1.12 & 255.255.255.0\\ 
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{Switches}
+
+\subsubsection{VLAN}
+
+\subsubsection{Laboraufbau: Gruppe}
+
+
+
 \subsubsection{Trees}
 \subsubsection{PacketFlow}
 \subsubsection{MAC Learning} 

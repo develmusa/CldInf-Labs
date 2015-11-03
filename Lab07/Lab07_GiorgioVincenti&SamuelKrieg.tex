@@ -560,12 +560,19 @@ You can configure both mininet environments parallel.
 \textit{\textbf{h1} ping \textbf{10.16.11.2}}
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.70\textwidth]{./pictures/pingall.png}
-	\caption{Screenshot: Befehl pingall}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_pingtest.png}
+	\caption{Screenshot: Ping von H1 (Ubuntu Srv 2) zu H4 (Ubuntu Srv 1)}
 	\label{x}
 	\end{center}
 \end{figure}
 \item Start wireshark on the physical hosts to sniff the VXLAN packets and check the VXLAN headers.
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_header_analyse.png}
+	\caption{Screenshot: VXLAN Header Analyse mit Wireshark}
+	\label{x}
+	\end{center}
+\end{figure}
 \item Show your working environment to the instructors!\\
 \textbf{Wurde durch Urs Baumann am Montag den 2. November 2015 abgenommen.}
 \end{enumerate}

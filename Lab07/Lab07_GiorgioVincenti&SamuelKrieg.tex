@@ -487,5 +487,89 @@ Wurde aus der Aufgabenstellung entnommen: \\
 \\
 You can use this lab to get further information about VXLAN by generating traffic, sniffing packets and analyzing the VXLAN headers. The lab infrastructure for VXLAN uses 3 Arista Switches. The Switches are correctly preconfigured. You must not change the configuration! To test the setup and to perform measurements you can use the lab computers by connecting them to the Arista Switches. Each group should connect 2 computers to the two different leaf switches. Refer to the physical and logical topology below to see which ports you should use.
 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_physical.png}
+	\caption{Aufgabenstellung: Physical Topology}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_logical.png}
+	\caption{Aufgabenstellung: Logical Topology}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\subsection{VXLAN Configuration}
+Wurde aus der Aufgabenstellung entnommen und mit unseren Parametern ergänzt (wurden \textbf{FETT} markiert): \\
+\\
+Now you should have enough knowledge about VXLAN to be able to configure it in a small test environment. For this exercise you will use both workstations. On the workstations a VM running Ubuntu Server is prepared for you. Please make sure that this VM uses its NIC in bridged mode. All the needed information like IP addresses, VLANs, VNIs are documented in the logical topology below.
+To simulate the switch s1 and the hosts h1 – h4 on each VM you will use mininet (http://mininet.org).
+Mininet is very useful for creating virtual networks on a single host without using too many resources. You will deploy networks with hosts and switches. The switch implementation used by mininet is Openvswitch (http://openvswitch.org). Openvswitch can be used for testing new network technologies, protocols without buying new and expensive hardware.
+
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_config.png}
+	\caption{Aufgabenstellung: Logical Topology}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\subsubsection{Basic configuration}
+\begin{enumerate}
+\item Start both Ubuntu Server VMs. (Openvswitch and mininet are already preinstalled.)
+\item Check the network settings of the VM. interface should be in bridged mode!
+\item Login with the credentials. username: ubuntu and password: ubuntu
+\item Set the IP addresses of the VMs according to the logical topology.\\
+\textbf{Ubuntu Srv 1: 192.168.16.1/24 and Ubuntu Srv 2: 192.168.16.2/24}
+\item Verify that both servers can reach each other.
+\end{enumerate}
+
+\subsubsection{VXLAN configuration}
+You can configure both mininet environments parallel.
+\begin{enumerate}
+\item Start and initialize mininet with the following commands. \\
+\textit{mn --topo single,4 --controller=none} \\
+\textit{sh ovs-vsctl set-fail-mode s1 standalone}
+\item Configure the ports of the switches connecting to the hosts as access ports in the specified VLANs. \\
+\textit{sh ovs-vsctl set port s1-eth1 tag=\textbf{10}}\\
+\textit{sh ovs-vsctl set port s1-eth2 tag=\textbf{30}}\\
+\textit{sh ovs-vsctl set port s1-eth3 tag=\textbf{10}}\\
+\textit{sh ovs-vsctl set port s1-eth4 tag=\textbf{30}}\\
+\textit{pingall} \\
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/pingall.png}
+	\caption{Screenshot: Befehl pingall}
+	\label{x}
+	\end{center}
+\end{figure}
+\item Configure the VXLAN tunnels\\
+\textit{sh ovs-vsctl add-port s1 vx\textbf{8000}  tag=\textbf{10} -- set interface vx\textbf{8000} type=vxlan\\ option:remote\_ip=\textbf{192.168.16.2} option:key=\textbf{8000}}\\
+\\
+\textit{sh ovs-vsctl add-port s1 vx\textbf{9000}  tag=\textbf{30} -- set interface vx\textbf{9000} type=vxlan\\ option:remote\_ip=\textbf{192.168.16.2} option:key=\textbf{9000}}\\
+\item Configure the IP addresses of the hosts\\
+\textit{h1 ifconfig h1-eth0 \textbf{10.16.11.1}/24}\\
+\textit{h2 ifconfig h2-eth0 \textbf{10.16.12.1}/24}\\
+\textit{h3 ifconfig h3-eth0 \textbf{10.16.11.2}/24}\\
+\textit{h4 ifconfig h4-eth0 \textbf{10.16.12.2}/24}
+\item Test connectivity through the VXLAN tunnels\\
+\textit{\textbf{h1} ping \textbf{10.16.11.2}}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/pingall.png}
+	\caption{Screenshot: Befehl pingall}
+	\label{x}
+	\end{center}
+\end{figure}
+\item Start wireshark on the physical hosts to sniff the VXLAN packets and check the VXLAN headers.
+\item Show your working environment to the instructors!\\
+\textbf{Wurde durch Urs Baumann am Montag den 2. November 2015 abgenommen.}
+\end{enumerate}
+
+
 
 \end{document}

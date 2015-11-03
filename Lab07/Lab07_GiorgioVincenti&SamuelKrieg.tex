@@ -310,8 +310,40 @@ Unsere Computer wurden im VLAN 1006 angeschlossen.
 \subsubsection{Laboraufbau: Gruppe}
 Hier folgt das Bild von Samu. 
 
+\subsubsection{TRILL: Diverse Befehle}
+Hier folgen Informationen über das Kommando \textit{trill brief}:
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/brief.jpg}
+	\caption{Screenshot HP3: trill brief}
+	\label{x}
+	\end{center}
+\end{figure}
+
+Mit dem Befehl \textit{trill neighbor table} findet man die Nachbaren heraus: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/neighbor-table.jpg}
+	\caption{Screenshot HP3: trill neighbor-table}
+	\label{x}
+	\end{center}
+\end{figure}
+\newpage
 
 \subsubsection{Trees}
+Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen kann man mithilfe von \textit{trill neighbor-table} rauslesen: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Switch} & {Nachbaren}\\ \midrule
+    HP1 & HP3 und HP4\\ \addlinespace
+    HP2 & HP3 und HP4\\ \addlinespace
+    HP3 & HP1 und HP2\\ \addlinespace
+    HP4 & HP1 und HP2\\ 
+    \bottomrule
+    \end{tabular}
+\end{center}
+Wie ein solcher Eintrag aussieht kann aus der Abbilung 7 entnommen werden. 
+
 \subsubsection{PacketFlow}
 \subsubsection{MAC Learning} 
 \newpage

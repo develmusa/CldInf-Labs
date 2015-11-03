@@ -447,8 +447,14 @@ Hier einige Anwendungsbeispiele von VXLAN:
 \end{itemize}
 
 \subsection{Vergleich von VXLAN mit traditionelle Protokolle}
+VXLAN ist mit diversen traditionelle Portokolle vergleichbar. 
+\subsubsection{VLAN}
+VXLAN wurde primär entwickelt um VLAN in grossen Rechenzentren zu ersetzten. Mit VLAN kann auch ein Multitenency sichergestellt werden. Das Problem bei VLAN liegt bei der Begrenzung von 4096 in einem Netzwerk. Dieses Problem wurde durch die Einführung von VXLAN behoben, das 24 Bit zur Verfügung hat um Multitenancy zu gewährleisten. Ein grosser Nachteil von VXLAN im Vergleich zu VLAN ist der Overhead. VXLAN hat einen deutlich höheren Overhead, da das Packet noch in UDP eingepackt wird. 
 
+\subsubsection{MPLS}
 
+\subsubsection{L2TP}
+Funktional sind beide sehr ähnlich. 
 
 \subsection{Welche Vor- und Nachteile bringt VXLAN mit sich?}
 In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt. 
@@ -513,10 +519,11 @@ Mininet is very useful for creating virtual networks on a single host without us
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_config.png}
-	\caption{Aufgabenstellung: Logical Topology}
+	\caption{Aufgabenstellung: Virtual Network Topology}
 	\label{x}
 	\end{center}
 \end{figure}
+\noindent \textbf{Wir haben bei diesem Versuch als Gruppe 6 gearbeitet. Überall wo in der Zeichnung ein X steht, haben wir eine Zahl 6 eingesetzt.}
 
 \subsubsection{Basic configuration}
 \begin{enumerate}
@@ -595,7 +602,4 @@ Bei diesem Versuch ist dasselbe wie beim vorherigem. Der einzige Unterschied ist
 \item Show your working environment to the instructors!\\
 \textbf{Wurde durch Urs Baumann am Montag den 2. November 2015 abgenommen.}
 \end{enumerate}
-
-
-
 \end{document}

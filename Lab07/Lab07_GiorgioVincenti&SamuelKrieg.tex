@@ -311,7 +311,7 @@ Unsere Computer wurden im VLAN 1006 angeschlossen.
 Hier folgt das Bild von Samu. 
 
 \subsubsection{TRILL: Diverse Befehle}
-Hier folgen Informationen über das Kommando \textit{trill brief}:
+Hier folgen Informationen über TRILL mit Hilfe des Kommandos \textit{trill brief}:
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./pictures/brief.jpg}
@@ -371,6 +371,42 @@ Das MAC-learnig bei RBridges ist sehr ähnlich wie bei normalen Switches, mit ei
 
 \newpage
 \section{VXLAN - Teil 2}
+VXLAN steht für Virtual eXtensible Local Area Network und ist einer der IETF festgelegten Standard. 
+\subsection{Funktion}
+Es handelt sich um ein Encapsulation-Protokoll, dass es erlaubt ein Overlay Netzwerk auf einer existierender Layer 3 Umgebung laufen zu lassen. VXLAN erzeugt logische Layer 2 Netzwerke die dann in Layer 3 Packete eingepackt werden. Dank VXLAN kann man ein Netzwerk extrem skalieren. Dies ist vorallem in einem Rechenzentrum, oder Rechenzentrum übergreifend, notwendig, wo viele Tenants sich ein pyhsiches Netzwerk teilen. Ein Problem vor der Einführung von VXLAN war, dass die Netze via VLANs getrennt wurden. Da es maximal 4096 VLANs per Netz geben konnte, war man sehr eingeschränkt und in grossen Umgebungen war das nicht genug. VXLAN wurde primär entwickelt um dieses Problem zu lösen (Erweiterung von VLANs). Für diesen Zweck hat man ein Segment mit 24 Bit hinzugefügt. Dies bedeutet das dank VXLAN nicht nur 4096 Netzwerk IDs verteilt werden können, sondern über 16 Millionen. 
+
+\subsubsection{VNI}
+Dank der VXLAN Encapsulation wird jedes ausgehende Frame mit VXLAN Header eingepackt der das VXLAN mit einer VNI identifiziert. Diese ist vergleichbar mit dem bekannten VLAN-Tag. 
+
+\subsubsection{VTEP}
+Wenn man von VTEP redet, dann meint man damit die VXLAN fähige Endgeräte. Diese können physisch sowie virtuell sein. Eine VM die sich hinter einem VTEP befindet, wird dynamisch von dem jeweiligem VTEP gerlernt. 
+
+\subsubsection{MTU}
+Ein Problem das auftauchen könnte ist die MTU im jeweiligen Netzwerk, zwischen den VTEPs. VXLAN Packete dürfen nicht fragmentiert werden, da diese ansonsten von der zu empfangenden VTEP verworfen werden. Es ist wichtig zu achten das genügend MTU berechnet wird. 
+
+\subsubsection{Data Flow}
+Verbindung zwischen zwei VMs im gleichem VXLAN: 
+\begin{enumerate}
+\item VM1 will mit VM2 kommunizieren 
+\item VM1 sendet ein ARP Request 
+\item VTEP1(VM1 befindet sich dahinter) nimmt Request entgegen 
+\item VTEP1 entpackt den Request mit VXLAN Header 
+\item VTEP1 versendet Request per Multicast 
+\item VTEP2 nimmt Request entgegen, da VM2 dahinter ist 
+\item VTEP2 lernt dass VM1 sich hinter VTEP1 befindet 
+\item VTEP2 entpackt Frame und sendet Packet weiter zu VM2
+\item VM2 erhält ARP Layer 2 Packet, merkt nichts von VXLAN
+\end{enumerate}
+
+\subsubsection{Learning Table}
+Die VTEP behalten Einträge solange wie die TTL gültig ist. Danach wird dieser entfernt. Das learning erfolgt dynamisch. EIne solche Tabelle beinhaltet die VM MAC, dazugehöriges VXLAN und den VTEP. 
+
+\subsubsection{Gateway}
+Um zwischen VXLAN kommunizieren zu können, ist ein VXLAN-Gateway erfolderlich. Dieser ist ebenfalls fähig VXLAN Header zu entfernen oder hinzuzufügen. Durch dies können Packete auch in ein nicht VXLAN-fähiges Netzwerk gesendet werden. 
+
+\subsection{Header}
+
+
 \section{VXLAN with Arista switches}
 \section{VXLAN Configuration}
 \section{Research modern data center requirements}

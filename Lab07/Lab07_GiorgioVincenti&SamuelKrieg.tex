@@ -281,7 +281,7 @@ display ip routing-table\\
 \subsubsection{Konfiguration Computer}
 Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren notwendig: 
 \begin{center}
-    \begin{tabular}{@{} l l | | r@{}}\toprule    
+    \begin{tabular}{@{} l l r@{}}\toprule    
     {Computer} & {IP-Adresse} & {Subnetzmaske}\\ \midrule
     PC1 & 10.10.1.11 & 255.255.255.0\\ \addlinespace
     PC2 & 10.10.1.12 & 255.255.255.0\\ 
@@ -289,20 +289,23 @@ Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren n
     \end{tabular}
 \end{center}
 
+\noindent PC1 wurde an den Switch HP4 angeschlossen, und PC2 an den Switch HP3. 
+
 \subsubsection{Switches}
 Für den Laboraufbau wurden vier Switches benötigt. Wurde durch Analyse mit SSH von den Geräten entnommen. Hier einige wichtige Switch-Konfigurationen: 
-\textbf{Switch-Netzwerk}
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
-    {Switch} & {IP-Adresse} & {Subnetzmaske}\\ \midrule
-    HP1 & 10.10.1.11 & 255.255.255.0\\ \addlinespace
-    HP2 & 10.10.1.11 & 255.255.255.0\\ \addlinespace
-    HP3 & 10.10.1.11 & 255.255.255.0\\ \addlinespace
-    HP4 & 10.10.1.12 & 255.255.255.0\\ 
+    {Switch (TRILL-Name)} & {IP-Adresse} & {MAC-Adresse}\\ \midrule
+    HP1 (0x2b67) & 10.5.0.11 & 44:21:92:60:62:47\\ \addlinespace
+    HP2 (0x56ce) & 10.5.0.12 & 44:31:92:5F:ED:B7\\ \addlinespace
+    HP3 (0x8235) & 10.5.0.13 & 44:31:92:60:6D:B8\\ \addlinespace
+    HP4 (0xad9c) & 10.5.0.14 & 44:31:92:60:54:78\\
     \bottomrule
     \end{tabular}
 \end{center}
+
 \subsubsection{VLAN}
+Unsere Computer wurden im VLAN 1006 angeschlossen. 
 
 \subsubsection{Laboraufbau: Gruppe}
 Hier folgt das Bild von Samu. 

@@ -123,6 +123,7 @@ Der Header von TRILL sieht gemäss RFC 6325 folgendermassen aus:
 	\label{x}
 	\end{center}
 \end{figure}
+\newpage
 
 \subsubsection{Felder}
 \begin{itemize}
@@ -140,7 +141,7 @@ Ein eingepacktes TRILL Frame sieht folgendermassen aus: (wurde aus RFC 6325 entn
 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/trill_encapsulation.png}
+	\includegraphics[width=0.50\textwidth]{./pictures/trill_encapsulation.png}
 	\caption{An Ethernet Encapsulated TRILL Frame}
 	\label{x}
 	\end{center}
@@ -350,6 +351,7 @@ Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen
     \end{tabular}
 \end{center}
 Wie ein solcher Eintrag aussieht kann aus der Abbilung 7 entnommen werden. 
+\newpage
 
 \subsubsection{PacketFlow}
 Mit Wireshark wurde der packet flow der Switches analysiert. Dadurch konnte festgstellt werden das sporadisch IS-IS Packete durch das Netzwerk fliessen, an eine Multicast Adresse. 
@@ -372,6 +374,7 @@ Bei einem weiteren Sniff Versuch, wurde von PC1 zu PC2 gepingt.
 \end{figure}
 \noindent Bei dieser Abbildung handelt es sich um einen Wireshark Ausschnitt, während PC2 den PC1 anpingt. Hier ist schön zu erkennen dass das Ethernet Frame eingepackt wird. Der Inner Ethernet Header wird nicht verrändert und enthält die MAC-Adressen der beiden PCs. Im Outer Ethernet Header sieht man die Informationen der HP Switches die das Frame empfangen und weiterleiten. Der zu empfangende Switch entfernt den TRILL Header und somit den Outer Ethernet Header und leitet das Packet an den PC weiter. \\\\
 Ein weiterer Test zeigte sich das die Frames nicht immer über den HP2 Switch fliessen müssen, sondern können ebenso über den HP1 fliessen.  Um dies zu testen haben wir auf \textit{ping} verzichtet und haben ein anderes Tool genommen das über TCP kommuniziert: \textit{jperf}. Damit wird ein neuer Hash  berechnet, da andere Protokolle im Einsatz sind, und die wahrscheinlichkeit ist sehr hoch das die Packete eine andere Route folgen (Da die Route meistens anhand von einem Hash über alle Informationen gewählt wird). Leider existieren von diesem Test keine Screenshots, die es beweisen würden. Es wurde jedoch ausführlich getestet.  
+\newpage
 
 \subsubsection{MAC Learning} 
 Das MAC-learnig bei RBridges ist sehr ähnlich wie bei normalen Switches, mit einigen Differenzen. Eine Ingress RBrigde welche ein Packet von einem Client erhält, notiert die MAC-Adresse des Clients (welche im Inner Ethernet Header steht) in seine MAC-Tabelle. Nach diesem Vorgang müsste die Ingress RBridge das Packet an eine Engress RBridge weiterleiten, es kann jedoch sein das die Engress RBridge welche das Packet erhalten soll (Inner Ethernet Header Destination Adresse des Clients) noch nicht bekannt ist. So flooded die Ingress RBridges anhand von Multicast Frames (ALL-RB-MCAST) einen Request aus an alle RBridges im Netz. Die RBridge die auf den Request antwortet kennt die MAC-Adresse der Destination MAC-Adresse des Clients (Inner Ethernet Header) und meldet sich bei der Ingress RBridge. Die Engress RBridge notiert die MAC-Adressen in seine table und kennt somit die Ingress RBridge jetzt. 
@@ -460,9 +463,8 @@ VXLAN ist mit diversen traditionelle Portokolle vergleichbar.
 VXLAN wurde primär entwickelt um VLAN in grossen Rechenzentren zu ersetzten. Mit VLAN kann auch ein Multitenency sichergestellt werden. Das Problem bei VLAN liegt bei der Begrenzung von 4096 in einem Netzwerk. Dieses Problem wurde durch die Einführung von VXLAN behoben, das 24 Bit zur Verfügung hat um Multitenancy zu gewährleisten. Ein grosser Nachteil von VXLAN im Vergleich zu VLAN ist der Overhead. VXLAN hat einen deutlich höheren Overhead, da das Packet noch in UDP eingepackt wird. 
 
 \subsubsection{MPLS}
-
-\subsubsection{L2TP}
-Funktional sind beide sehr ähnlich. 
+MPLS bietet die Möglichkeit Layer 2 Pakete zu tunneln. MPLS wird jedoch nicht von virtuellen Infrastrukturen unterstützt. Die MPLS-Label würden dann die VNI ersetzten, diese haben jedoch nur lokal eine Bedeutung. Die VNI im Gegensatz haben eine Netzübergreifende Bedeutung. Ein weiterer negativer Punkt zu MPLS sind die Preise der Geräte, die MPLS unterstützen. 
+\newpage
 
 \subsection{Welche Vor- und Nachteile bringt VXLAN mit sich?}
 In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt. 

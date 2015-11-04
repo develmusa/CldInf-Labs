@@ -308,7 +308,15 @@ Für den Laboraufbau wurden vier Switches benötigt. Wurde durch Analyse mit SSH
 Unsere Computer wurden im VLAN 1006 angeschlossen. 
 
 \subsubsection{Laboraufbau: Gruppe}
-Hier folgt das Bild von Samu. 
+Hier eine Abbildung des Laboraufbaus mit den wichtigsten Daten: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./draws/trill_ex2_laboraufbau.pdf}
+	\caption{Abbildung: Laboraufbau der Gruppe}
+	\label{x}
+	\end{center}
+\end{figure}
+
 
 \subsubsection{TRILL: Diverse Befehle}
 Hier folgen Informationen über TRILL mit Hilfe des Kommandos \textit{trill brief}:
@@ -508,6 +516,56 @@ You can use this lab to get further information about VXLAN by generating traffi
 	\label{x}
 	\end{center}
 \end{figure}
+\newpage
+
+\subsubsection{Konfiguration Computer}
+Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren notwendig: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Computer} & {IP-Adresse} & {Subnetzmaske}\\ \midrule
+    PC1 & 10.1.16.11 & 255.255.255.0\\ \addlinespace
+    PC2 & 10.1.16.12 & 255.255.255.0\\ 
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+\noindent PC1 wurde an den Switch sw01 angeschlossen, und PC2 an den Switch sw03. 
+
+\subsubsection{Switches}
+Für den Laboraufbau wurden drei Switches benötigt. Hier einige wichtige Informationen zu den Geräten: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Switch} & {IP-Adresse} & {MAC-Adresse}\\ \midrule
+    vxlan-lab-sw01 & 172.16.2.2 & 00:1C:73:69:18:DD\\ \addlinespace
+    vxlan-lab-sw02 & 172.16.2.1 & unknow\\ \addlinespace
+    vxlan-lab-sw03 & 172.16.2.6 & 00:1C:73:69:17:71\\
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{VLAN}
+PC1 wurde an Ethernet Port 12 (VLAN 16) von vxlan-lab-sw01 angeschlossen. PC2 wurde an Ethernet Port 12 (VLAN 36) von vxlan-lab-sw03 angeschlossen. 
+
+\subsubsection{Laboraufbau VXLAN}
+Hier eine Abbildung des Laboraufbaus unserer Grupppe: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./draws/vxlan_ex3_laboraufbau.pdf}
+	\caption{Abbildung: Laboraufbau VXLAN Gruppe (ex3)}
+	\label{x}
+	\end{center}
+\end{figure}
+
+\subsubsection{Wireshark traffic flow}
+Um den Verkehr zwischen den beiden Computern zu analysieren haben wir mit Wireshark auf einem der konfigurieren Monitoring Ports mitgeschnitten: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/vxlan_ex3_sniff.png}
+	\caption{Screenshot: Wireshark Ping from PC1 to PC2}
+	\label{x}
+	\end{center}
+\end{figure}
+\noindent Hier ist zu erkennen das die ICMP Packete in ein UDP Packet entpackt werden, und das ein VXLAN Header hinzugefügt wird mit der dazugehörigen VNI ID. Hier wurde von PC2 auf PC1 gepingt. Im Outer Ethernet Header sind die Switch IPs zu erkennen (von sw01 und sw03) und im Inner Ethernet Header die IPs der beiden Computer. 
 
 \subsection{VXLAN Configuration}
 Wurde aus der Aufgabenstellung entnommen und mit unseren Parametern ergänzt (wurden \textbf{FETT} markiert): \\
@@ -524,6 +582,31 @@ Mininet is very useful for creating virtual networks on a single host without us
 	\end{center}
 \end{figure}
 \noindent \textbf{Wir haben bei diesem Versuch als Gruppe 6 gearbeitet. Überall wo in der Zeichnung ein X steht, haben wir eine Zahl 6 eingesetzt.}
+
+\subsubsection{Konfiguration VMs}
+Für dieses Lab wurden zwei Computer benötigt. Auf diesen Computer wurde ein Ubuntu Image heruntergeladen und gestartet. Wichtig dabei was die Netzwerkkarten Einstellung auf Bridgemodus zu betreiben. Folgende Netzwerkkonfigurationen waren notwendig: 
+\begin{center}
+    \begin{tabular}{@{} l l r@{}}\toprule    
+    {Computer} & {IP-Adresse} & {Subnetzmaske}\\ \midrule
+    Ubuntu Srv 1 & 192.168.16.1 & 255.255.255.0\\ \addlinespace
+    Ubuntu Srv 2 & 192.168.16.2 & 255.255.255.0\\ 
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{Mininet}
+In dieser Übung haben wir mit Hilfe von Mininet zwei virtuelle Netze auf den Ubuntu VMs simuliert. Es wurden Hosts und Switches simuliert, und diese fungierten als VTEPs. Die Hosts wurden in ein VLAN integriert (Ubuntu Srv 1: 10 und 30 und Ubuntu Srv 2: 20 und 40). Diese VLANs wurden auf die, gemäss Abbildung ersichtlich, dazugehörige VNI gemappt. Somit konnten sich die Hosts innerhalb von einem Mininet und Mininet übergreifend erreichen. Die Kommunikation zwischen den Hosts funktionierte nur mit den Hosts deren VLAN auf die gleiche VNI gemappt wurde. Weiter unten haben wir Screenshots und weiteres zu der Mininet Konfiguration dokumentiert. 
+
+\subsubsection{Laboraufbau Mininet}
+Hier eine Abbildung von unserer virtuellen Umgebung: 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./draws/vxlan_ex4_laboraufbau.pdf}
+	\caption{Abbildung: Mininet Laboraufbau VXLAN}
+	\label{x}
+	\end{center}
+\end{figure}
+Aus dieser Abbildung können alle wichtige Informationen entnommen werden. 
 
 \subsubsection{Basic configuration}
 \begin{enumerate}

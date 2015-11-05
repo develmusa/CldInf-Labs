@@ -52,9 +52,10 @@
 \tableofcontents
 \newpage
 
+
 \section{Anforderungen an ein modernes Datacenter}
 \subsection{Herausforderungen}
-Die Herausforderungen in einem moderem Datacenter bestehen darin die riesigen Datenmengen, die generiert werden, effizient und schnell verarbeiten zu können. Die Storages und Server Performance spielen dabei eine grosse rolle, jedoch bringt diese Performance nichts, wenn das Netzwerk nicht dementsprechend mit den Datenmengen effizient umgehen kann. Die grossen Datenmengen verlassen das Datacenter nicht, sondern fliessen von System zu System.
+Die Herausforderungen in einem modernen Datacenter bestehen darin die riesigen Datenmengen, die generiert werden, effizient und schnell verarbeiten zu können. Die Storages und Server Performance spielen dabei eine grosse rolle, jedoch bringt diese Performance nichts, wenn das Netzwerk nicht dementsprechend mit den Datenmengen effizient umgehen kann. Die grossen Datenmengen verlassen das Datacenter nicht, sondern fliessen von System zu System.
 
 \subsubsection{Beispiele}
 Hier einige Beispiele in der Praxis. \\
@@ -80,7 +81,7 @@ Die Anforderungen an ein solches Datacenter sind sehr hoch. Da gibt es einiges z
 \end{itemize}
 
 \subsection{Netzwerkarchitektur}
-Die Netzwerkarchitektur spielt eine sehr grosse Rolle in einem Datacenter. Auch diese bringt grosse Anforderungen mitsich, damit das Beste aus der Infrastruktur rausgeholt werden kann. 
+Die Netzwerkarchitektur spielt eine sehr grosse Rolle in einem Datacenter. Auch diese bringt grosse Anforderungen mit sich, damit das Beste aus der Infrastruktur rausgeholt werden kann. 
 \begin{itemize}
 \item Skalierbarkeit
 \item Performance 
@@ -93,25 +94,25 @@ Die Netzwerkarchitektur spielt eine sehr grosse Rolle in einem Datacenter. Auch 
 Trill steht für \textbf{Tr}ansparent \textbf{I}nterconnection of \textbf{L}ots of \textbf{L}inks und ist ein von der IETF festgelegten Standard.
 
 \subsection{Funktion}
-TRILL ist eine Kombination von Layer 2 (bridging) und Layer 3 (routing). Dank dieser Kombination ermöglicht TRILL ein routing auf Layer 2 zu betreiben. Wird ein Layer 2 Netzwerk auf Layer 3 betrieben, ist kein Spanning-Tree mehr notwendig.
+TRILL ist eine Kombination von Layer 2 (bridging) und Layer 3 (routing). Dank dieser Kombination ermöglicht TRILL, ein routing auf Layer 2 zu betreiben. Wird ein Layer 2 Netzwerk auf Layer 3 betrieben, ist kein Spanning-Tree mehr notwendig.
 
 \subsubsection{Implementation}
-TRILL wird von  Geräte implementiert die sich RBridges (routing bridges) nennen. Ein anderer Name für diese Geräte ist TRILL Switches. 
+TRILL wird von Geräte implementiert die sich RBridges (routing bridges) nennen. Ein anderer Name für diese Geräte ist TRILL Switches. 
 
 \subsubsection{Routing}
-Zwischen den verschiedenen RBridges wird ein Link State Routing Protokol eingesetzt, damit alle RBridges über die gesamte Netztopologie bescheid wissen. Dies ermöglicht den RBridges den optimalen Pfad zur Destination ausfindigzumachen. Als Protokoll wird IS-IS eingesetzt, weil es auf Layer 2 kommuniziert und somit keinerlei IP-Konfiguration benötigt und sehr leicht erweiterbar ist. TRILL erstellt eine separata IS-IS Instanz und ist von einer eventuell bestehenden Layer 3 IS-IS Instanz komplett losgelöst. Jede RBridge hat eine eindeutige IS-IS ID von 48 Bit, welche von der eigenen MAC-Adresse abgeleitet wird. 
+Zwischen den verschiedenen RBridges wird ein Link State Routing Protokoll eingesetzt, damit alle RBridges über die gesamte Netztopologie bescheid wissen. Dies ermöglicht den RBridges den optimalen Pfad zur Destination ausfindigzumachen. Als Protokoll wird IS-IS eingesetzt, weil es auf Layer 2 kommuniziert und somit keinerlei IP-Konfiguration benötigt und sehr leicht erweiterbar ist. TRILL erstellt eine separate IS-IS Instanz und ist von einer eventuell bestehenden Layer 3 IS-IS Instanz komplett losgelöst. Jede RBridge hat eine eindeutige IS-IS ID von 48 Bit, welche von der eigenen MAC-Adresse abgeleitet wird. 
 
 \subsubsection{RBrigdes ID}
 Jede RBrigde im Netzwerk hat eine eindeutige ID (Bridge Identifier). Diese ID wird entweder dynamisch gewählt, oder kann durch den Netzwerkadministrator statisch vergeben werden. 
 
 \subsubsection{Loop Prevention}
-Im TRILL Header existiert ein Feld das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete anzahl Hops, und jede RBridge dekrementiert das Feld um 1. Bei 0 wird das Paket verworfen.  
+Im TRILL Header existiert ein Feld, das sich Hop Count nennt. Durch dieses Feld werden Loops verhindert. Die RBridges stellen das Hop Count Feld auf die erwartete Anzahl Hops, und jede RBridge dekrementiert das Feld um 1. Bei 0 wird das Paket verworfen.  
 
 \subsubsection{Encapsulation}
 Die RBridge welches ein Ethernet Frame von einem Client erhält (ingress bridge) verpackt das Frame in ein TRILL Paket. Dabei wird der TRILL Header eingefügt (siehe nächstes Kapitel). In diesem Header wird die destination bridge (engress bridge) spezifiziert, welche das ankommende Paket wieder auspackt und es an den Client weiter sendet, welcher das Paket erhalten soll. Wie ein eingepacktes Frame aussieht, wird im nächsten Kapitel gezeigt. 
 
 \subsubsection{VLAN-Tags}
-VLAN kann trotz TRILL verwendet werden. Es wird zwischen zwei VLANs unterschieden. Im Inner Ethernet Header: Inner VLAN-Tag, im Outer Ethernet Header: Outer VLAN-Tag. Die VLAN-Tags werden von TRILL nicht verrändert. Das Inner VLAN-Tag ist das ursprüngliche VLAN des Clients. Der Outer VLAN-Tag wird von der RBridge gesetzt beim Versand des Pakets. 
+VLAN kann trotz TRILL verwendet werden. Es wird zwischen zwei VLANs unterschieden. Im Inner Ethernet Header: Inner VLAN-Tag, im Outer Ethernet Header: Outer VLAN-Tag. Die VLAN-Tags werden von TRILL nicht verändert. Das Inner VLAN-Tag ist das ursprüngliche VLAN des Clients. Der Outer VLAN-Tag wird von der RBridge gesetzt beim Versand des Pakets. 
 
 \subsection{Header}
 Der Header von TRILL sieht gemäss RFC 6325 folgendermassen aus: 
@@ -159,24 +160,24 @@ Ein eingepacktes TRILL Frame sieht folgendermassen aus: (wurde aus RFC 6325 entn
 	\end{center}
 \end{figure}
 
-\noindent Anhand von dieser Grafik ist zu erkennen, das der Outer Ethernet Header nach jedem Hop geändert wird. In diesem Beispiel befindet sich das Paket zwischen RB3 und RB4. Dies bedeutet das im Outer Ethernet Header unter Destination RB4 steht, und unter Source RB3. Das restliche Paket ist unverrändert (abgesehen der Hop Count im TRILL Header, da wird dekrementiert nach jedem Hop). 
+\noindent Anhand von dieser Grafik ist zu erkennen, dass der Outer Ethernet Header nach jedem Hop geändert wird. In diesem Beispiel befindet sich das Paket zwischen RB3 und RB4. Dies bedeutet das im Outer Ethernet Header unter Destination RB4 steht, und unter Source RB3. Das restliche Paket ist unverändert (abgesehen der Hop Count im TRILL Header, da wird dekrementiert nach jedem Hop). 
 \newpage
 
 \subsection{Ziele von TRILL}
 Das Hauptziel von TRILL ist es ein Layer 2 Routing zu betreiben. Dadurch wird das Spanning-Tree Protokoll nicht weiter benötigt, das in Rechenzentren inakzeptable Aussetzer verursachen würde. TRILL kann einfach auch in bestehende Netzwerke eingesetzt werden, in dem nicht alle Geräte TRILL unterstützen. 
 
 \subsection{Wieso wurde TRILL entwickelt?}
-TRILL wurde entwickelt um Spanning-Tree in kritische Umgebungen ablösen zu können. Spanning-Tree ist nicht gut geeignet da es die ungenutzte Pfade blockiert um loops zu vermeiden. Dadurch kann nicht die volle Bandbreite genutzt werden und im Falle eines Ausfalls, benötigt Spanning-Tree einige Zeit um den blockierten Pfad aufzuheben. Dadurch können Unterbrüche und Verzögerungen entstehen, welche in einem Rechenzentrum nicht erwünscht sind. TRILL behebt dieses Problem. Bei TRILL gibt es keine blockierten Pfade, somit kann die gesamte Bandbreite genutzt werden. TRILL betreibt im Gegensatz zu STP ein Layer 2 Routing, was dazuführt das keine Loops entstehen können. Das STP und das TRILL wurden beide von der gleichen Entwicklerin designed, und zwar von Radia Perlmann. 
+TRILL wurde entwickelt um Spanning-Tree in kritische Umgebungen ablösen zu können. Spanning-Tree ist nicht gut geeignet da es die ungenutzte Pfade blockiert, um Loops zu vermeiden. Dadurch kann nicht die volle Bandbreite genutzt werden und im Falle eines Ausfalls, benötigt Spanning-Tree einige Zeit um den blockierten Pfad aufzuheben. Dadurch können Unterbrüche und Verzögerungen entstehen, welche in einem Rechenzentrum nicht erwünscht sind. TRILL behebt dieses Problem. Bei TRILL gibt es keine blockierten Pfade, somit kann die gesamte Bandbreite genutzt werden. TRILL betreibt im Gegensatz zu STP ein Layer 2 Routing, was dazuführt das keine Loops entstehen können. Das STP und das TRILL wurden beide von der gleichen Entwicklerin designed, und zwar von Radia Perlmann. 
 
 \subsection{Wo kann TRILL eingesetzt werden?}
 Der Einsatz von TRILL macht bei diverse Szenarien Sinn: 
 \begin{itemize}
 \item In Rechenzentren wo hohe Bandbreiten und Verfügbarkeit gefragt sind (da TRILL keine Pfade blockt, und keine Unterbrüche verursacht bei aktivieren der blockierten Pfade wie STP) 
 \item In Rechenzentren wo virtuelle Maschinen flexibel verschiebt werden müssen
-\item In Netzwerke wo nicht alle Geräte TRILL unterstützen (die Geräte die kein TRILL unterstützen, sehen die TRILL RBridges als einzigen Switch und reden STP mit diesem)
+\item In Netzwerke wo nicht alle Geräte TRILL unterstützen (die Geräte, die kein TRILL unterstützen, sehen die TRILL RBridges als einzigen Switch und reden STP mit diesem)
 \item In allen Netzwerke wo STP im Allgemeinen nicht erwünscht ist 
-\item In Netzwerke in welchem ein verlängertes Layer 2 Netzwerk benötigt wird 
-\item In allen Netzwerken in welchem Layer 2 Routing notwendig ist 
+\item In Netzwerke, in welchem ein verlängertes Layer 2 Netzwerk benötigt wird 
+\item In allen Netzwerken, in welchem Layer 2 Routing notwendig ist 
 \end{itemize}
 
 \subsection{Vergleich von TRILL mit traditionelle Protokolle}
@@ -205,7 +206,7 @@ Ein sehr ähnliches Protokoll ist SPB.  \\
 \textbf{Unterschiede}
 \begin{itemize}
 \item TRILL wurde von IETF veröffentlich, SPB von IEEE
-\item SPB Nachfolgder von PBB (gibt es schon länger) 
+\item SPB Nachfolger von PBB (gibt es schon länger) 
 \end{itemize}
 
 \subsection{Welche Vor- und Nachteile bringt TRILL mit sich?}
@@ -225,7 +226,7 @@ Wie jedes Protokoll gibt es Vor- und Nachteile.
 \begin{itemize}
 \item Noch nicht weit verbreitet 
 \item Nicht von allen Geräte unterstützt 
-\item Oft wird nicht TRILL integriert sondern Hersteller ähnliche Protokolle 
+\item Oft wird nicht TRILL integriert, sondern Hersteller ähnliche Protokolle 
 \end{itemize}
 
 \subsection{Ähnliche Technologien wie TRILL} 
@@ -290,7 +291,7 @@ Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren n
     \end{tabular}
 \end{center}
 
-\noindent PC1 wurde an den Switch HP4 angeschlossen, und PC2 an den Switch HP3. 
+\noindent PC1 wurde an den Switch HP4 angeschlossen und PC2 an den Switch HP3. 
 
 \subsubsection{Switches}
 Für den Laboraufbau wurden vier Switches benötigt. Wurde durch Analyse mit SSH von den Geräten entnommen. Hier einige wichtige Switch-Konfigurationen: 
@@ -329,7 +330,7 @@ Hier folgen Informationen über TRILL mit Hilfe des Kommandos \textit{trill brie
 	\end{center}
 \end{figure}
 
-Mit dem Befehl \textit{trill neighbor table} findet man die Nachbaren heraus: 
+Mit dem Befehl \textit{trill neighbor table} findet man die Nachbarn heraus: 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.50\textwidth]{./pictures/neighbor-table.jpg}
@@ -339,10 +340,10 @@ Mit dem Befehl \textit{trill neighbor table} findet man die Nachbaren heraus:
 \end{figure}
 
 \subsubsection{Trees}
-Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen kann man mithilfe von \textit{trill neighbor-table} rauslesen: 
+Hier einen Überblick über alle Geräte und ihre Nachbarn. Diese Informationen kann man mithilfe von \textit{trill neighbor-table} rauslesen: 
 \begin{center}
     \begin{tabular}{@{} l l r@{}}\toprule    
-    {Switch} & {Nachbaren}\\ \midrule
+    {Switch} & {Nachbarn}\\ \midrule
     HP1 & HP3 und HP4\\ \addlinespace
     HP2 & HP3 und HP4\\ \addlinespace
     HP3 & HP1 und HP2\\ \addlinespace
@@ -350,11 +351,11 @@ Hier einen Überblick über alle Geräte und ihre Nachbaren. Diese Informationen
     \bottomrule
     \end{tabular}
 \end{center}
-Wie ein solcher Eintrag aussieht kann aus der Abbilung 7 entnommen werden. 
+Wie ein solcher Eintrag aussieht, kann aus der Abbildung 7 entnommen werden. 
 \newpage
 
 \subsubsection{PaketFlow}
-Mit Wireshark wurde der Paket flow der Switches analysiert. Dadurch konnte festgstellt werden das sporadisch IS-IS Pakete durch das Netzwerk fliessen, an eine Multicast Adresse. 
+Mit Wireshark wurde der PaketFlow der Switches analysiert. Dadurch konnte festgestellt werden, dass sporadisch IS-IS Pakete durch das Netzwerk fliessen, an eine Multicast Adresse. 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./pictures/capture_isis.png}
@@ -362,7 +363,7 @@ Mit Wireshark wurde der Paket flow der Switches analysiert. Dadurch konnte festg
 	\label{x}
 	\end{center}
 \end{figure}
-\noindent Aus diesem Screenshot kann man erkennen das es sich um ein IS-IS HELLO Paket handelt, dass an die Multicast Adresse \textit{All-IS-IS-RBridges} gesendet wird. Weiter unten ist auch zu erkennen, dass es sich um TRILL handelt (supported protocols). 
+\noindent Aus diesem Screenshot kann man erkennen, dass es sich um ein IS-IS HELLO Paket handelt, dass an die Multicast Adresse \textit{All-IS-IS-RBridges} gesendet wird. Weiter unten ist auch zu erkennen, dass es sich um TRILL handelt (supported protocols). 
 \newpage
 Bei einem weiteren Sniff Versuch, wurde von PC1 zu PC2 gepingt. 
 \begin{figure} [H]
@@ -372,30 +373,30 @@ Bei einem weiteren Sniff Versuch, wurde von PC1 zu PC2 gepingt.
 	\label{x}
 	\end{center}
 \end{figure}
-\noindent Bei dieser Abbildung handelt es sich um einen Wireshark Ausschnitt, während PC2 den PC1 anpingt. Hier ist schön zu erkennen dass das Ethernet Frame eingepackt wird. Der Inner Ethernet Header wird nicht verrändert und enthält die MAC-Adressen der beiden PCs. Im Outer Ethernet Header sieht man die Informationen der HP Switches die das Frame empfangen und weiterleiten. Der zu empfangende Switch entfernt den TRILL Header und somit den Outer Ethernet Header und leitet das Paket an den PC weiter. \\\\
-Ein weiterer Test zeigte sich das die Frames nicht immer über den HP2 Switch fliessen müssen, sondern können ebenso über den HP1 fliessen.  Um dies zu testen haben wir auf \textit{ping} verzichtet und haben ein anderes Tool genommen das über TCP kommuniziert: \textit{jperf}. Damit wird ein neuer Hash  berechnet, da andere Protokolle im Einsatz sind, und die wahrscheinlichkeit ist sehr hoch das die Pakete eine andere Route folgen (Da die Route meistens anhand von einem Hash über alle Informationen gewählt wird). Leider existieren von diesem Test keine Screenshots, die es beweisen würden. Es wurde jedoch ausführlich getestet.  
+\noindent Bei dieser Abbildung handelt es sich um einen Wireshark Ausschnitt, während PC2 den PC1 anpingt. Hier ist gut zu erkennen, dass das Ethernet Frame eingepackt wird. Der Inner Ethernet Header wird nicht verändert und enthält die MAC-Adressen der beiden PCs. Im Outer Ethernet Header sieht man die Informationen der HP Switches die das Frame empfangen und weiterleiten. Der zu empfangende Switch entfernt den TRILL Header und somit den Outer Ethernet Header und leitet das Paket an den PC weiter. \\\\
+Ein weiterer Test zeigte sich das die Frames nicht immer über den HP2 Switch fliessen müssen, sondern können ebenso über den HP1 fliessen.  Um dies zu testen haben wir auf \textit{ping} verzichtet und haben ein anderes Tool genommen das über TCP kommuniziert: \textit{jperf}. Damit wird ein neuer Hash berechnet, da andere Protokolle im Einsatz sind, und die Wahrscheinlichkeit ist sehr hoch das die Pakete eine andere Route folgen (Da die Route meistens anhand von einem Hash über alle Informationen gewählt wird). Leider existieren von diesem Test keine Screenshots, die es beweisen würden. Es wurde jedoch ausführlich getestet.  
 \newpage
 
 \subsubsection{MAC Learning} 
-Das MAC-learnig bei RBridges ist sehr ähnlich wie bei normalen Switches, mit einigen Differenzen. Eine Ingress RBrigde welche ein Paket von einem Client erhält, notiert die MAC-Adresse des Clients (welche im Inner Ethernet Header steht) in seine MAC-Tabelle. Nach diesem Vorgang müsste die Ingress RBridge das Paket an eine Engress RBridge weiterleiten, es kann jedoch sein das die Engress RBridge welche das Paket erhalten soll (Inner Ethernet Header Destination Adresse des Clients) noch nicht bekannt ist. So flooded die Ingress RBridges anhand von Multicast Frames (ALL-RB-MCAST) einen Request aus an alle RBridges im Netz. Die RBridge die auf den Request antwortet kennt die MAC-Adresse der Destination MAC-Adresse des Clients (Inner Ethernet Header) und meldet sich bei der Ingress RBridge. Die Engress RBridge notiert die MAC-Adressen in seine table und kennt somit die Ingress RBridge jetzt. 
+Das MAC-learnig bei RBridges ist sehr ähnlich wie bei normalen Switches, mit einigen Differenzen. Eine Ingress RBrigde welche ein Paket von einem Client erhält, notiert die MAC-Adresse des Clients (welche im Inner Ethernet Header steht) in seine MAC-Tabelle. Nach diesem Vorgang müsste die Ingress RBridge das Paket an eine Engress RBridge weiterleiten, es kann jedoch sein das die Engress RBridge, welche das Paket erhalten soll (Inner Ethernet Header Destination Adresse des Clients) noch nicht bekannt ist. So flooded die Ingress RBridges anhand von Multicast Frames (ALL-RB-MCAST) einen Request aus an alle RBridges im Netz. Die RBridge die auf den Request antwortet kennt die MAC-Adresse der Destination MAC-Adresse des Clients (Inner Ethernet Header) und meldet sich bei der Ingress RBridge. Die Engress RBridge notiert die MAC-Adressen in seine table und kennt somit die Ingress RBridge jetzt. 
 
 \newpage
 \section{VXLAN - Teil 2}
-VXLAN steht für Virtual eXtensible Local Area Network und ist einer der IETF festgelegten Standard. 
+VXLAN steht für Virtual eXtensible Local Area Network und ist einer der IETF festgelegten Standards. 
 \subsection{Funktion}
-Es handelt sich um ein Encapsulation-Protokoll, dass es erlaubt ein Overlay Netzwerk auf einer existierender Layer 3 Umgebung laufen zu lassen. VXLAN erzeugt logische Layer 2 Netzwerke die dann in Layer 3 Pakete eingepackt werden. Dank VXLAN kann man ein Netzwerk extrem skalieren. Dies ist vorallem in einem Rechenzentrum, oder Rechenzentrum übergreifend, notwendig, wo viele Tenants sich ein pyhsiches Netzwerk teilen. Ein Problem vor der Einführung von VXLAN war, dass die Netze via VLANs getrennt wurden. Da es maximal 4096 VLANs per Netz geben konnte, war man sehr eingeschränkt und in grossen Umgebungen war das nicht genug. VXLAN wurde primär entwickelt um dieses Problem zu lösen (Erweiterung von VLANs). Für diesen Zweck hat man ein Segment mit 24 Bit hinzugefügt. Dies bedeutet das dank VXLAN nicht nur 4096 Netzwerk IDs verteilt werden können, sondern über 16 Millionen. 
+Es handelt sich um ein Encapsulation-Protokoll, dass es erlaubt ein Overlay Netzwerk auf einer existierender Layer 3 Umgebung laufen zu lassen. VXLAN erzeugt logische Layer 2 Netzwerke, die dann in Layer 3 Pakete eingepackt werden. Dank VXLAN kann man ein Netzwerk extrem skalieren. Dies ist vor allem in einem Rechenzentrum, oder Rechenzentrum übergreifend, notwendig, wo viele Tenants sich ein physisches Netzwerk teilen. Ein Problem vor der Einführung von VXLAN war, dass die Netze via VLANs getrennt wurden. Da es maximal 4096 VLANs per Netz geben konnte, war man sehr eingeschränkt und in grossen Umgebungen war das nicht genug. VXLAN wurde primär entwickelt, um dieses Problem zu lösen (Erweiterung von VLANs). Für diesen Zweck hat man ein Segment mit 24 Bit hinzugefügt. Dies bedeutet das dank VXLAN nicht nur 4096 Netzwerk IDs verteilt werden können, sondern über 16 Millionen. 
 
 \subsubsection{VNI}
-Dank der VXLAN Encapsulation wird jedes ausgehende Frame mit VXLAN Header eingepackt der das VXLAN mit einer VNI identifiziert. Diese ist vergleichbar mit dem bekannten VLAN-Tag. 
+Dank der VXLAN Encapsulation wird jedes ausgehende Frame mit VXLAN Header eingepackt, der das VXLAN mit einer VNI identifiziert. Diese ist vergleichbar mit dem bekannten VLAN-Tag. 
 
 \subsubsection{VTEP}
-Wenn man von VTEP redet, dann meint man damit die VXLAN fähige Endgeräte. Diese können physisch sowie virtuell sein. Eine VM die sich hinter einem VTEP befindet, wird dynamisch von dem jeweiligem VTEP gerlernt. 
+Wenn man von VTEP redet, dann meint man damit die VXLAN fähige Endgeräte. Diese können physisch sowie virtuell sein. Eine VM die sich hinter einem VTEP befindet, wird dynamisch von dem Jeweiligem VTEP gerlernt. 
 
 \subsubsection{MTU}
-Ein Problem das auftauchen könnte ist die MTU im jeweiligen Netzwerk, zwischen den VTEPs. VXLAN Pakete dürfen nicht fragmentiert werden, da diese ansonsten von der zu empfangenden VTEP verworfen werden. Es ist wichtig zu achten das genügend MTU berechnet wird. 
+Ein Problem, das auftauchen könnte ist die MTU im jeweiligen Netzwerk, zwischen den VTEPs. VXLAN Pakete dürfen nicht fragmentiert werden, da diese ansonsten von der zu empfangenden VTEP verworfen werden. Es ist wichtig, zu achten, das genügend MTU berechnet wird. 
 
 \subsubsection{Data Flow}
-Verbindung zwischen zwei VMs im gleichem VXLAN: 
+Verbindung zwischen zwei VMs im gleichen VXLAN: 
 \begin{enumerate}
 \item VM1 will mit VM2 kommunizieren 
 \item VM1 sendet ein ARP Request 
@@ -403,19 +404,19 @@ Verbindung zwischen zwei VMs im gleichem VXLAN:
 \item VTEP1 entpackt den Request mit VXLAN Header 
 \item VTEP1 versendet Request per Multicast 
 \item VTEP2 nimmt Request entgegen, da VM2 dahinter ist 
-\item VTEP2 lernt dass VM1 sich hinter VTEP1 befindet 
+\item VTEP2 lernt, dass VM1 sich hinter VTEP1 befindet 
 \item VTEP2 entpackt Frame und sendet Paket weiter zu VM2
 \item VM2 erhält ARP Layer 2 Paket, merkt nichts von VXLAN
 \end{enumerate}
 
 \subsubsection{Learning Table}
-Die VTEP behalten Einträge solange wie die TTL gültig ist. Danach wird dieser entfernt. Das learning erfolgt dynamisch. EIne solche Tabelle beinhaltet die VM MAC, dazugehöriges VXLAN und den VTEP. 
+Die VTEP behalten Einträge, solange wie die TTL gültig ist. Danach wird dieser entfernt. Das learning erfolgt dynamisch. Eine solche Tabelle beinhaltet die VM MAC, dazugehöriges VXLAN und den VTEP. 
 
 \subsubsection{Gateway}
-Um zwischen VXLAN kommunizieren zu können, ist ein VXLAN-Gateway erfolderlich. Dieser ist ebenfalls fähig VXLAN Header zu entfernen oder hinzuzufügen. Durch dies können Pakete auch in ein nicht VXLAN-fähiges Netzwerk gesendet werden. 
+Um zwischen VXLAN kommunizieren zu können, ist ein VXLAN-Gateway erforderlich. Dieser ist ebenfalls fähig VXLAN Header zu entfernen oder hinzuzufügen. Durch dies können Pakete auch in ein nicht VXLAN-fähiges Netzwerk gesendet werden. 
 
 \subsection{Header}
-Folgende Abblidung zeigt ein VXLAN-Paket. 
+Folgende Abbildung zeigt ein VXLAN-Paket. 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./pictures/vxlan_header.png}
@@ -423,7 +424,7 @@ Folgende Abblidung zeigt ein VXLAN-Paket.
 	\label{x}
 	\end{center}
 \end{figure}
-\noindent Aus dieser Abbildung ist zu erkennen dass auf L2 Frame ein VXLAN Header hinzugefügt bekommt, und das ganze in ein UDP Paket gepackt wird. Dies führt zu erhöhtem Overhead. Deswegen ist die Wahl der MTU Size sehr wichtig. 
+\noindent Aus dieser Abbildung ist zu erkennen, dass auf L2 Frame ein VXLAN Header hinzugefügt bekommt, und das ganze in ein UDP Paket gepackt wird. Dies führt zu erhöhtem Overhead. Deswegen ist die Wahl der MTU Size sehr wichtig. 
 
 \subsubsection{Felder}
 Sehen wir uns den VXLAN Header genauer an: 
@@ -444,7 +445,7 @@ Der VXLAN Header beinhaltet 8 Bytes und ist folgendermassen aufgebaut:
 \end{itemize}
 
 \subsection{Ziele von VXLAN?}
-Das primäre Ziel von VXLAN ist es die Kapazität von VLAN zu erweitern. Es wurde entwickelt um die Skalierbarkeit in einem Rechenzentrum zu gewährleisten. Mit VXLAN kann eine multitenancy-Fähigkeit in einem Rechenzentrum oder Rechenzentrum übergreifend gewährleistet werden, somit können VMs sich im gleichem Layer 2 Netzwerk befinden. 
+Das primäre Ziel von VXLAN ist es die Kapazität von VLAN zu erweitern. Es wurde entwickelt um die Skalierbarkeit in einem Rechenzentrum zu gewährleisten. Mit VXLAN kann eine Multitenancy-Fähigkeit in einem Rechenzentrum oder Rechenzentrum übergreifend gewährleistet werden, somit können VMs sich im gleichem Layer 2 Netzwerk befinden. 
 
 \subsection{Warum wurde VXLAN entwickelt?}
 VXLAN wurde primär entwickelt um VLAN zu erweitern. Mehr zum Einsatz findet man im Kapitel Ziele von VXLAN. 
@@ -453,12 +454,12 @@ VXLAN wurde primär entwickelt um VLAN zu erweitern. Mehr zum Einsatz findet man
 Hier einige Anwendungsbeispiele von VXLAN: 
 \begin{itemize}
 \item VM Verschieben: Nehmen wir an wir möchten gerne eine neue VM auf einem physischen Server implementieren, die Kapazität von diesem reicht jedoch nicht aus. Es können VMs auf andere Server gezügelt werden und diese verbleiben im gleichen Layer 2 Netzwerk. 
-\item Rechenzentrum Kapazität: DIe Kapazität von VLANs ist auf 4096 begrenzt. Für manche Rechenzentren reicht diese nicht aus. Da kommt VXLAN ins Spiel. Dank VXLAN ist die Grenze von 4096 Netzwerk IDs aufgehoben, und es können neu bis zu 16 Millionen Netzwerk IDs vergeben werden. 
-\item Ein Kunde möchte seine Umgebung auf mehrere Rechenzentren spalten, es besteht jedoch das Problem das sich die VMs nicht im gleichen Layer 2 Netzwerk befinden würden. Dank VXLAN ist eine solche Implementation möglich. Es ermöglicht dem Kunden eine Rechenzentrum übergreifende Layer 2 Umgebung. 
+\item Rechenzentrum Kapazität: Die Kapazität von VLANs ist auf 4096 begrenzt. Für manche Rechenzentren reicht diese nicht aus. Da kommt VXLAN ins Spiel. Dank VXLAN ist die Grenze von 4096 Netzwerk IDs aufgehoben, und es können neu bis zu 16 Millionen Netzwerk IDs vergeben werden. 
+\item Ein Kunde möchte seine Umgebung auf mehrere Rechenzentren spalten, es besteht jedoch das Problem, das sich die VMs nicht im gleichen Layer 2 Netzwerk befinden würden. Dank VXLAN ist eine solche Implementation möglich. Es ermöglicht dem Kunden eine Rechenzentrum übergreifende Layer 2 Umgebung. 
 \end{itemize}
 
 \subsection{Vergleich von VXLAN mit traditionelle Protokolle}
-VXLAN ist mit diversen traditionelle Portokolle vergleichbar. 
+VXLAN ist mit diversen traditionelle Protokolle vergleichbar. 
 \subsubsection{VLAN}
 VXLAN wurde primär entwickelt um VLAN in grossen Rechenzentren zu ersetzten. Mit VLAN kann auch ein Multitenency sichergestellt werden. Das Problem bei VLAN liegt bei der Begrenzung von 4096 in einem Netzwerk. Dieses Problem wurde durch die Einführung von VXLAN behoben, das 24 Bit zur Verfügung hat um Multitenancy zu gewährleisten. Ein grosser Nachteil von VXLAN im Vergleich zu VLAN ist der Overhead. VXLAN hat einen deutlich höheren Overhead, da das Paket noch in UDP eingepackt wird. 
 
@@ -481,11 +482,11 @@ In diesem Kapitel werden einige Vor- und Nachteile von VXLAN aufgezeigt.
 \begin{itemize}
 \item Grosser Overhead - auf MTU achten 
 \item noch nicht von allen Herstellern unterstützt
-\item Gateway notwendig um mit andere VXLAN Netze zu kommunizieren (nicht umbedingt ien Nachteil) 
+\item Gateway notwendig um mit andere VXLAN Netze zu kommunizieren (nicht unbedingt ein Nachteil) 
 \end{itemize}
 
 \subsection{Ähnliche Technologien wie VXLAN?}
-Hier eine eine sehr ähnliche Technologie. 
+Hier eine sehr ähnliche Technologie. 
 \subsubsection{NVGRE}
 Bei NVGRE handelt es sich um ein fast identische Technologie wie VXLAN. Es besitzt die selben Funktionen und verfolgt die gleichen Ideen. NVGRE verwendet kein jedoch UDP um die Pakete zu entpacken, sondern setzt auf GRE (Generic Routing Encapsulation). Mit GRE werden die Pakete in Form eines Tunnels über ein IP Netzwerk transportiert. Was ist mit dem Overhead Problem? Der Overhead der dadurch generiert wird, ist fast identisch. VMWare setzt auf VXLAN, im Gegensatz zu Microsoft mit Hyper V auf NVGRE. \\
 \\
@@ -531,7 +532,7 @@ Für dieses Lab wurden zwei Computer benötigt. Folgende Konfigurationen waren n
     \end{tabular}
 \end{center}
 
-\noindent PC1 wurde an den Switch sw01 angeschlossen, und PC2 an den Switch sw03. 
+\noindent PC1 wurde an den Switch sw01 angeschlossen, PC2 an den Switch sw03. 
 
 \subsubsection{Switches}
 Für den Laboraufbau wurden drei Switches benötigt. Hier einige wichtige Informationen zu den Geräten: 
@@ -549,7 +550,7 @@ Für den Laboraufbau wurden drei Switches benötigt. Hier einige wichtige Inform
 PC1 wurde an Ethernet Port 12 (VLAN 16) von vxlan-lab-sw01 angeschlossen. PC2 wurde an Ethernet Port 12 (VLAN 36) von vxlan-lab-sw03 angeschlossen. 
 
 \subsubsection{Laboraufbau VXLAN}
-Hier eine Abbildung des Laboraufbaus unserer Grupppe: 
+Hier eine Abbildung des Laboraufbaus unserer Gruppe: 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.80\textwidth]{./draws/vxlan_ex3_laboraufbau.pdf}
@@ -597,7 +598,7 @@ Für dieses Lab wurden zwei Computer benötigt. Auf diesen Computer wurde ein Ub
 \end{center}
 
 \subsubsection{Mininet}
-In dieser Übung haben wir mit Hilfe von Mininet zwei virtuelle Netze auf den Ubuntu VMs simuliert. Es wurden Hosts und Switches simuliert, und diese fungierten als VTEPs. Die Hosts wurden in ein VLAN integriert (Ubuntu Srv 1: 10 und 30 und Ubuntu Srv 2: 20 und 40). Diese VLANs wurden auf die, gemäss Abbildung ersichtlich, dazugehörige VNI gemappt. Somit konnten sich die Hosts innerhalb von einem Mininet und Mininet übergreifend erreichen. Die Kommunikation zwischen den Hosts funktionierte nur mit den Hosts deren VLAN auf die gleiche VNI gemappt wurde. Weiter unten haben wir Screenshots und weiteres zu der Mininet Konfiguration dokumentiert. 
+In dieser Übung haben wir mithilfe von Mininet zwei virtuelle Netze auf den Ubuntu VMs simuliert. Es wurden Hosts und Switches simuliert, und diese fungierten als VTEPs. Die Hosts wurden in ein VLAN integriert (Ubuntu Srv 1: 10 und 30 und Ubuntu Srv 2: 20 und 40). Diese VLANs wurden auf die, gemäss Abbildung ersichtlich, dazugehörige VNI gemappt. Somit konnten sich die Hosts innerhalb von einem Mininet und Mininet übergreifend erreichen. Die Kommunikation zwischen den Hosts funktionierte nur mit den Hosts deren VLAN auf die gleiche VNI gemappt wurde. Weiter unten haben wir Screenshots und weiteres zu der Mininet Konfiguration dokumentiert. 
 
 \subsubsection{Laboraufbau Mininet}
 Hier eine Abbildung von unserer virtuellen Umgebung: 
@@ -666,7 +667,7 @@ Wir haben drei Wireshark Sessions durchgeführt. Anbei die Abbildungen zu unsere
 	\label{x}
 	\end{center}
 \end{figure}
-Bei diesem Versuch hingen unsere Computer noch von der vorherigen Übung auf den konfigurierten HP Switches die ein eigenes VXLAN Konfiguriert hatten mit VNI 6666. Hier ist zu erkennen dass die Pakete zwei Mal eingepackt werden. Einmal wird der Header hinzugefügt im eigenen virtuellen Netzwerk (das wir aufgebaut haben), das zweite Mal wird ein erneuter Header durch die Switches drauf gepackt. Wir haben diesen Screenshot hinzugefügt um zu zeigen wie die Encapsulation geschieht, wenn das Paket durch mehrere VXLANs wandert. Hier wird von HP1 (Ubuntu Srv 2) zu HP4 (Ubuntu Srv 1) gepingt. 
+Bei diesem Versuch hingen unsere Computer noch von der vorherigen Übung auf den konfigurierten HP Switches. Diese hatten jeweils ein eigenes VXLAN konfiguriert mit VNI 6666. Hier ist zu erkennen, dass die Pakete zwei Mal eingepackt werden. Einmal wird der Header hinzugefügt im eigenen virtuellen Netzwerk (das wir aufgebaut haben), das zweite Mal wird ein erneuter Header durch die Switches drauf gepackt. Wir haben diesen Screenshot hinzugefügt um zu zeigen wie die Encapsulation geschieht, wenn das Paket durch mehrere VXLANs wandert. Hier wird von HP1 (Ubuntu Srv 2) zu HP4 (Ubuntu Srv 1) gepingt. 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=0.70\textwidth]{./pictures/vxlan_sniff2.png}

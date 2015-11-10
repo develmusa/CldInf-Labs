@@ -1,15 +1,10 @@
 #!/usr/bin/python
 "Starten mit sudo mn --custom LeafAndSpineSwitchTopo.py --topo=LeafAndSpine,x,y      x = Anzahl Spine y = Anzahl Leaf"
 
-from mininet.net import Mininet
 from mininet.topo import Topo
-from mininet.cli import CLI
-
 
 class LeafAndSpine(Topo):
     def __init__(self, spine=2, leaf=2):
-        "Create Leaf and Spine Topo."
-
         Topo.__init__(self)
 
         spines = {}

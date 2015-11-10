@@ -11,11 +11,10 @@ class LeafAndSpine(Topo):
         for s in range(spine):
             spines[s] = self.addSwitch('spine%s' % (s + 1))
 
-        for ls in range(leaf):
-            leafSwitch = self.addSwitch('leaf%s' % (ls + 1))
+        for l in range(leaf):
+            leafSwitch = self.addSwitch('leaf%s' % (l + 1))
 
             for s in range(spine):
-                switch = spines[s]
-                self.addLink(leafSwitch, switch)
+                self.addLink(leafSwitch, spines[s])
 
 topos = { 'LeafAndSpine': ( lambda spine, leaf: LeafAndSpine(spine, leaf) ) }

@@ -55,7 +55,6 @@
 \tableofcontents
 \newpage
 
-
 \section{Mininet}
 Wurde aus der Aufgabenstellung entnommen: \\
 \\
@@ -98,30 +97,28 @@ class LeafAndSpine(Topo):
 
         spines = {}
         for s in range(spine):
-            spines[s] = self.addSwitch('spine%s' % (s + 1))
-            Cmd('sh ovs-vsctl set-fail-mode spine%s standalone' % (s + 1))
-            Cmd('sh ovs-vsctl set Bridge spine%s stp_enable=true' % (s + 1))
+            spines[s] = self.addSwitch('spine%s'%(s+1))
+            Cmd('sh ovs-vsctl set-fail-mode spine%s standalone'%(s+1))
+            Cmd('sh ovs-vsctl set Bridge spine%s stp_enable=true'%(s+1))
 
         for l in range(leaf):
-            leafSwitch = self.addSwitch('leaf%s' % (l + 1))
-            Cmd('sh ovs-vsctl set-fail-mode leaf%s standalone' % (l + 1))
-            Cmd('sh ovs-vsctl set Bridge leaf%s stp_enable=true' % (l + 1))
+            leafSwitch = self.addSwitch('leaf%s'%(l+1))
+            Cmd('sh ovs-vsctl set-fail-mode leaf%s standalone'%(l+1))
+            Cmd('sh ovs-vsctl set Bridge leaf%s stp_enable=true'%(l+1))
             
-            host = self.addHost('h%s' % (l + 1), ip="10.10.1.%s" % (l + 1))
+            host = self.addHost('h%s' % (l+1),ip="10.10.1.%s"%(l+1))
             self.addLink(host,leafSwitch)
 
             for s in range(spine):
                 self.addLink(leafSwitch, spines[s])
 
-topos = { 
-'LeafAndSpine': ( lambda spine, leaf: LeafAndSpine(spine, leaf)) 
-}
+topos = {'LeafAndSpine':(lambda spine,leaf:LeafAndSpine(spine, leaf))}
 \end{lstlisting}
 
 \subsection{Infrastruktur}
-Das Script und die Umgebung wurde in einer virtuellen Maschine, mit Linux Ubuntu Server, getestet. Die einzige Voraussetzung ist, dass Mininet installiert ist. Wir gehen nicht auf die Einzelheiten ein.
+Das Script und die Umgebung wurde in einer virtuellen Maschine, mit Linux Ubuntu Server, getestet. Die einzige Voraussetzung für das testen ist, dass Mininet installiert ist. Wir gehen nicht auf die Einzelheiten ein.
 
-\subsubsection{Layer}
+\subsection{Layer}
 Mininet Infrastruktur wurde im Layer2 betrieben,. Um Loops zu vermeiden, wurde auf Spanning-Tree auf den Switches aktiviert. 
 
 \subsection{Mininet starten, mit Parameter}

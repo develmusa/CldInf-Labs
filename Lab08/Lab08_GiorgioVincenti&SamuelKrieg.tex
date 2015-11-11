@@ -85,19 +85,12 @@ Create a custom topology script for clos fabric
 \item Layer2 or Layer3
 \end{itemize}
 
-\subsection{Infrastruktur}
-Das Script und die Umgebung wurde in einer virtuellen Maschine, mit Linux Ubuntu Server, getestet. Die einzige Voraussetzung ist, dass Mininet installiert ist. Wir gehen nicht auf die Einzelheiten ein.
-
-\subsubsection{Layer}
-Mininet Infrastruktur wurde im Layer2 betrieben.
-
-\section{Python Script}
-Folgendes Script wird eine eigene Topologie im Mininet aufsetzten: \\
-
+\section{Mininet Script (Python)}
 \begin{lstlisting}
 #!/usr/bin/python
 
 from mininet.topo import Topo
+from cmd import Cmd
 
 class LeafAndSpine(Topo):
     def __init__(self, spine=2, leaf=2):
@@ -106,9 +99,16 @@ class LeafAndSpine(Topo):
         spines = {}
         for s in range(spine):
             spines[s] = self.addSwitch('spine%s' % (s + 1))
+            Cmd('sh ovs-vsctl set-fail-mode spine%s standalone' % (s + 1))
+            Cmd('sh ovs-vsctl set Bridge spine%s stp_enable=true' % (s + 1))
 
         for l in range(leaf):
             leafSwitch = self.addSwitch('leaf%s' % (l + 1))
+            Cmd('sh ovs-vsctl set-fail-mode leaf%s standalone' % (l + 1))
+            Cmd('sh ovs-vsctl set Bridge leaf%s stp_enable=true' % (l + 1))
+            
+            host = self.addHost('h%s' % (l + 1), ip="10.10.1.%s" % (l + 1))
+            self.addLink(host,leafSwitch)
 
             for s in range(spine):
                 self.addLink(leafSwitch, spines[s])
@@ -118,30 +118,36 @@ topos = {
 }
 \end{lstlisting}
 
+\subsection{Infrastruktur}
+Das Script und die Umgebung wurde in einer virtuellen Maschine, mit Linux Ubuntu Server, getestet. Die einzige Voraussetzung ist, dass Mininet installiert ist. Wir gehen nicht auf die Einzelheiten ein.
+
+\subsubsection{Layer}
+Mininet Infrastruktur wurde im Layer2 betrieben,. Um Loops zu vermeiden, wurde auf Spanning-Tree auf den Switches aktiviert. 
+
 \subsection{Mininet starten, mit Parameter}
 Um Mininet mit folgenden Script aufzustarten, ist die Angabe des Scripts bei Start von Mininet notwendig. 
 \begin{lstlisting}
 #Startet Mininet mit Script - wobei x = Anzahl Spines, y = Anzahl Leafs
-#LeafAndSpineSwitchTopo.py = Scriptname 
-sudo mn --custom LeafAndSpineSwitchTopo.py --topo=LeafAndSpine,x,y 
+#LeafAndSpineSwitchTopo_v2.py = Scriptname 
+sudo mn --custom LeafAndSpineSwitchTopo_v2.py --topo=LeafAndSpine,x,y 
 \end{lstlisting}
 
-\subsubsection{Beispiel: Mininet mit 2x Spines und 2x Leafs}
-In diesem Beispiel wird Mininet mithilfe des Scripts aufgesetzt, mit dem man die Anzahl Spines und Leafs als Parameter mitgeben kann.
+\subsubsection{Mininet-Topo mit 2x Spines und 4x Leafs}
+In diesem Beispiel wird Mininet mithilfe des Scripts aufgesetzt, mit dem man die Anzahl Spines und Leafs als Parameter mitgeben kann. Pro Leaf wird automatisch einen Host hinzugefügt. 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/example.png}
+	\includegraphics[width=1.00\textwidth]{./pictures/example.png}
 	\caption{Screenshot: Mininet Config mit Script}
 	\label{x}
 	\end{center}
 \end{figure} 
 
-\subsubsection{Beispiel: Ping Tests Switches}
-Hier einige Ping Tests von den Leaf-Switches zu den Spine-Switches: 
+\subsubsection{Test: pingall}
+Hier einige Ping-Tests die mithilfe von pingall durchgefüht wurden. 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.40\textwidth]{./pictures/example_ping.png}
-	\caption{Screenshot: Pingtest}
+	\includegraphics[width=0.60\textwidth]{./pictures/example_ping.png}
+	\caption{Screenshot: pingall}
 	\label{x}
 	\end{center}
 \end{figure} 

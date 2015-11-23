@@ -1,0 +1,7 @@
+To connect to the openstack vm use the key file in the directory /keys/ 
+
+on mac: 
+sudo ssh -i myKey.pem ubuntu@152.96.8.43 
+
+on windows: (please use putty) 
+under ssh - auth - insert the *.pem file 

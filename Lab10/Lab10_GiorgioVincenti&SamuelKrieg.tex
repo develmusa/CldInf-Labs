@@ -55,97 +55,130 @@
 \tableofcontents
 \newpage
 
-\section{Mininet}
+\section{Implementing a Hub - Part 1}
+
+\subsection{Aufgabenstellung}
 Wurde aus der Aufgabenstellung entnommen: \\
 \\
-Mininet is a network emulator which creates a network of virtual hosts, switches, controllers, and links. Mininet hosts run standard Linux network software, and its switches support OpenFlow for highly flexible custom routing and Software-Defined Networking.\\
-\\
-Mininet supports research, development, learning, prototyping, testing, debugging, and any other tasks that could benefit from having a complete experimental network on a laptop or other PC.\\
-\\
-\textbf{Mininet:}
+To get familiar with SDN controller programming you will start with a very basic and easy implementation task. The goal of this exercise is to write a hub.
 \begin{itemize}
-\item Provides a simple and inexpensive network testbed for developing OpenFlow applications
-\item Enables multiple concurrent developers to work independently on the same topology
-\item Supports system-level regression tests, which are repeatable and easily packaged
-\item Enables complex topology testing, without the need to wire up a physical network
-\item Includes a CLI that is topology-aware and OpenFlow-aware, for debugging or running network-wide tests
-\item Supports arbitrary custom topologies, and includes a basic set of parametrized topologies
-\item is usable out of the box without programming, but
-\item also Provides a straightforward and extensible Python API for network creation and experimentation
+\item OpenFlow-Switch with Hub behavior
+\item Each incoming packet on the OpenFlow-Switch generates a request which will be send to your SDN controller
+\item The SDN controller responds to each request with a "FLOOD"-message.
 \end{itemize}
 
-\noindent Mininet provides an easy way to get correct system behavior (and, to the extent supported by your hardware, performance) and to experiment with topologies.
-Mininet networks run real code including standard Unix/Linux network applications as well as the real Linux kernel and network stack (including any kernel extensions which you may have available, as long as they are compatible with network namespaces.)
-
-\subsection{Aufgaben}
-Create a custom topology script for clos fabric
-\begin{itemize}
-\item Tow parameter for Leaf and Spine
-\item Layer2 or Layer3
-\end{itemize}
-
-\section{Mininet Script (Python)}
-\begin{lstlisting}
-#!/usr/bin/python
-
-from mininet.topo import Topo
-from cmd import Cmd
-
-class LeafAndSpine(Topo):
-    def __init__(self, spine=2, leaf=2):
-        Topo.__init__(self)
-
-        spines = {}
-        for s in range(spine):
-            spines[s] = self.addSwitch('spine%s'%(s+1))
-            Cmd('sh ovs-vsctl set-fail-mode spine%s standalone'%(s+1))
-            Cmd('sh ovs-vsctl set Bridge spine%s stp_enable=true'%(s+1))
-
-        for l in range(leaf):
-            leafSwitch = self.addSwitch('leaf%s'%(l+1))
-            Cmd('sh ovs-vsctl set-fail-mode leaf%s standalone'%(l+1))
-            Cmd('sh ovs-vsctl set Bridge leaf%s stp_enable=true'%(l+1))
-            
-            host = self.addHost('h%s' % (l+1),ip="10.10.1.%s"%(l+1))
-            self.addLink(host,leafSwitch)
-
-            for s in range(spine):
-                self.addLink(leafSwitch, spines[s])
-
-topos = {'LeafAndSpine':(lambda spine,leaf:LeafAndSpine(spine, leaf))}
-\end{lstlisting}
+\subsection{Ziel der Aufgabe}
+Jeder Traffic soll über den Controller gehen, mittels OpenFlow. 
 
 \subsection{Infrastruktur}
-Das Script und die Umgebung wurde in einer virtuellen Maschine, mit Linux Ubuntu Server, getestet. Die einzige Voraussetzung für das testen ist, dass Mininet installiert ist. Wir gehen nicht auf die Einzelheiten ein.
+Um die Aufgabe zu realisieren haben wir eine Ubuntu x64 VM verwendet. 
+Auf dieser VM wird ebenfalls einiges benötigt. 
+\begin{itemize}
+\item Mininet 
+\item Ryu (per Github, oder mit Hilfe von pip) 
+\item Open vSwitch
+\item Script für Simple Hub (selber programmiert) 
+\item Wireshark 
+\end{itemize}
 
-\subsection{Layer}
-Mininet Infrastruktur wurde im Layer2 betrieben,. Um Loops zu vermeiden, wurde auf Spanning-Tree auf den Switches aktiviert. 
-
-\subsection{Mininet starten, mit Parameter}
-Um Mininet mit folgenden Script aufzustarten, ist die Angabe des Scripts bei Start von Mininet notwendig. 
+\subsection{Simple Hub Script (Python)}
 \begin{lstlisting}
-#Startet Mininet mit Script - wobei x = Anzahl Spines, y = Anzahl Leafs
-#LeafAndSpineSwitchTopo_v2.py = Scriptname 
-sudo mn --custom LeafAndSpineSwitchTopo_v2.py --topo=LeafAndSpine,x,y 
+#!/usr/bin/env python
+from ryu.base import app_manager
+from ryu.controller import ofp_event
+from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
+from ryu.controller.handler import set_ev_cls
+from ryu.ofproto import ofproto_v1_3
+from ryu.lib.packet import packet
+
+class SimpleHub13(app_manager.RyuApp):
+    OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
+
+    def __init__(self, *args, **kwargs):
+        super(SimpleHub13, self).__init__(*args, **kwargs)
+
+    @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
+    def switch_features_handler(self, ev):
+        datapath = ev.msg.datapath
+        ofproto = datapath.ofproto
+        parser = datapath.ofproto_parser
+        match = parser.OFPMatch()
+        actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER, 
+        		ofproto.OFPCML_NO_BUFFER)]
+        self.add_flow(datapath, 0, match, actions)
+
+    def add_flow(self, datapath, priority, match, actions):
+        ofproto = datapath.ofproto
+        parser = datapath.ofproto_parser
+        inst = [parser.OFPInstructionActions(
+        			ofproto.OFPIT_APPLY_ACTIONS, actions)]
+        mod = parser.OFPFlowMod(datapath=datapath, priority=priority, 
+        				match=match, instructions=inst)
+        datapath.send_msg(mod)
+
+    @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
+    def _packet_in_handler(self, ev):
+        msg = ev.msg
+        datapath = msg.datapath
+        ofproto = datapath.ofproto
+        parser = datapath.ofproto_parser
+        in_port = msg.match['in_port']
+        out_port = ofproto.OFPP_FLOOD
+        actions = [parser.OFPActionOutput(out_port)]
+
+        data = None
+        if msg.buffer_id == ofproto.OFP_NO_BUFFER:
+            data = msg.data
+
+        out = parser.OFPPacketOut(datapath=datapath, 
+        	buffer_id=msg.buffer_id, in_port=in_port, 
+        		actions=actions, data=data)
+        datapath.send_msg(out)
+        dpid = datapath.id
+        self.logger.info("packet in %s %s", dpid, in_port)
 \end{lstlisting}
 
-\subsubsection{Mininet-Topo mit 2x Spines und 4x Leafs}
-In diesem Beispiel wird Mininet mithilfe des Scripts aufgesetzt, mit dem man die Anzahl Spines und Leafs als Parameter mitgeben kann. Pro Leaf wird automatisch einen Host hinzugefügt. 
+\subsection{Mininet starten}
+Mininet starten um die Umgebung zu simulieren. Folgeder Befehl erstellt eine simulierte Netzwerk Infrastruktur. Dieser Befehl muss auf der Ubuntu VM als root ausgeführt werden. 
+\begin{lstlisting}
+sudo mn --topo single,3 --mac --switch ovsk --controller remote -x
+\end{lstlisting}
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=1.00\textwidth]{./pictures/example.png}
-	\caption{Screenshot: Mininet Config mit Script}
+	\includegraphics[width=0.40\textwidth]{./pictures/mininet.png}
+	\caption{Mininet start}
 	\label{x}
 	\end{center}
 \end{figure} 
 
-\subsubsection{Test: pingall}
-Hier einige Ping-Tests die mithilfe von pingall durchgefüht wurden. 
+\subsection{OpenFlow}
+Hier teilen wir der Bridge mit welche OpenFlow Version verwendet werden soll. Dieser Befehl muss auf s1 ausgeführt werden. 
+\begin{lstlisting}
+ovs-vsctl set Bridge s1 protocols=OpenFlow13
+\end{lstlisting}
+
+\subsection{Ryu application starten}
+Nachdem die Vorbereitungen getroffen wurden, können wir jetzt Ryu starten mit dem erstelltem Script als Parameter. Dieser Befehl muss auf dem erstelltem Controller c0 ausgeführt werden. 
+\begin{lstlisting}
+ryu-manager --verbose simple_hub_v2.py
+\end{lstlisting}
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.60\textwidth]{./pictures/example_ping.png}
-	\caption{Screenshot: pingall}
+	\includegraphics[width=0.50\textwidth]{./pictures/ryu_start_simple_hub.png}
+	\caption{Ryu application start}
 	\label{x}
 	\end{center}
 \end{figure} 
+
+\subsection{Traffic}
+Nachdem alles gestartet wurde können wir im Mininet von Host (h1) zu Host (h3) pingen um zu sehen ob der Verkehr mittels OpenFlow fliesst. Der Verkehr können wir mit Hilfe von Wireshark sniffen. Der gesamte Traffic verläuft über den Controller c0. Jedes Paket wird in ein OpenFlow Paket gekapselt und weitergeleitet. Der Hub ist nicht in der Lage einen Flow zu lernen. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=1.00\textwidth]{./pictures/simple_hub_traffic.png}
+	\caption{Mininet Traffic ping from h1 to h3}
+	\label{x}
+	\end{center}
+\end{figure} 
+
+
 \end{document}

@@ -12,7 +12,6 @@ class SimpleHub(app_manager.RyuApp):
 
         def __init__(self, *args, **kwargs):
                 super(SimpleHub,self).__init__(*args, **kwargs)
-                self.mac_to_port = {}
 
         @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
         def switch_features_handler(self, ev):

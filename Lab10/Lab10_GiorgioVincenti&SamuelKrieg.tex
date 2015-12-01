@@ -55,6 +55,57 @@
 \tableofcontents
 \newpage
 
+\section{Vorbereitung und Allgemeines}
+Hier einige Dinge die zur Vorbereitung notwendig sind, um die Aufgaben erfüllen zu können. Es werden auch Befehle die zu jeder Aufgabe notwendig sind in diesem Kapitel erwähnt. 
+
+\subsection{Infrastruktur}
+Um die Aufgabe zu realisieren haben wir eine Ubuntu x64 VM verwendet. 
+Auf dieser VM wird ebenfalls einiges benötigt. 
+\begin{itemize}
+\item Mininet 
+\item Ryu (per Github, oder mit Hilfe von pip) 
+\item Open vSwitch
+\item Python Script pro Aufgabe (selber programmiert) 
+\item Wireshark (mit OpenFlow Plugin)
+\item Ryubook.pdf 
+\end{itemize}
+
+\subsection{Mininet starten}
+Mininet starten um die Umgebung zu simulieren. Folgeder Befehl erstellt eine simulierte Netzwerk Infrastruktur. Dieser Befehl muss auf der Ubuntu VM als root ausgeführt werden. Dieser Befehl kann je nach Aufgabe variieren. 
+\begin{lstlisting}
+sudo mn --topo single,3 --mac --switch ovsk --controller remote -x
+\end{lstlisting}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.40\textwidth]{./pictures/mininet.png}
+	\caption{Mininet start}
+	\label{x}
+	\end{center}
+\end{figure} 
+
+\subsection{OpenFlow}
+Hier teilen wir der Bridge mit welche OpenFlow Version verwendet werden soll. Dieser Befehl muss auf s1 ausgeführt werden. 
+\begin{lstlisting}
+ovs-vsctl set Bridge s1 protocols=OpenFlow13
+\end{lstlisting}
+
+\subsection{Ryu application starten}
+Nachdem die obigen Vorbereitungen getroffen wurden, können wir jetzt Ryu starten mit dem erstelltem Script als Parameter. Dieser Befehl muss auf dem erstelltem Controller c0 ausgeführt werden. Auch dieser Befehl kann je nach Aufgabe variieren. (Beispiel Ryu Start aus Aufgabe 1) 
+\begin{lstlisting}
+ryu-manager --verbose simple_hub_v2.py
+\end{lstlisting}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.50\textwidth]{./pictures/ryu_start_simple_hub.png}
+	\caption{Ryu application start}
+	\label{x}
+	\end{center}
+\end{figure} 
+
+\subsection{andere Hilfreiche Befehle}
+coming soon...
+\newpage
+
 \section{Implementing a Hub - Part 1}
 
 \subsection{Aufgabenstellung}
@@ -69,17 +120,6 @@ To get familiar with SDN controller programming you will start with a very basic
 
 \subsection{Ziel der Aufgabe}
 Jeder Traffic soll über den Controller gehen, mittels OpenFlow. 
-
-\subsection{Infrastruktur}
-Um die Aufgabe zu realisieren haben wir eine Ubuntu x64 VM verwendet. 
-Auf dieser VM wird ebenfalls einiges benötigt. 
-\begin{itemize}
-\item Mininet 
-\item Ryu (per Github, oder mit Hilfe von pip) 
-\item Open vSwitch
-\item Script für Simple Hub (selber programmiert) 
-\item Wireshark 
-\end{itemize}
 
 \subsection{Simple Hub Script (Python)}
 \begin{lstlisting}
@@ -137,38 +177,7 @@ class SimpleHub13(app_manager.RyuApp):
         dpid = datapath.id
         self.logger.info("packet in %s %s", dpid, in_port)
 \end{lstlisting}
-
-\subsection{Mininet starten}
-Mininet starten um die Umgebung zu simulieren. Folgeder Befehl erstellt eine simulierte Netzwerk Infrastruktur. Dieser Befehl muss auf der Ubuntu VM als root ausgeführt werden. 
-\begin{lstlisting}
-sudo mn --topo single,3 --mac --switch ovsk --controller remote -x
-\end{lstlisting}
-\begin{figure} [H]
-	\begin{center}
-	\includegraphics[width=0.40\textwidth]{./pictures/mininet.png}
-	\caption{Mininet start}
-	\label{x}
-	\end{center}
-\end{figure} 
-
-\subsection{OpenFlow}
-Hier teilen wir der Bridge mit welche OpenFlow Version verwendet werden soll. Dieser Befehl muss auf s1 ausgeführt werden. 
-\begin{lstlisting}
-ovs-vsctl set Bridge s1 protocols=OpenFlow13
-\end{lstlisting}
-
-\subsection{Ryu application starten}
-Nachdem die Vorbereitungen getroffen wurden, können wir jetzt Ryu starten mit dem erstelltem Script als Parameter. Dieser Befehl muss auf dem erstelltem Controller c0 ausgeführt werden. 
-\begin{lstlisting}
-ryu-manager --verbose simple_hub_v2.py
-\end{lstlisting}
-\begin{figure} [H]
-	\begin{center}
-	\includegraphics[width=0.50\textwidth]{./pictures/ryu_start_simple_hub.png}
-	\caption{Ryu application start}
-	\label{x}
-	\end{center}
-\end{figure} 
+\newpage
 
 \subsection{Traffic}
 Nachdem alles gestartet wurde können wir im Mininet von Host (h1) zu Host (h3) pingen um zu sehen ob der Verkehr mittels OpenFlow fliesst. Der Verkehr können wir mit Hilfe von Wireshark sniffen. Der gesamte Traffic verläuft über den Controller c0. Jedes Paket wird in ein OpenFlow Paket gekapselt und weitergeleitet. Der Hub ist nicht in der Lage einen Flow zu lernen. 
@@ -179,6 +188,25 @@ Nachdem alles gestartet wurde können wir im Mininet von Host (h1) zu Host (h3) 
 	\label{x}
 	\end{center}
 \end{figure} 
+\newpage
 
+\section{Implementing a Hub - Part 2}
+
+\subsection{Aufgabenstellung}
+Wurde aus der Aufgabenstellung entnommen: \\
+\\
+In the second part of the hub implementation you will improve the hub behavior as follows:
+\begin{itemize}
+\item Still Hub behavior
+\item During the connection setup between the OpenFlow-Switch and your SDN-Controller the controller installs a flow on the OpenFlow-Switch:  Flow: always Flood
+\end{itemize}
+
+\subsection{Ziel der Aufgabe}
+Jeder Traffic soll über den Controller gehen, mittels OpenFlow. Der Controller soll den Flow dem auf dem Switch vermerken. 
+
+\subsection{Infrastruktur}
+An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3. 
+
+\subsection{Simple Hub Script (Python) }
 
 \end{document}

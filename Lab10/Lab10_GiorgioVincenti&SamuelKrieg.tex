@@ -103,7 +103,11 @@ ryu-manager --verbose simple_hub_v2.py
 \end{figure} 
 
 \subsection{andere Hilfreiche Befehle}
-coming soon...
+\subsubsection{Flow Table anzeigen}
+Befehl auf s1 ausführen um die Flow Table anzuzeigen. 
+\begin{lstlisting}
+ovs-ofctl -O OpenFlow13 dump-flows s1
+\end{lstlisting}
 \newpage
 
 \section{Implementing a Hub - Part 1}
@@ -279,6 +283,7 @@ Durch einen ICMP Test im Mininet ist gut sichtbar wie sich der Flow verhält. De
 \end{figure} 
 
 \subsubsection{Flow Table}
+Wenn man die Flow Table anzeigen lässt sind jetzt mehrere Einträge vorhanden. Man erkennt daraus den Pfad mit Priorität 0: Controller, und den Pfad mit Priorität 1: Flood. Eine weitere wichtige Erkennung ist die Anzahl Pakete. Unter dem Eintrag mit Priorität 0 ist zu sehen das sich die Anzahl Pakete auf eines beschränkt, und der Pfad mit Priorität 1 die restlichen Pakete des flows enthält. 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=1.00\textwidth]{./pictures/flow_table_flood.png}
@@ -309,5 +314,5 @@ No, flood packet to all ports, except the incoming port
 
 \subsection{Ziel der Aufgabe}
 
-\
+
 \end{document}

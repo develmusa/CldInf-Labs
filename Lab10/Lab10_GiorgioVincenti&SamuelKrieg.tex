@@ -485,11 +485,106 @@ Wurde aus der Aufgabenstellung entnommen: \\
 In this exercise you will implement a controller which allows or denies traffic based on a specified policy.
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/ex4_aufgabestellung.png}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_aufgabenstellung.png}
+	\caption{ex4 Aufgabenstellung}
+	\label{x}
+	\end{center}
+\end{figure} 
+\noindent Each Server tenant can reach only the allowed tenants. (Web <> App, App <> DB)
+Start Mininet: 
+\begin{lstlisting}
+sudo mn --topo single, 6 --mac --controller remote, ip=127.0.0.1
+\end{lstlisting}
+You can test your script with h1 ping h2 or pingall in the mininet CLI. h1 xterm opens a new
+terminal for host h1. Now you can use for example tcpdump.
+The second pingall output should looks like this:
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_aufgabenstellung2.png}
+	\caption{ex4 Aufgabenstellung}
+	\label{x}
+	\end{center}
+\end{figure} 
+\newpage
+\noindent The minimal script must work with this fixed Topology. We will test your script with our Docker
+container and 
+\begin{lstlisting}
+sudo mn --topo single,6 --mac --controller remote, ip=127.0.0.1
+\end{lstlisting}
+Optional you can add more flexibility with csv files or a db.
+
+\subsubsection{Appendix: Quickstart}
+\begin{itemize}
+\item To get started, start your VM or private Linux. You can install Ryu or use our Docker container.
+\item Run Mininet on a terminal window using the following command. This starts a network emulation environment to emulate 1 switch with 3 hosts.
+\end{itemize} 
+\begin{lstlisting}
+sudo mn --topo single,3 --mac --controller remote
+\end{lstlisting}
+\begin{itemize}
+\item The above command will spawn 1 switch that has support for both OpenFlow ver 1.0 and 1.3. Based on your needs, however, you can force a switch to support OpenFlow 1.3 by executing this command:
+\end{itemize}
+\begin{lstlisting}
+sudo ovs-vsctl set Bridge s1 protocols=OpenFlow13
+\end{lstlisting}
+\begin{itemize}
+\item Next, start the RYU Controller.
+\end{itemize}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=1.00\textwidth]{./pictures/ex4_aufgabenstellung3.png}
+	\caption{ex4 Aufgabenstellung}
+	\label{x}
+	\end{center}
+\end{figure} 
+\newpage
+\begin{itemize}
+\item Ensure that we start the correct ryu-manager if multiple versions of the controller is installed in the same system.
+\item Have you changed the OpenFlow version on bridge s1?
+\item Next, check if the hosts in the mininet topology can reach each other
+\end{itemize}
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=1.00\textwidth]{./pictures/ex4_aufgabenstellung4.png}
 	\caption{ex4 Aufgabenstellung}
 	\label{x}
 	\end{center}
 \end{figure} 
 
+\subsubsection{ryu code structure}
+The main controller code is organized under the /ryu/ folder (In our Docker – /opt/ryu/ryu/). Here we discuss the functionalities of the key components. It is important to become familiar with them.
+\begin{itemize}
+\item app/ – Contains set of applications that run on-top of the controller.
+\item base/ – Contains the base class for RYU applications. The RyuApp class in the appmanager.py file is inherited when creating a new application.
+\item controller/ – Contains the required set of files to handle OpenFlow functions (e.g., packets from switches, generating flows, handling network events, gathering statistics etc).
+\item lib/ – Contains set of packet libraries to parse different protocol headers and a library for OFConfig. In addition, it includes parsers for Netflow and sFlow too.
+\item ofproto/ – Contains the OpenFlow protocol specific information and related parsers to support different versions of OF protocol (1.0, 1.2, 1.3, 1.4)
+\item topology/: Contains code that performs topology discovery related to OpenFlow switches and handles associated information (e.g., ports, links etc). Internally uses LLDP protocol.
+\end{itemize}
 
+\subsubsection{ryu	controller code essentials}
+Most controller platforms expose some native features to allow these key features:
+\begin{itemize}
+\item Ability to listen to asynchronous events (e.g., PACKET\_IN, FLOW\_REMOVED) and to observe events using ryu.controller.handler.set\_ev\_cls decorator.
+\item Ability to parse incoming packets (e.g., ARP, ICMP, TCP) and fabricate packets to send out into the network
+\item Ability to create and send an OpenFlow SDN message (e.g., PACKET\_OUT, FLOW\_MOD, STATS\_REQUEST) to the programmable dataplane.
+\end{itemize}
+With RYU you can achieve all of those by invoking set of applications to handle network events, parse any switch request and react to network changes by installing new flows, if required. For instance, creating a new application involves creating a subclass of RyuApp and building the required logic to listen for network events.\\
+https://github.com/osrg/ryu/blob/master/ryu/ofproto/ofproto\_v1\_3.py\\
+Line 234: enum ofp\_action\_type Line 1138: Match Fields \\
+https://github.com/osrg/ryu/blob/master/ryu/ofproto/ofproto\_v1\_3\_parser.py\\
+Events: EventOFPErrorMsg, EventOFPEchoRequest, EventOFPEchoReply, EventOFPSwitchFeatures, EventOFPGetConfigReply, EventOFPPacketIn, EventOFPFlowRemoved, EventOFPPortStatus, EventOFPDescStatsReply, EventOFPFlowStatsReply, EventOFPAggregateStatsReply, EventOFPTableStatsReply, EventOFPPortStatsReply, EventOFPQueueStatsReply, EventOFPGroupStatsReply, EventOFPGroupDescStatsReply, EventOFPGroupFeaturesStatsReply, EventOFPMeterStatsReply, EventOFPMeterConfigStatsReply, EventOFPMeterFeaturesStatsReply, EventOFPPortDescStatsReply, EventOFPBarrierReply, EventOFPQueueGetConfigReply, EventOFPRoleRepl, EventOFPGetAsyncReply
+
+\subsection{Ziel der Aufgabe}
+Auf dem Controllen sollen Policys erstellt werden, welche bestimmen, welcher Host mit welchem kommunizieren darf. 
+
+\subsection{Infrastruktur}
+An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3.
+
+\subsection{Vorgehen}
+Wir gingen nach der Aufgabenstellung vor. (Quickstart) Alle Schritte wurden erfolgreich ausgeführt. 
+
+
+\section{Referenzen}
+Als Referenz für diese Arbeit wurde das ryubook.pdf verwendet. 
 \end{document}

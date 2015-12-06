@@ -194,6 +194,17 @@ Nachdem alles gestartet wurde können wir im Mininet von Host (h1) zu Host (h3) 
 \end{figure} 
 \newpage
 
+\subsection{c0 flow}
+Auf der Konsole des Controllers c0 ist ersichtlich das alle Pakete zu ihm geschickt wird. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.60\textwidth]{./pictures/c0_ex1.png}
+	\caption{c0 flow}
+	\label{x}
+	\end{center}
+\end{figure} 
+\newpage
+
 \section{Implementing a Hub - Part 2}
 
 \subsection{Aufgabenstellung}
@@ -293,12 +304,22 @@ Wenn man die Flow Table anzeigen lässt sind jetzt mehrere Einträge vorhanden. 
 \end{figure} 
 \newpage
 
+\subsection{c0 flow}
+Auf der Konsole des Controllers c0 ist ebenfalls ersichtlich das nur ein Paket zu ihm geschickt wird. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.60\textwidth]{./pictures/c0_ex2.png}
+	\caption{c0 flow}
+	\label{x}
+	\end{center}
+\end{figure} 
+
 \subsubsection{Wireshark OpenFlow}
 Im Wireshark ist ebenfalls ersichtlich, dass die Pakete auf allen Ports gefloodet werden. 
 Nachdem das Erste Paket an den Controller gesendet wird, werden die restlichen auf allen Ports gefloodet. 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/wireshark-flood.png}
+	\includegraphics[width=0.60\textwidth]{./pictures/wireshark-flood.png}
 	\caption{wireshark capture flooding}
 	\label{x}
 	\end{center}
@@ -325,6 +346,13 @@ No, flood packet to all ports, except the incoming port
 \end{itemize}
 
 \subsection{Ziel der Aufgabe}
+In dieser Aufgabe soll jetzt ein Switch implementiert werden der die Pfade lernt. Falls der Switch noch keinen Flow für ein Paket hat, so soll er dieses zum Controller schicken. 
 
+\subsection{Infrastruktur}
+An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3.
+
+\subsection{Script: Implementing a Switch}
+
+\subsection{Traffic}
 
 \end{document}

@@ -125,7 +125,7 @@ To get familiar with SDN controller programming you will start with a very basic
 \subsection{Ziel der Aufgabe}
 Jeder Traffic soll über den Controller gehen, mittels OpenFlow. 
 
-\subsection{Simple Hub Script (Python)}
+\subsection{Script: Simple Hub}
 \begin{lstlisting}
 #!/usr/bin/env python
 from ryu.base import app_manager
@@ -211,7 +211,7 @@ Jeder, nicht bekannte Flow, soll an den Controller gesendet werden.
 \subsection{Infrastruktur}
 An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3. 
 
-\subsection{Simple Hub Flood Script (Python) }
+\subsection{Script: Simple Hub mit flood Pfad}
 \begin{lstlisting}
 #!/usr/bin/env python
 from ryu.base import app_manager
@@ -287,7 +287,19 @@ Wenn man die Flow Table anzeigen lässt sind jetzt mehrere Einträge vorhanden. 
 \begin{figure} [H]
 	\begin{center}
 	\includegraphics[width=1.00\textwidth]{./pictures/flow_table_flood.png}
-	\caption{Mininet Traffic ping from h1 to h2}
+	\caption{s1 flow table}
+	\label{x}
+	\end{center}
+\end{figure} 
+\newpage
+
+\subsubsection{Wireshark OpenFlow}
+Im Wireshark ist ebenfalls ersichtlich, dass die Pakete auf allen Ports gefloodet werden. 
+Nachdem das Erste Paket an den Controller gesendet wird, werden die restlichen auf allen Ports gefloodet. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/wireshark-flood.png}
+	\caption{wireshark capture flooding}
 	\label{x}
 	\end{center}
 \end{figure} 

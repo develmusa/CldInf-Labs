@@ -350,6 +350,7 @@ In dieser Aufgabe soll jetzt ein Switch implementiert werden der die Pfade lernt
 
 \subsection{Infrastruktur}
 An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3.
+\newpage
 
 \subsection{Script: Implementing a Switch}
 \begin{lstlisting}
@@ -430,16 +431,51 @@ class SimpleHub13(app_manager.RyuApp):
         datapath.send_msg(out)
         dpid = datapath.id
 \end{lstlisting}
+\newpage
 
 \subsection{Traffic}
-Mittels Wireshark sollte jetzt das Resultat nachvollziehbar sein. 
+Mittels Wireshark sollte jetzt das Resultat nachvollziehbar sein. Wir haben einen Test durchgeführt mittels einem Ping von h1 zu h2. 
 
 \subsubsection{Wireshark: first packet in}
+Das Erste Paket wird an den Controller gesendet, da der flow nicht bekannt ist. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex3_paket_in.png}
+	\caption{wireshark capture first packet in}
+	\label{x}
+	\end{center}
+\end{figure} 
 
 \subsubsection{Wireshark: first packet in - packet out flood}
+Da der flow nicht bekannt ist, wird als packet out einen flood durchgeführt 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/ex3_paket_out.png}
+	\caption{wireshark capture packet out flood}
+	\label{x}
+	\end{center}
+\end{figure} 
 
 \subsubsection{Wireshark: packet out learning port}
+Jetzt learnt der Switch den flow und merkt sich die MAC-Adresse und den dazugehörigen Port. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex3_paket_out_port.png}
+	\caption{wireshark capture learning port}
+	\label{x}
+	\end{center}
+\end{figure} 
 
 \subsubsection{Wireshark: traffic direct after learning}
+Nachdem die MAC-Adresse und den dazugehörgen Port bekannt ist, verläuft der traffic direkt. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex3_paket_direct.png}
+	\caption{wireshark capture direct traffic}
+	\label{x}
+	\end{center}
+\end{figure} 
+
+\section{•}
 
 \end{document}

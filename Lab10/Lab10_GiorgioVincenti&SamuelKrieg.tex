@@ -102,8 +102,7 @@ ryu-manager --verbose ex1_simple_hub.py
 	\end{center}
 \end{figure} 
 
-\subsection{andere Hilfreiche Befehle}
-\subsubsection{Flow Table anzeigen}
+\subsection{Flow Table anzeigen}
 Befehl auf s1 ausführen um die Flow Table anzuzeigen. 
 \begin{lstlisting}
 ovs-ofctl -O OpenFlow13 dump-flows s1
@@ -598,12 +597,12 @@ c0: ryu-manager --verbose scripts/ex4_controller_policy.py
 \subsubsection{ACL}
 Gemäss Aufgabe dürfen nicht alle Hosts miteinander kommunizieren. 
 \begin{itemize}
-\item h1 --> h2,h3,h4
-\item h2 --> h1,h3,h4
-\item h3 --> h1,h2,h4,h5,h6
-\item h4 --> h1,h2,h3,h5,h6
-\item h5 --> h3,h4,h6
-\item h6 --> h3,h4,h5
+\item h1 --> h2,h3,h4 (group1)
+\item h2 --> h1,h3,h4 (group2)
+\item h3 --> h1,h2,h4,h5,h6 (group3)
+\item h4 --> h1,h2,h3,h5,h6 (group4)
+\item h5 --> h3,h4,h6 (group5)
+\item h6 --> h3,h4,h5 (group6)
 \end{itemize}
 
 \subsection{Script: Policy-based controller}
@@ -798,8 +797,49 @@ Mit pingall kann auf Mininet die gesamte Implementation getestet werden. Die Hos
 Gemäss Aussage von dieser Abbildung funktioniert der Aufbau wie gefodert. 
 
 \subsubsection{c0 flow}
-Was zeigt der Controller auf der Konsole während dem traffic fliesst? Hier einen Auszug von unserem c0 Controller. Wir zeigen nicht den gesamten Konsolenauszug, da dieser enorm lang ist. Wir haben die wichtigsten Positionen im Script mit Ausgaben geschmückt, damit man das Verhalten besser nachvollziehen kann. 
+Was zeigt der Controller auf der Konsole während dem traffic fliesst? Hier einen Auszug von unserem c0 Controller. Wir zeigen nicht den gesamten Konsolenauszug, da dieser enorm lang ist. Wir haben die wichtigsten Positionen im Script mit Ausgaben geschmückt, damit man das Verhalten besser nachvollziehen kann. Wir zeigen einmal ein erfolgreicher Ping von h1 zu h2, und ein nicht erlaubter Ping von h1 zu h6. 
+\begin{itemize}
+\item mininet: h1 ping h2 (allowed)
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.70\textwidth]{./pictures/h1_ping_h2_ok.png}
+	\caption{erfolgreicher ping von h1 zu h2}
+	\label{x}
+	\end{center}
+\end{figure} 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/h1_ping_h2.png}
+	\caption{c0 flow bei allowed access}
+	\label{x}
+	\end{center}
+\end{figure} 
+\item mininet: h1 ping h6 (not allowed)
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/h1_ping_h6_nok.png}
+	\caption{kein erfolgreicher ping von h1 zu h6}
+	\label{x}
+	\end{center}
+\end{figure} 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/h1_ping_h6.png}
+	\caption{c0 flow bei access denied}
+	\label{x}
+	\end{center}
+\end{figure} 
+\end{itemize}
 
+\subsubsection{s1 flow table}
+In der flow table kann man die jeweiligen bereits bekannten Pfade anzeigen lassen. Gemäss diesem Bild ist der Pfad zu h1,h2 und h3 bereits bekannt. Jeder neue traffic der an diese drei Hosts adressiert ist, wird nicht mehr zum Controller c0 geschickt. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_flow_table.png}
+	\caption{s1 flow table}
+	\label{x}
+	\end{center}
+\end{figure} 
 
 \subsubsection{Wireshark}
 

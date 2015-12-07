@@ -581,17 +581,31 @@ Auf dem Controllen sollen Policys erstellt werden, welche bestimmen, welcher Hos
 \subsection{Infrastruktur}
 An der Infrastruktur ändert sich für diese Aufgabe nur das Script. Ansonsten dieselbe wie 1.1.3.
 
-\subsection{Vorgehen}
-Wir gingen nach der Aufgabenstellung vor. (Quickstart) Alle Schritte wurden erfolgreich ausgeführt. 
-
 \subsection{Start Mininet und Vorbereitung}
-Für diese Aufgabe werden 6 Hosts benötigt. 
+Für diese Aufgabe werden 6 Hosts benötigt. Mininet muss mit folgendem Befehl gestartet werden.
 \begin{lstlisting}
 sudo mn --topo single,6 --mac --controller remote,ip=127.0.0.1 
+\end{lstlisting}
+Ebenfalls muss OpenFlow13 auf dem s1 aktiviert sein: 
+\begin{lstlisting}
+s1: ovs-vsctl set bridge s1 protocols=OpenFlow13
+\end{lstlisting}
+Der ryu-manager kann wie bisher gestartet werden mit dem neuem Script: 
+\begin{lstlisting}
+c0: ryu-manager --verbose scripts/ex4_controller_policy.py
 \end{lstlisting}
 
 \subsubsection{ACL}
 Gemäss Aufgabe dürfen nicht alle Hosts miteinander kommunizieren. 
+\begin{itemize}
+\item h1 --> h2,h3,h4
+\item h2 --> h1,h3,h4
+\item h3 --> h1,h2,h4,h5,h6
+\item h4 --> h1,h2,h3,h5,h6
+\item h5 --> h3,h4,h6
+\item h6 --> h3,h4,h5
+\end{itemize}
+
 \subsection{Script: Policy-based controller}
 \begin{lstlisting}
 #!/usr/bin/env python
@@ -767,13 +781,25 @@ class PolicyController(app_manager.RyuApp):
 \end{lstlisting}
 
 \subsection{Beschreibung zu Script}
-Unser Script arbeitet mit keinem Import einer Liste, sondern mit Variablen und Arrays. Die Host MAC-Adressen werden als Variablen definiert und die jeweiligen ACLs der Hosts, sind Arrays mit den jeweiligen Client MAC-Adressen als Inhalt. Beispiel: h1 kann mit allen MAC-Adressen die in group1 eingetragen sind kommunizieren. 
+Unser Script arbeitet mit keinem Import einer Liste, sondern mit Variablen und Arrays. Die Host MAC-Adressen werden als Variablen definiert und die jeweiligen ACLs der Hosts, sind Arrays mit den jeweiligen Client MAC-Adressen als Inhalt. Beispiel: h1 kann mit allen MAC-Adressen die in group1 eingetragen sind kommunizieren. Diese Abfrage passiert in den untenstehenden IF-Abfragen. Es gibt insgesamt 8 Fälle: 1-6 sind Fälle von erlaubten Zugriffen (h1-h6 auf group1-group6), ein Fall betrifft der Broadcast und der letzte Fall betrifft keinen match (Zugriff verweigert). 
 
 \subsection{Traffic}
+In diesem Kapitel zeigen wir diverse Traffic Verhalten von unserer Infrastruktur. 
 
 \subsubsection{Pingall}
+Mit pingall kann auf Mininet die gesamte Implementation getestet werden. Die Hosts müssten gemäss Kapitel ACL miteinander kommunizieren können, oder auch nicht. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/pingall.png}
+	\caption{pingall mininet}
+	\label{x}
+	\end{center}
+\end{figure} 
+Gemäss Aussage von dieser Abbildung funktioniert der Aufbau wie gefodert. 
 
 \subsubsection{c0 flow}
+Was zeigt der Controller auf der Konsole während dem traffic fliesst? Hier einen Auszug von unserem c0 Controller. Wir zeigen nicht den gesamten Konsolenauszug, da dieser enorm lang ist. Wir haben die wichtigsten Positionen im Script mit Ausgaben geschmückt, damit man das Verhalten besser nachvollziehen kann. 
+
 
 \subsubsection{Wireshark}
 

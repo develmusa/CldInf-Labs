@@ -841,8 +841,42 @@ In der flow table kann man die jeweiligen bereits bekannten Pfade anzeigen lasse
 	\end{center}
 \end{figure} 
 
-\subsubsection{Wireshark}
+\subsubsection{Wireshark: first traffic - flood}
+Bei einem unbekannten flow (immer bei der Ersten Kontaktaufnahme) wird gefloodet. Das ist der Fall 7 in im Python Script. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_packet_flood.png}
+	\caption{first traffic - flood}
+	\label{x}
+	\end{center}
+\end{figure} 
 
+\subsubsection{Wireshark: allowed flow}
+Kontaktiert h1 einen erlaubten Host so werden folgende Einträge angezeigt. Das Feld Actions enthält die zu durchführende Aktion. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_packet_action.png}
+	\caption{allowed flow}
+	\label{x}
+	\end{center}
+\end{figure} 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_packet_action2.png}
+	\caption{allowed flow}
+	\label{x}
+	\end{center}
+\end{figure} 
+
+\subsubsection{Wireshark: denied flow}
+Wird einen nicht erlaubten flow aufgebaut, so bleibt das Feld Actions leer. Die Pakete werden verworfen. 
+\begin{figure} [H]
+	\begin{center}
+	\includegraphics[width=0.80\textwidth]{./pictures/ex4_packet_action2.png}
+	\caption{access denied, drop packet}
+	\label{x}
+	\end{center}
+\end{figure} 
 
 \section{Referenzen}
 Als Referenz für diese Arbeit wurde das ryubook.pdf verwendet. 

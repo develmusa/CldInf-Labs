@@ -780,7 +780,7 @@ class PolicyController(app_manager.RyuApp):
 \end{lstlisting}
 
 \subsection{Beschreibung zu Script}
-Unser Script arbeitet mit keinem Import einer Liste, sondern mit Variablen und Arrays. Die Host MAC-Adressen werden als Variablen definiert und die jeweiligen ACLs der Hosts, sind Arrays mit den jeweiligen Client MAC-Adressen als Inhalt. Beispiel: h1 kann mit allen MAC-Adressen die in group1 eingetragen sind kommunizieren. Diese Abfrage passiert in den untenstehenden IF-Abfragen. Es gibt insgesamt 8 Fälle: 1-6 sind Fälle von erlaubten Zugriffen (h1-h6 auf group1-group6), ein Fall betrifft der Broadcast und der letzte Fall betrifft keinen match (Zugriff verweigert). 
+Unser Script arbeitet mit keinem Import einer Liste, sondern mit Variablen und Arrays. Die Host MAC-Adressen werden als Variablen definiert und die jeweiligen ACLs der Hosts, sind Arrays mit den jeweiligen Client MAC-Adressen als Inhalt. Beispiel: h1 kann mit allen MAC-Adressen die in group1 eingetragen sind kommunizieren. Diese Abfrage passiert in den untenstehenden IF-Abfragen. Es gibt insgesamt 8 Fälle: 1-6 sind Fälle von erlaubten Zugriffen (h1-h6 auf group1-group6), ein Fall betrifft der Broadcast und der letzte Fall betrifft keinen match (Zugriff verweigert). Eine Erweiterungsmöglichkeit wäre es das Gesamte skalierbar zu implementieren, mit Hilfe einer externen Liste. 
 
 \subsection{Traffic}
 In diesem Kapitel zeigen wir diverse Traffic Verhalten von unserer Infrastruktur. 
@@ -789,7 +789,7 @@ In diesem Kapitel zeigen wir diverse Traffic Verhalten von unserer Infrastruktur
 Mit pingall kann auf Mininet die gesamte Implementation getestet werden. Die Hosts müssten gemäss Kapitel ACL miteinander kommunizieren können, oder auch nicht. 
 \begin{figure} [H]
 	\begin{center}
-	\includegraphics[width=0.80\textwidth]{./pictures/pingall.png}
+	\includegraphics[width=0.60\textwidth]{./pictures/pingall.png}
 	\caption{pingall mininet}
 	\label{x}
 	\end{center}
